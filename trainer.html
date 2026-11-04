@@ -148,7 +148,7 @@
          <section id="contact" class="contact-section">
            <h2> :تواصل معنا</h2>
            <p>📱عبر الهاتف: +201100351797</p>
-           <p> :💬عن طريق واتس آب<ahref="https://wa.me/201100351797">اضغط هنا</a></p>
+           <p>💬 عن طريق واتساب:<a href="https://wa.me/201100351797">اضغط هنا</a></p>
            <p>skillmasr@gmail.com :عن طريق الايميل</p>
          </section>
       </center>
@@ -163,23 +163,21 @@
            addDoc
          } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
          
-         const form = document.getElementById("coachForm");
-         const priceTypeSelect = document.getElementById("priceType");
-         const priceLabel = document.getElementById("priceLabel");
-         const priceInput = document.getElementById("price");
-         priceTypeSelect.addEventListener("change", () => {
-         if (priceTypeSelect.value === "monthly") {
-            priceLabel.textContent = " سعر الشهر (ج)";
-            priceInput.placeholder = "سعر الشهر بالجنيه المصري";
-       } else if (priceTypeSelect.value === "per_session") {
-            priceLabel.textContent = "سعر الحصه (ج)";
-            priceInput.placeholder = "سعر الحصه بالجنيه المصري";
-       } else {
-            priceLabel.textContent = "Training Price (EGP)";
-            priceInput.placeholder = "Enter amount in EGP";}});
-         form.addEventListener("submit", async function (e) {
-         
-             e.preventDefault();
+            const form = document.getElementById("coachForm");
+            const priceTypeSelect = document.getElementById("priceType");
+            const priceLabel = document.getElementById("priceLabel");
+            const priceInput = document.getElementById("price");
+            priceTypeSelect.addEventListener("change", () => {
+               if (priceTypeSelect.value === "monthly") {
+                  priceLabel.textContent = " سعر الشهر (ج)";
+                  priceInput.placeholder = "سعر الشهر بالجنيه المصري";
+             } else if (priceTypeSelect.value === "per_session") {
+                  priceLabel.textContent = "سعر الحصه (ج)";
+                  priceInput.placeholder = "سعر الحصه بالجنيه المصري";}
+               else {priceLabel.textContent = "Training Price (EGP)"; priceInput.placeholder = "Enter amount in EGP";}});
+            form.addEventListener("submit", async function (e) {e.preventDefault();
+             const price = Number(document.getElementById("price").value);
+             const priceType = document.getElementById("priceType").value;
              const fullName = document.getElementById("fullName").value;
              const email = document.getElementById("email").value;
              let category = document.getElementById("category").value;
@@ -202,10 +200,15 @@
                      return;
                  }
          
-                 if (price <= 0) {
-                     alert("Invalid price");
-                     return;
-                 }
+                 if (!priceType) {
+                   alert("اختاري طريقة الدفع");
+                   return;
+               }
+               
+               if (!Number.isFinite(price) || price <= 0) {
+                   alert("اكتبي سعر صحيح");
+                   return;
+               }
          
                  let imageUrl = "";
          
@@ -261,19 +264,20 @@
              trainingPlaces.push(data.secure_url);
          }
                  await addDoc(collection(db, "coaches"), {
-                     fullName,
-                     email,
-                     category,
-                     specialization,
-                     governorate,
-                     area,
-                     phone,
-                     price,
-                     about,
-                     imageUrl,
-                     certs,
-                     trainingPlaces
-                 });
+                   fullName,
+                   email,
+                   category,
+                   specialization,
+                   governorate,
+                   area,
+                   phone,
+                   price,
+                   priceType,
+                   about,
+                   imageUrl,
+                   certs,
+                   trainingPlaces
+               });
                  localStorage.setItem("loggedIn", "true");
                  alert("تم حفظ البيانات بنجاح");
                  window.location.href = "index.html";
