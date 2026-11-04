@@ -164,6 +164,7 @@
          <button onclick="showCategory('handmade')">🎨 حرف يدوية</button>
          <button onclick="showCategory('music')">🎵 موسيقى</button>
          <button onclick="showCategory('programming')">💻 برمجة</button>
+         <button onclick="showCategory('quran')">📖 القرآن الكريم والعلوم الدينية</button>
          <button onclick="showCategory('other')">✨ غيرهم</button>
       </div>
       <section id="sports" class="category" style="display:block;">
@@ -299,6 +300,10 @@
                <button onclick="goDetails('Ahmed Samir')">عرض المزيد</button>
             </div>
          </div>
+         <section id="quran" class="category" style="display:none;">
+             <h2 class="section-title">القرآن الكريم والعلوم الدينية</h2>
+             <div class="products" id="quranFirebase"></div>
+         </section>
       </section>
       <section id="other" class="category" style="display:none;">
          <h2 class="section-title">غيرهم</h2>
@@ -394,6 +399,9 @@
          }
          else if (coach.category === "Programming") {
              container = document.getElementById("programmingFirebase");
+         }
+         else if (coach.category === "Quran") {
+          container = document.getElementById("quranFirebase");
          }
          else if (coach.category === "Other") {
          container = document.getElementById("otherFirebase");
