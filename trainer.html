@@ -164,11 +164,22 @@
          } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
          
          const form = document.getElementById("coachForm");
-         
+         const priceTypeSelect = document.getElementById("priceType");
+         const priceLabel = document.getElementById("priceLabel");
+         const priceInput = document.getElementById("price");
+         priceTypeSelect.addEventListener("change", () => {
+         if (priceTypeSelect.value === "monthly") {
+            priceLabel.textContent = " سعر الشهر (ج)";
+            priceInput.placeholder = "سعر الشهر بالجنيه المصري";
+       } else if (priceTypeSelect.value === "per_session") {
+            priceLabel.textContent = "سعر الحصه (ج)";
+            priceInput.placeholder = "سعر الحصه بالجنيه المصري";
+       } else {
+            priceLabel.textContent = "Training Price (EGP)";
+            priceInput.placeholder = "Enter amount in EGP";}});
          form.addEventListener("submit", async function (e) {
          
              e.preventDefault();
-         
              const fullName = document.getElementById("fullName").value;
              const email = document.getElementById("email").value;
              let category = document.getElementById("category").value;
@@ -176,7 +187,6 @@
              const governorate = document.getElementById("governorate").value;
              const area = document.getElementById("area").value;
              const phone = document.getElementById("phone").value;
-             const price = document.getElementById("price").value;
              const about = document.getElementById("about").value;
              const photo = document.getElementById("photo").files[0];
              const certFiles = document.getElementById("certificates").files;
