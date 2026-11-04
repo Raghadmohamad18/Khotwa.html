@@ -91,41 +91,56 @@
          <p>skillmasr@gmail.com :عن طريق الايميل</p>
       </section>
       <script type="module">
-         import { auth, db } from "./firebase.js";
-         import {
-         createUserWithEmailAndPassword
-         } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-         import {
-         collection,
-         addDoc
-         } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-         const form = document.getElementById("signupForm");
-         form.addEventListener("submit", async(e)=>{
-         e.preventDefault();
-         const name=document.getElementById("name").value;
-         const email=document.getElementById("email").value;
-         const password=document.getElementById("password").value;
-         const confirmPassword=document.getElementById("confirmPassword").value;
-         if(password!==confirmPassword){
-         alert("Passwords do not match");
-         return;}
-         try{
-         const userCredential=
-         await createUserWithEmailAndPassword(
-         auth,
-         email,
-         password);
-         await addDoc(collection(db,"trainees"),{
-           uid:userCredential.user.uid,
-           name,
-           email,});
-         localStorage.setItem("loggedIn", "true");
-         localStorage.setItem("coachName", name);
-         alert("Account created successfully");
-         window.location.href = "SkillMasr.html";
-         } catch(error){
-           alert(error.message);}
-         });
+      import { auth, db, authReady } from "./firebase.js";
+      import {createUserWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+      import {doc,setDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+      await authReady;
+      const form = document.getElementById("signupForm");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+        const confirmPassword =
+          document.getElementById("confirmPassword").value;
+      
+        if (password !== confirmPassword) {
+          alert("كلمتا المرور غير متطابقتين");
+          return;
+        }
+      
+        try {
+          const result = await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+      
+          const uid = result.user.uid;
+      
+          await setDoc(doc(db, "users", uid), {
+            uid: uid,
+            name: name,
+            email: email,
+            role: "trainee",
+            createdAt: serverTimestamp()
+          });
+      
+          await setDoc(doc(db, "trainees", uid), {
+            uid: uid,
+            name: name,
+            email: email,
+            createdAt: serverTimestamp()
+          });
+      
+          alert("تم إنشاء حساب المتدرب بنجاح");
+      
+          window.location.href = "dashboard.html";
+      
+        } catch (error) {
+          alert(error.message);
+        }
+      });
       </script>
    </body>
 </html>
