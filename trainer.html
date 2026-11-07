@@ -91,7 +91,7 @@
                   <option value="Handmade">حرف يدوية</option>
                   <option value="Music">موسيقى و غناء</option>
                   <option value="Programming">برمجة</option>
-                  <option value="Programming">برمجة</option>
+                  <!-- <option value="Programming">برمجة</option> -->
                   <option value="Quran"> القرآن الكريم و العلوم الدينية</option>
                   <option value="Other">غيره</option>
                </select>
@@ -137,7 +137,7 @@
                <option value="">اختر طريقة الدفع </option>
                <option value="per_session">الدفع بالحصه</option>
                <option value="monthly"> الدفع بالشهر</option>
-               </select><label id="priceLabel">Training Price (EGP)</label><input type="number"id="price"placeholder="اكتب السعر بالجنيه المصري" min="1"step="1"required>
+               </select><label id="priceLabel">Training Price (EGP)</label><input type="number" id="price" placeholder="اكتب السعر بالجنيه المصري" min="1" step="1" required>
                <label>تفاصيل عنك</label><textarea id="about" placeholder="اخبرنا اكثر عن خبرتك و مجالك"></textarea>
                <label>صورة للمدرب</label><input type="file" id="photo" accept="image/*">
                <label>صور لشهادات المدرب</label><input id="certificates" type="file" multiple accept="image/*">
@@ -176,7 +176,21 @@
              } else if (priceTypeSelect.value === "per_session") {
                   priceLabel.textContent = "سعر الحصه (ج)";
                   priceInput.placeholder = "سعر الحصه بالجنيه المصري";}
-               else {priceLabel.textContent = "Training Price (EGP)"; priceInput.placeholder = "Enter amount in EGP";}});
+               else {priceLabel.textContent = "ثمن التدريب(جنيه مصري)"; priceInput.placeholder = "ادخل السعر بالعملة المصرية";}});
+            async function uploadToCloudinary(file) {
+                const formData = new FormData();
+                formData.append("file", file);
+                formData.append("upload_preset", "rbqrpayg");
+                const response = await fetch("https://api.cloudinary.com/v1_1/i1ia28nc/image/upload", {
+                  method: "POST",
+                  body: formData
+                });
+                const data = await response.json();
+                if (!response.ok) {
+                  throw new Error("فشل رفع الصورة: " + (data.error?.message || "خطأ غير معروف"));
+                }
+                return data.secure_url || "";
+              }
             form.addEventListener("submit", async function (e) {e.preventDefault();
              const price = Number(document.getElementById("price").value);
              const priceType = document.getElementById("priceType").value;
