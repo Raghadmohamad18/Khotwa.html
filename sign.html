@@ -103,21 +103,17 @@
         const password = document.getElementById("password").value;
         const confirmPassword =
           document.getElementById("confirmPassword").value;
-      
         if (password !== confirmPassword) {
           alert("كلمتا المرور غير متطابقتين");
           return;
-        }
-      
+        }  
         try {
           const result = await createUserWithEmailAndPassword(
             auth,
             email,
             password
           );
-      
           const uid = result.user.uid;
-      
           await setDoc(doc(db, "users", uid), {
             uid: uid,
             name: name,
@@ -125,18 +121,14 @@
             role: "trainee",
             createdAt: serverTimestamp()
           });
-      
           await setDoc(doc(db, "trainees", uid), {
             uid: uid,
             name: name,
             email: email,
             createdAt: serverTimestamp()
           });
-      
           alert("تم إنشاء حساب المتدرب بنجاح");
-      
           window.location.href = "dashboard.html";
-      
         } catch (error) {
           alert(error.message);
         }
