@@ -1,55 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
    <head>
-      <title>Sign Up</title>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Log in</title>
       <style>
          body{
          margin:0;
-         background:#F5F5F5;
          font-family:Arial,sans-serif;
-         display:flex;
-         flex-direction: column;
-         justify-content:center; 
+         background:#f5f5f5;
          align-items:center;
-         min-height:100vh;
+         display:flex;
+         flex-direction:column;
          }
          .form{
          background:white;
-         width:90%;
-         max-width:500px;
-         padding:35px;
+         width:100%;
+         max-width:600px;
+         padding:30px;
          border-radius:15px;
-         box-shadow:0 5px 15px rgba(0,0,0,.15);
+         box-shadow:0 8px 20px rgba(0,0,0,.15);
+         margin-top:50px;
+         }
+         .form h1,
+         .form h3{
          text-align:center;
          }
-         h2{
-         color:#1F1F1F;
-         margin-bottom:25px;
+         label{
+         display:block;
+         text-align:left;
+         margin-top:15px;
+         margin-bottom:6px;
+         font-weight:bold;
+         color:#333;
          }
          input{
          width:100%;
          padding:12px;
-         margin:12px 0;
          border:1px solid #ccc;
          border-radius:8px;
          font-size:15px;
-         box-sizing:border-box;
          }
          button{
          width:100%;
-         height:45px;
-         margin-top:15px;
+         margin-top:25px;
+         padding:14px;
          border:none;
          border-radius:8px;
          background:#C62828;
          color:white;
          font-size:16px;
          font-weight:bold;
-         cursor:pointer;
-         transition:.3s;
          }
          button:hover{
          background:#388E3C;
+         }
+         .sign{
+         margin-top:20px;
+         text-align:center;
+         }
+         .sign p{
+         color:#444;
+         }
+         .sign a{
+         color:#D4AF37;
+         text-decoration:none;
+         font-weight:bold;
          }
          .contact-section{
          width:100%;
@@ -75,14 +91,19 @@
    </head>
    <body>
       <div class="form">
-         <h2>إنشاء حساب</h2>
-         <form id="signupForm">
-            <input type="text" id="name" placeholder="الاسم بالكامل" required>
-            <input type="email" id="email" placeholder="البريد الالكتروني" required>
-            <input type="password" id="password" placeholder="كلمة المرور" required>
-            <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور" required>
-            <button type="submit">إنشاء حساب</button>
+         <h1>تسجيل الدخول</h1>
+         <h3><em>!اهلا بك مجددًا</em></h3>
+         <form id="loginForm">
+            <label>البريد الالكتروني</label>
+            <input type="email" id="email" placeholder="ادخله هنا" required>
+            <label>كلمة المرور</label>
+            <input type="password" id="password" placeholder="ادخلها هنا" required>
+            <button type="submit">تسجيل الدخول</button>
          </form>
+      </div>
+      <div class="sign">
+         <p>ليس لديك حساب</p>
+         <a href="trainer.html"><em>إنشاء حساب</em></a>
       </div>
       <section id="contact" class="contact-section">
          <h2> :تواصل معنا</h2>
@@ -91,52 +112,22 @@
          <p>skillmasr@gmail.com :عن طريق الايميل</p>
       </section>
       <script type="module">
-      import { auth, db, authReady } from "./firebase.js";
-      import {createUserWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-      import {doc,setDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-      await authReady;
-      const form = document.getElementById("signupForm");
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const name = document.getElementById("name").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value;
-        const confirmPassword =
-          document.getElementById("confirmPassword").value;
-      
-        if (password !== confirmPassword) {
-          alert("كلمتا المرور غير متطابقتين");
-          return;
-        }
-      
-        try {
-          const result = await createUserWithEmailAndPassword(
-            auth,
-            email,
-            password
-          );
-      
-          const uid = result.user.uid;
-      
-          await setDoc(doc(db, "users", uid), {
-            uid: uid,
-            name: name,
-            email: email,
-            role: "trainee",
-            createdAt: serverTimestamp()
-          });
-          await setDoc(doc(db, "trainees", uid), {
-            uid: uid,
-            name: name,
-            email: email,
-            createdAt: serverTimestamp()
-          });
-          alert("تم إنشاء حساب المتدرب بنجاح");
-          window.location.href = "personal.com";
-        } catch (error) {
-          alert(error.message);
-        }
-      });
+         import { auth } from "./firebase.js";
+         import {
+           signInWithEmailAndPassword
+         } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+         const form = document.getElementById("loginForm");
+         form.addEventListener("submit", async (e) => {
+             e.preventDefault();
+             const email = document.getElementById("email").value;
+             const password = document.getElementById("password").value;
+             try {
+                 await signInWithEmailAndPassword(auth, email, password);
+                 alert("Login successful!");
+                 window.location.href = "persobal.html";
+             } catch (error) {
+                 alert("Invalid email or password");}
+         });
       </script>
    </body>
 </html>
