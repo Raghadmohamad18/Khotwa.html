@@ -132,18 +132,29 @@
                   <option>جنوب سيناء</option>
                   <option>السويس</option>
                </select>
-               <label>المنطقة</label><input type="text" id="area" placeholder="مثال: سموحة,اكتوبر">
-               <label>رقم الهاتف</label><input type="tel" id="phone" placeholder="01XXXXXXXXX">
+               <select id="placeType" required>
+               <option value="">مكان التدريب </option>
+               <option value="online">اونلاين</option>
+               <option value="offline"> مقر تدريب</option>
+               <label id="priceLabel> المنطقة التدريب</label>
+               <input type="text" id="place" required>
+               <label>رقم الهاتف</label>
+               <input type="tel" id="phone" placeholder="01XXXXXXXXX">
                <label>طريقة الدفع</label>
                <select id="priceType" required>
                <option value="">اختر طريقة الدفع </option>
                <option value="per_session">الدفع بالحصه</option>
                <option value="monthly"> الدفع بالشهر</option>
-               </select><label id="priceLabel">ثمن التدريب(جنيه مصري)</label><input type="number" id="price" placeholder="اكتب السعر بالجنيه المصري" min="1" step="1" required>
-               <label>تفاصيل عنك</label><textarea id="about" placeholder="اخبرنا اكثر عن خبرتك و مجالك"></textarea>
-               <label>صورة للمدرب</label><input type="file" id="photo" accept="image/*">
-               <label>صور لشهادات المدرب</label><input id="certificates" type="file" multiple accept="image/*">
-               <label>صور لمكان التدريب</label><input id="trainingPlaces" type="file" multiple accept="image/*">
+               </select><label id="priceLabel">ثمن التدريب(جنيه مصري)</label>
+               <input type="number" id="price" placeholder="اكتب السعر بالجنيه المصري" min="1" step="1" required>
+               <label>تفاصيل عنك</label>
+               <textarea id="about" placeholder="اخبرنا اكثر عن خبرتك و مجالك"></textarea>
+               <label>صورة للمدرب</label>
+               <input type="file" id="photo" accept="image/*">
+               <label>صور لشهادات المدرب</label>
+               <input id="certificates" type="file" multiple accept="image/*">
+               <label>صور لمكان التدريب</label>
+               <input id="trainingPlaces" type="file" multiple accept="image/*">
                <button type="submit">
                سجل
                </button>
@@ -169,8 +180,11 @@
          
             const form = document.getElementById("coachForm");
             const priceTypeSelect = document.getElementById("priceType");
+            const placeTypeSelect = document.getElementById("placeType");
             const priceLabel = document.getElementById("priceLabel");
             const priceInput = document.getElementById("price");
+            const placeLabel = document.getElementById("placeLabel");
+            const prlaceInput = document.getElementById("place");
             priceTypeSelect.addEventListener("change", () => {
                if (priceTypeSelect.value === "monthly") {
                   priceLabel.textContent = " سعر الشهر (ج)";
@@ -179,6 +193,14 @@
                   priceLabel.textContent = "سعر الحصه (ج)";
                   priceInput.placeholder = "سعر الحصه بالجنيه المصري";}
                else {priceLabel.textContent = "ثمن التدريب(جنيه مصري)"; priceInput.placeholder = "ادخل السعر بالعملة المصرية";}});
+            placeTypeSelect.addEventListener("change", () => {
+               if (placeTypeSelect.value === "online") {
+                  placeLabel.textContent = " اونلاين";
+                  placeInput.placeholder = "✓اونلاين"
+             } else if (placeTypeSelect.value === "offline") {
+                  priceLabel.textContent = "مقر تدريبي";
+                  priceInput.placeholder = "عنوان التدريب";}
+               else {alert choose one});
             async function uploadToCloudinary(file) {
                 const formData = new FormData();
                 formData.append("file", file);
