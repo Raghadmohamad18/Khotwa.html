@@ -133,11 +133,8 @@
                   <option>السويس</option>
                </select>
                <select id="placeType" required>
-               <option value="">مكان التدريب </option>
-               <option value="online">اونلاين</option>
-               <option value="offline"> مقر تدريب</option>
-               <label id="priceLabel> المنطقة التدريب</label>
-               <input type="text" id="place" required>
+               <label id="priceLabel"> منطقة التدريب </label>
+               <input type="text" id="place" placeholder="يمكن كتابة المنطقة او اونلاين" required>
                <label>رقم الهاتف</label>
                <input type="tel" id="phone" placeholder="01XXXXXXXXX">
                <label>طريقة الدفع</label>
@@ -180,11 +177,8 @@
          
             const form = document.getElementById("coachForm");
             const priceTypeSelect = document.getElementById("priceType");
-            const placeTypeSelect = document.getElementById("placeType");
             const priceLabel = document.getElementById("priceLabel");
             const priceInput = document.getElementById("price");
-            const placeLabel = document.getElementById("placeLabel");
-            const prlaceInput = document.getElementById("place");
             priceTypeSelect.addEventListener("change", () => {
                if (priceTypeSelect.value === "monthly") {
                   priceLabel.textContent = " سعر الشهر (ج)";
@@ -193,14 +187,6 @@
                   priceLabel.textContent = "سعر الحصه (ج)";
                   priceInput.placeholder = "سعر الحصه بالجنيه المصري";}
                else {priceLabel.textContent = "ثمن التدريب(جنيه مصري)"; priceInput.placeholder = "ادخل السعر بالعملة المصرية";}});
-            placeTypeSelect.addEventListener("change", () => {
-               if (placeTypeSelect.value === "online") {
-                  placeLabel.textContent = " اونلاين";
-                  placeInput.placeholder = "✓اونلاين"
-             } else if (placeTypeSelect.value === "offline") {
-                  priceLabel.textContent = "مقر تدريبي";
-                  priceInput.placeholder = "عنوان التدريب";}
-               else {alert choose one});
             async function uploadToCloudinary(file) {
                 const formData = new FormData();
                 formData.append("file", file);
