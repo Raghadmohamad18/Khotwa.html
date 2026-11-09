@@ -1,0 +1,216 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>حساب المتدرب - SkillMasr</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #F5F5F5;
+  padding: 20px;
+}
+.container {
+  max-width: 850px;
+  margin: auto;
+}
+.card {
+  background: white;
+  padding: 20px;
+  margin: 15px 0;
+  border-radius: 12px;
+}
+button {
+  background: #C62828;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>SkillMasr - حساب المتدرب</h1>
+
+<div class="card">
+  <h2 id="name">جاري التحميل...</h2>
+  <p id="email"></p>
+  <button id="logout">تسجيل الخروج</button>
+</div>
+
+<div class="card">
+  <h2>My Requests - طلباتي</h2>
+  <div id="requests"></div>
+</div>
+
+<div class="card">
+  <h2>Notifications - الإشعارات</h2>
+  <div id="notifications"></div>
+</div>
+
+</div>
+
+<script type="module">
+import { auth, db, authReady } from "./firebase.js";
+
+import {
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+import {
+  doc,
+  getDoc,
+  collection,
+  query,
+  where,
+  orderBy,
+  onSnapshot,
+  updateDoc
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+await authReady;
+
+let stopRequests;
+let stopNotifications;
+
+onAuthStateChanged(auth, async (user) => {
+
+  if (!user) {
+    window.location.href = "log.html";
+    return;
+  }
+
+  const userSnap = await getDoc(doc(db, "users", user.uid));
+
+  if (!userSnap.exists() || userSnap.data().role !== "trainee") {
+    alert("هذا الحساب ليس حساب متدرب");
+    return;
+  }
+
+  const traineeSnap = await getDoc(doc(db, "trainees", user.uid));
+
+  if (!traineeSnap.exists()) {
+    alert("بيانات المتدرب غير موجودة");
+    return;
+  }
+
+  const trainee = traineeSnap.data();
+
+  document.getElementById("name").textContent =
+    "أهلاً " + trainee.name;
+
+  document.getElementById("email").textContent =
+    trainee.email;
+
+  const requestsQuery = query(
+    collection(db, "requests"),
+    where("traineeId", "==", user.uid),
+    orderBy("createdAt", "desc")
+  );
+
+  stopRequests = onSnapshot(requestsQuery, (snapshot) => {
+
+    const list = document.getElementById("requests");
+    list.innerHTML = "";
+
+    if (snapshot.empty) {
+      list.textContent = "لم ترسل أي طلبات حتى الآن";
+    }
+
+    snapshot.forEach((item) => {
+
+      const data = item.data();
+
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const name = document.createElement("h3");
+      name.textContent = "المدرب: " + data.coachName;
+
+      const goal = document.createElement("p");
+      goal.textContent =
+        "هدف التدريب: " + (data.formData?.goal || "");
+
+      const status = document.createElement("p");
+      status.textContent = "حالة الطلب: " + data.status;
+
+      card.append(name, goal, status);
+      list.appendChild(card);
+
+    });
+
+  });
+
+  const notificationsQuery = query(
+    collection(db, "notifications"),
+    where("userId", "==", user.uid),
+    orderBy("createdAt", "desc")
+  );
+
+  stopNotifications = onSnapshot(notificationsQuery, (snapshot) => {
+
+    const list = document.getElementById("notifications");
+    list.innerHTML = "";
+
+    if (snapshot.empty) {
+      list.textContent = "لا توجد إشعارات";
+    }
+
+    snapshot.forEach((item) => {
+
+      const data = item.data();
+
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const title = document.createElement("h3");
+      title.textContent = data.title;
+
+      const message = document.createElement("p");
+      message.textContent = data.message;
+
+      card.append(title, message);
+
+      if (!data.isRead) {
+        const button = document.createElement("button");
+        button.textContent = "تحديد كمقروء";
+
+        button.onclick = async () => {
+          await updateDoc(
+            doc(db, "notifications", item.id),
+            { isRead: true }
+          );
+        };
+
+        card.appendChild(button);
+      }
+
+      list.appendChild(card);
+
+    });
+
+  });
+
+});
+
+document.getElementById("logout").onclick = async () => {
+
+  if (stopRequests) stopRequests();
+  if (stopNotifications) stopNotifications();
+
+  await signOut(auth);
+  window.location.href = "log.html";
+
+};
+
+</script>
+</body>
+</html>
