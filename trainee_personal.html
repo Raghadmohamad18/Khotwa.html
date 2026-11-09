@@ -58,159 +58,59 @@ button {
 </div>
 
 <script type="module">
+<script type="module">
 import { auth, db, authReady } from "./firebase.js";
 
 import {
-  onAuthStateChanged,
-  signOut
+  signInWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 import {
   doc,
-  getDoc,
-  collection,
-  query,
-  where,
-  orderBy,
-  onSnapshot,
-  updateDoc
+  getDoc
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 await authReady;
 
-let stopRequests;
-let stopNotifications;
+const loginForm = document.getElementById("loginForm");
 
-onAuthStateChanged(auth, async (user) => {
+loginForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-  if (!user) {
-    window.location.href = "log.html";
-    return;
-  }
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
 
-  const userSnap = await getDoc(doc(db, "users", user.uid));
+  try {
+    const result = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
 
-  if (!userSnap.exists() || userSnap.data().role !== "trainee") {
-    alert("هذا الحساب ليس حساب متدرب");
-    return;
-  }
+    const uid = result.user.uid;
 
-  const traineeSnap = await getDoc(doc(db, "trainees", user.uid));
+    const userSnap = await getDoc(doc(db, "users", uid));
 
-  if (!traineeSnap.exists()) {
-    alert("بيانات المتدرب غير موجودة");
-    return;
-  }
-
-  const trainee = traineeSnap.data();
-
-  document.getElementById("name").textContent =
-    "أهلاً " + trainee.name;
-
-  document.getElementById("email").textContent =
-    trainee.email;
-
-  const requestsQuery = query(
-    collection(db, "requests"),
-    where("traineeId", "==", user.uid),
-    orderBy("createdAt", "desc")
-  );
-
-  stopRequests = onSnapshot(requestsQuery, (snapshot) => {
-
-    const list = document.getElementById("requests");
-    list.innerHTML = "";
-
-    if (snapshot.empty) {
-      list.textContent = "لم ترسل أي طلبات حتى الآن";
+    if (!userSnap.exists()) {
+      alert("بيانات الحساب غير موجودة");
+      return;
     }
 
-    snapshot.forEach((item) => {
+    const role = userSnap.data().role;
 
-      const data = item.data();
-
-      const card = document.createElement("div");
-      card.className = "card";
-
-      const name = document.createElement("h3");
-      name.textContent = "المدرب: " + data.coachName;
-
-      const goal = document.createElement("p");
-      goal.textContent =
-        "هدف التدريب: " + (data.formData?.goal || "");
-
-      const status = document.createElement("p");
-      status.textContent = "حالة الطلب: " + data.status;
-
-      card.append(name, goal, status);
-      list.appendChild(card);
-
-    });
-
-  });
-
-  const notificationsQuery = query(
-    collection(db, "notifications"),
-    where("userId", "==", user.uid),
-    orderBy("createdAt", "desc")
-  );
-
-  stopNotifications = onSnapshot(notificationsQuery, (snapshot) => {
-
-    const list = document.getElementById("notifications");
-    list.innerHTML = "";
-
-    if (snapshot.empty) {
-      list.textContent = "لا توجد إشعارات";
+    if (role === "trainee") {
+      window.location.href = "trainee_personal.html";
+    } else if (role === "coach") {
+      window.location.href = "personal.html";
+    } else {
+      alert("نوع الحساب غير معروف");
     }
 
-    snapshot.forEach((item) => {
-
-      const data = item.data();
-
-      const card = document.createElement("div");
-      card.className = "card";
-
-      const title = document.createElement("h3");
-      title.textContent = data.title;
-
-      const message = document.createElement("p");
-      message.textContent = data.message;
-
-      card.append(title, message);
-
-      if (!data.isRead) {
-        const button = document.createElement("button");
-        button.textContent = "تحديد كمقروء";
-
-        button.onclick = async () => {
-          await updateDoc(
-            doc(db, "notifications", item.id),
-            { isRead: true }
-          );
-        };
-
-        card.appendChild(button);
-      }
-
-      list.appendChild(card);
-
-    });
-
-  });
-
+  } catch (error) {
+    console.error(error);
+    alert("تأكدي من البريد الإلكتروني وكلمة المرور");
+  }
 });
-
-document.getElementById("logout").onclick = async () => {
-
-  if (stopRequests) stopRequests();
-  if (stopNotifications) stopNotifications();
-
-  await signOut(auth);
-  window.location.href = "log.html";
-
-};
-
 </script>
 </body>
 </html>
