@@ -1,1 +1,329 @@
 
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Personal Dashboard - SkillMasr</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #F5F5F5;
+  padding: 20px;
+}
+.container {
+  max-width: 900px;
+  margin: auto;
+}
+.card {
+  background: white;
+  padding: 20px;
+  margin: 18px 0;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px #ddd;
+}
+button {
+  background: #C62828;
+  color: white;
+  border: 0;
+  padding: 10px 18px;
+  border-radius: 7px;
+  cursor: pointer;
+  margin: 5px;
+}
+button:hover {
+  background: #A00000;
+}
+.request {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 9px;
+  margin: 12px 0;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>SkillMasr - لوحة المدرب</h1>
+
+<div class="card">
+  <h2 id="coachName">جاري التحميل...</h2>
+  <p id="coachEmail"></p>
+  <p id="coachSpecialization"></p>
+  <p id="coachPrice"></p>
+  <button id="logout">تسجيل الخروج</button>
+</div>
+
+<div class="card">
+  <h2>إحصائيات التدريب</h2>
+  <p>كل الطلبات: <span id="total">0</span></p>
+  <p>طلبات جديدة: <span id="pending">0</span></p>
+  <p>المتدربون المقبولون: <span id="accepted">0</span></p>
+</div>
+
+<div class="card">
+  <h2>طلبات المتدربين والفورمز</h2>
+  <div id="requests">جاري تحميل الطلبات...</div>
+</div>
+
+<div class="card">
+  <h2>My Trainees - المتدربون المقبولون</h2>
+  <div id="myTrainees"></div>
+</div>
+
+<div class="card">
+  <h2>الإشعارات</h2>
+  <div id="notifications"></div>
+</div>
+
+</div>
+
+<script type="module">
+import { auth, db, authReady } from "./firebase.js";
+
+import {
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+import {
+  doc,
+  getDoc,
+  collection,
+  query,
+  where,
+  orderBy,
+  onSnapshot,
+  updateDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+await authReady;
+
+let stopRequests;
+let stopNotifications;
+
+onAuthStateChanged(auth, async (user) => {
+
+  if (!user) {
+    window.location.href = "signCoach.html";
+    return;
+  }
+
+  const userSnap = await getDoc(doc(db, "users", user.uid));
+
+  if (!userSnap.exists() || userSnap.data().role !== "coach") {
+    alert("هذا الحساب ليس حساب مدرب");
+    return;
+  }
+
+  const coachSnap = await getDoc(doc(db, "coaches", user.uid));
+
+  if (!coachSnap.exists()) {
+    alert("بيانات المدرب غير موجودة");
+    return;
+  }
+
+  const coach = coachSnap.data();
+
+  document.getElementById("coachName").textContent =
+    "أهلاً " + coach.fullName;
+
+  document.getElementById("coachEmail").textContent =
+    coach.email;
+
+  document.getElementById("coachSpecialization").textContent =
+    coach.specialization;
+
+  document.getElementById("coachPrice").textContent =
+    coach.price + " جنيه";
+
+  if (stopRequests) stopRequests();
+  if (stopNotifications) stopNotifications();
+
+  const requestsQuery = query(
+    collection(db, "requests"),
+    where("coachId", "==", user.uid),
+    orderBy("createdAt", "desc")
+  );
+
+  stopRequests = onSnapshot(requestsQuery, (snapshot) => {
+
+    const list = document.getElementById("requests");
+    const trainees = document.getElementById("myTrainees");
+
+    list.innerHTML = "";
+    trainees.innerHTML = "";
+
+    let pending = 0;
+    let accepted = 0;
+
+    document.getElementById("total").textContent =
+      snapshot.size;
+
+    snapshot.forEach((requestDoc) => {
+
+      const data = requestDoc.data();
+
+      const card = document.createElement("div");
+      card.className = "request";
+
+      const heading = document.createElement("h3");
+      heading.textContent = data.traineeName || "متدرب";
+
+      const goal = document.createElement("p");
+      goal.textContent =
+        "الهدف: " + (data.formData?.goal || "");
+
+      const experience = document.createElement("p");
+      experience.textContent =
+        "الخبرة: " + (data.formData?.experience || "");
+
+      const time = document.createElement("p");
+      time.textContent =
+        "الوقت المناسب: " + (data.formData?.preferredTime || "");
+
+      const notes = document.createElement("p");
+      notes.textContent =
+        "ملاحظات: " + (data.formData?.notes || "");
+
+      const status = document.createElement("p");
+      status.textContent = "الحالة: " + data.status;
+
+      card.append(
+        heading,
+        goal,
+        experience,
+        time,
+        notes,
+        status
+      );
+
+      if (data.status === "pending") {
+
+        pending++;
+
+        const accept = document.createElement("button");
+        accept.textContent = "قبول";
+
+        accept.onclick = async () => {
+          await updateDoc(doc(db, "requests", requestDoc.id), {
+            status: "accepted",
+            updatedAt: serverTimestamp()
+          });
+        };
+
+        const decline = document.createElement("button");
+        decline.textContent = "رفض";
+
+        decline.onclick = async () => {
+          await updateDoc(doc(db, "requests", requestDoc.id), {
+            status: "declined",
+            updatedAt: serverTimestamp()
+          });
+        };
+
+        card.append(accept, decline);
+      }
+
+      if (data.status === "accepted") {
+
+        accepted++;
+
+        const traineeCard = document.createElement("div");
+        traineeCard.className = "request";
+
+        traineeCard.textContent =
+          data.traineeName + " - " + data.traineeEmail;
+
+        trainees.appendChild(traineeCard);
+      }
+
+      list.appendChild(card);
+
+    });
+
+    document.getElementById("pending").textContent = pending;
+    document.getElementById("accepted").textContent = accepted;
+
+    if (snapshot.empty) {
+      list.textContent = "لا توجد طلبات حتى الآن";
+    }
+
+  }, (error) => {
+    console.error(error);
+    document.getElementById("requests").textContent =
+      "تعذر تحميل الطلبات";
+  });
+
+  const notificationQuery = query(
+    collection(db, "notifications"),
+    where("userId", "==", user.uid),
+    orderBy("createdAt", "desc")
+  );
+
+  stopNotifications = onSnapshot(notificationQuery, (snapshot) => {
+
+    const list = document.getElementById("notifications");
+    list.innerHTML = "";
+
+    if (snapshot.empty) {
+      list.textContent = "لا توجد إشعارات";
+      return;
+    }
+
+    snapshot.forEach((item) => {
+
+      const data = item.data();
+
+      const card = document.createElement("div");
+      card.className = "request";
+
+      const title = document.createElement("h3");
+      title.textContent = data.title;
+
+      const message = document.createElement("p");
+      message.textContent = data.message;
+
+      card.append(title, message);
+
+      if (!data.isRead) {
+        const read = document.createElement("button");
+        read.textContent = "تحديد كمقروء";
+
+        read.onclick = async () => {
+          await updateDoc(
+            doc(db, "notifications", item.id),
+            { isRead: true }
+          );
+        };
+
+        card.appendChild(read);
+      }
+
+      list.appendChild(card);
+
+    });
+
+  }, (error) => {
+    console.error(error);
+  });
+
+});
+
+document.getElementById("logout").onclick = async () => {
+  if (stopRequests) stopRequests();
+  if (stopNotifications) stopNotifications();
+
+  await signOut(auth);
+  window.location.href = "signCoach.html";
+};
+
+</script>
+</body>
+</html>
+
