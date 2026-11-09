@@ -133,7 +133,7 @@
                   <option>جنوب سيناء</option>
                   <option>السويس</option>
                </select>
-               <label id="priceLabel"> منطقة التدريب </label>
+               <label id="areaLabel"> منطقة التدريب </label>
                <input type="text" id="area" placeholder="يمكن كتابة المنطقة او اونلاين" required>
                <label>رقم الهاتف</label>
                <input type="tel" id="phone" placeholder="01XXXXXXXXX">
@@ -169,15 +169,17 @@
       </footer>
       <script type="module">
          
+
 import { auth, db, authReady } from "./firebase.js";
 
 import {
-  createUserWithEmailAndPassword
+  createUserWithEmailAndPassword,
+  deleteUser
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 import {
   doc,
-  setDoc,
+  writeBatch,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
@@ -215,8 +217,8 @@ async function uploadToCloudinary(file) {
 
   const data = await response.json();
 
-  if (!response.ok) {
-    throw new Error("فشل رفع الصورة");
+  if (!response.ok || !data.secure_url) {
+    throw new Error("فشل رفع إحدى الصور إلى Cloudinary");
   }
 
   return data.secure_url;
@@ -225,52 +227,66 @@ async function uploadToCloudinary(file) {
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const fullName = document.getElementById("fullName").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
-  const confirmPassword = document.getElementById("confirmPassword").value;
+  const button = form.querySelector('button[type="submit"]');
+  if (button) button.disabled = true;
 
-  const category = document.getElementById("category").value;
-  const specialization = document.getElementById("specialization").value.trim();
-  const governorate = document.getElementById("governorate").value;
-  const area = document.getElementById("area").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-
-  const price = Number(document.getElementById("price").value);
-  const priceType = document.getElementById("priceType").value;
-
-  const about = document.getElementById("about").value;
-
-  const photo = document.getElementById("photo").files[0];
-  const certFiles = document.getElementById("certificates").files;
-  const placeFiles = document.getElementById("trainingPlaces").files;
-
-  if (password !== confirmPassword) {
-    alert("كلمتا المرور غير متطابقتين");
-    return;
-  }
-
-  if (phone.length !== 11) {
-    alert("رقم الهاتف يجب أن يتكون من 11 رقمًا");
-    return;
-  }
-
-  if (!Number.isFinite(price) || price <= 0) {
-    alert("اكتبي سعرًا صحيحًا");
-    return;
-  }
+  let createdUser = null;
 
   try {
-    await authReady;
+    const fullName = document.getElementById("fullName").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const confirmPassword =
+      document.getElementById("confirmPassword").value;
 
+    const category = document.getElementById("category").value;
+    const specialization =
+      document.getElementById("specialization").value.trim();
+
+    const governorate = document.getElementById("governorate").value;
+    const area = document.getElementById("area").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+
+    const price = Number(document.getElementById("price").value);
+    const priceType = document.getElementById("priceType").value;
+
+    const about = document.getElementById("about").value.trim();
+
+    const photo = document.getElementById("photo").files[0];
+    const certFiles = document.getElementById("certificates").files;
+    const placeFiles = document.getElementById("trainingPlaces").files;
+
+    if (password !== confirmPassword) {
+      throw new Error("كلمتا المرور غير متطابقتين");
+    }
+
+    if (password.length < 6) {
+      throw new Error("كلمة المرور يجب ألا تقل عن 6 أحرف");
+    }
+
+    if (!/^\d{11}$/.test(phone)) {
+      throw new Error("رقم الهاتف يجب أن يتكون من 11 رقمًا");
+    }
+
+    if (!Number.isFinite(price) || price <= 0) {
+      throw new Error("اكتبي سعرًا صحيحًا");
+    }
+
+    if (!priceType || !category || !governorate || !area) {
+      throw new Error("من فضلك أكمل البيانات المطلوبة");
+    }
+
+    // إنشاء حساب Firebase Auth
     const result = await createUserWithEmailAndPassword(
       auth,
       email,
       password
     );
 
-    const uid = result.user.uid;
+    createdUser = result.user;
+    const uid = createdUser.uid;
 
+    // رفع الصور
     let imageUrl = "";
 
     if (photo) {
@@ -306,9 +322,12 @@ form.addEventListener("submit", async (e) => {
       createdAt: serverTimestamp()
     };
 
-    await setDoc(doc(db, "coaches", uid), coachData);
+    // حفظ بيانات المدرب والحساب في عملية واحدة
+    const batch = writeBatch(db);
 
-    await setDoc(doc(db, "users", uid), {
+    batch.set(doc(db, "coaches", uid), coachData);
+
+    batch.set(doc(db, "users", uid), {
       uid,
       name: fullName,
       email,
@@ -316,15 +335,29 @@ form.addEventListener("submit", async (e) => {
       createdAt: serverTimestamp()
     });
 
-    alert("تم إنشاء حساب المدرب بنجاح");
+    await batch.commit();
 
+    alert("تم إنشاء حساب المدرب بنجاح");
     window.location.href = "personal.html";
 
   } catch (error) {
     console.error(error);
+
+    // لو فشل التسجيل بعد إنشاء حساب Auth، نحاول حذف الحساب غير المكتمل
+    if (createdUser) {
+      try {
+        await deleteUser(createdUser);
+      } catch (deleteError) {
+        console.error("تعذر حذف الحساب غير المكتمل:", deleteError);
+      }
+    }
+
     alert("حدث خطأ: " + error.message);
+
+  } finally {
+    if (button) button.disabled = false;
   }
-});      
+});
       </script>
    </body>
 </html>
