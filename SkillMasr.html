@@ -420,7 +420,7 @@
          ${coach.priceType === "monthly"
     ? `<p class="price">${coach.price} EGP / Month</p>`
     : `<p class="price">${coach.price} EGP / Session</p>`}
-         <button onclick="order('${coach.phone}','${coach.fullName}')">Contact Coach</button>
+         <button onclick="goDetailsFirebase('${doc.id}')">Contact Coach</button>
          <button onclick="goDetailsFirebase('${doc.id}')">View Details</button>
          </div>`;
          });
