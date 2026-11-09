@@ -1,6 +1,12 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import {getFirestore
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+import {
+  getAuth,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
 const firebaseConfig = {
   apiKey: "AIzaSyC3I9DDJKU2D5T3JMPwyoMbVzOpi8KisSQ",
   authDomain: "skillmasr.firebaseapp.com",
@@ -12,3 +18,13 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
+export const authReady = new Promise((resolve, reject) => {
+  const unsubscribe = onAuthStateChanged(
+    auth,
+    (user) => {
+      unsubscribe();
+      resolve(user);
+    },
+    reject
+  );
+});
