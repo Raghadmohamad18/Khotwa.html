@@ -112,22 +112,53 @@
          <p>skillmasr@gmail.com :عن طريق الايميل</p>
       </section>
       <script type="module">
-         import { auth } from "./firebase.js";
-         import {
-           signInWithEmailAndPassword
-         } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-         const form = document.getElementById("loginForm");
-         form.addEventListener("submit", async (e) => {
-             e.preventDefault();
-             const email = document.getElementById("email").value;
-             const password = document.getElementById("password").value;
-             try {
-                 await signInWithEmailAndPassword(auth, email, password);
-                 alert("Login successful!"); 
-                 window.location.href = "personal.html";
-             } catch (error) {
-                 alert("Invalid email or password");}
-         });
+         
+import { auth, db, authReady } from "./firebase.js";
+
+import {
+  signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+import {
+  doc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+await authReady;
+
+document.getElementById("loginForm").addEventListener(
+  "submit",
+  async (e) => {
+
+    e.preventDefault();
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    try {
+      const result = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      const userSnap = await getDoc(
+        doc(db, "users", result.user.uid)
+      );
+
+      if (!userSnap.exists() ||
+          userSnap.data().role !== "coach") {
+        alert("هذا الحساب ليس حساب مدرب");
+        return;
+      }
+
+      window.location.href = "personal.html";
+
+    } catch (error) {
+      alert("البريد الإلكتروني أو كلمة المرور غير صحيحة");
+    }
+  }
+);
       </script>
    </body>
 </html>
