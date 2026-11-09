@@ -66,6 +66,43 @@
          <h2>الشهادات الحاصل عليها المدرب</h2>
          <ul id="certs"></ul>
          <br>
+         
+<hr>
+
+<h2>طلب الانضمام للتدريب</h2>
+
+<form id="requestForm">
+
+  <label>ما هدفك من التدريب؟</label>
+  <textarea
+    id="goal"
+    placeholder="اكتب هدفك من التدريب"
+    required
+  ></textarea>
+
+  <label>مستوى خبرتك</label>
+  <select id="experience" required>
+    <option value="">اختار مستواك</option>
+    <option value="Beginner">مبتدئ</option>
+    <option value="Intermediate">متوسط</option>
+    <option value="Advanced">متقدم</option>
+  </select>
+
+  <label>الوقت المناسب لك</label>
+  <input
+    type="text"
+    id="preferredTime"
+    placeholder="مثلاً السبت والثلاثاء مساءً"
+    required
+  >
+
+  <label>ملاحظات إضافية</label>
+  <textarea id="notes"></textarea>
+
+  <button type="submit">إرسال طلب التدريب</button>
+
+</form>
+
          <button onclick="history.back()">
          العودة
          </button>
@@ -208,72 +245,165 @@
          }
 };
 
-          import { db } from "./firebase.js";
-         
-         import {
-         doc,
-         getDoc
-         } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-         const params = new URLSearchParams(window.location.search);
-         
-         let coach;
-         
-         const id = params.get("id");
-         
-         if (id) {
-          const coachRef = doc(db, "coaches", id);
-          const coachSnap = await getDoc(coachRef);
-         
-          if (coachSnap.exists()) {
-              coach = coachSnap.data();
-              coach.img = coach.imageUrl || "";
-              coach.price = coach.price + " EGP / Session";
-              coach.sport = coach.specialization;
-              coach.name = coach.fullName;
-              coach.certs = coach.certs || [];
-              coach.trainingPlaces = coach.trainingPlaces || [];
-          }
-         } else {
-          const name = params.get("name");
-          coach = data[name];
-         }
-         if (!coach) {
-          document.body.innerHTML = "<h2>Coach not found</h2>";
-          throw new Error("No coach found");
-         }
-         document.getElementById("name").textContent = coach.name || coach.fullName;
-         document.getElementById("sport").textContent = coach.sport;
-         document.getElementById("img").src = coach.img;
-         document.getElementById("area").textContent = coach.area;
-         document.getElementById("phone").textContent = coach.phone;
-         document.getElementById("price").textContent = coach.price;
-         document.getElementById("about").textContent = coach.about;
-         const ul = document.getElementById("certs");
-         
-         coach.certs.forEach(cert => {
-         const li = document.createElement("li");
-         
-         const img = document.createElement("img");
-         img.src = cert;
-         img.style.width = "150px";
-         img.style.margin = "10px";
-         img.style.borderRadius = "10px";
-         
-         li.appendChild(img);
-         ul.appendChild(li);
-         });
-         
-         const placesDiv = document.getElementById("places");
-         
-         coach.trainingPlaces.forEach(imgUrl => {
-         const img = document.createElement("img");
-         img.src = imgUrl;
-         img.style.width = "150px";
-         img.style.margin = "10px";
-         img.style.borderRadius = "10px";
-         
-         placesDiv.appendChild(img);
-         });
+          
+import { auth, db, authReady } from "./firebase.js";
+
+import {
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+import {
+  doc,
+  getDoc,
+  addDoc,
+  collection,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+await authReady;
+
+const params = new URLSearchParams(window.location.search);
+const coachId = params.get("id");
+
+let currentCoach = null;
+let currentUser = null;
+
+onAuthStateChanged(auth, async (user) => {
+  currentUser = user;
+
+  if (!user) {
+    window.location.href = "log.html";
+    return;
+  }
+
+  const userSnap = await getDoc(doc(db, "users", user.uid));
+
+  if (!userSnap.exists() ||
+      userSnap.data().role !== "trainee") {
+    alert("يجب تسجيل الدخول بحساب متدرب");
+    return;
+  }
+
+  if (!coachId) {
+    document.getElementById("requestForm").style.display = "none";
+    alert("هذا المدرب غير مرتبط بحساب على الموقع");
+    return;
+  }
+
+  const coachSnap = await getDoc(doc(db, "coaches", coachId));
+
+  if (!coachSnap.exists()) {
+    alert("لم يتم العثور على المدرب");
+    return;
+  }
+
+  currentCoach = coachSnap.data();
+
+  document.getElementById("name").textContent =
+    currentCoach.fullName;
+
+  document.getElementById("sport").textContent =
+    currentCoach.specialization;
+
+  document.getElementById("img").src =
+    currentCoach.imageUrl || "";
+
+  document.getElementById("area").textContent =
+    currentCoach.area || "";
+
+  document.getElementById("phone").textContent =
+    currentCoach.phone || "";
+
+  document.getElementById("price").textContent =
+    currentCoach.price + " EGP / " +
+    (currentCoach.priceType === "monthly" ? "Month" : "Session");
+
+  document.getElementById("about").textContent =
+    currentCoach.about || "";
+
+  const certs = document.getElementById("certs");
+  const places = document.getElementById("places");
+
+  certs.innerHTML = "";
+  places.innerHTML = "";
+
+  (currentCoach.certs || []).forEach(url => {
+    const li = document.createElement("li");
+    const img = document.createElement("img");
+    img.src = url;
+    img.style.width = "150px";
+    li.appendChild(img);
+    certs.appendChild(li);
+  });
+
+  (currentCoach.trainingPlaces || []).forEach(url => {
+    const img = document.createElement("img");
+    img.src = url;
+    img.style.width = "150px";
+    places.appendChild(img);
+  });
+});
+
+document.getElementById("requestForm").addEventListener(
+  "submit",
+  async (e) => {
+
+    e.preventDefault();
+
+    if (!currentUser || !currentCoach) {
+      alert("بيانات الحساب أو المدرب غير جاهزة");
+      return;
+    }
+
+    const traineeSnap = await getDoc(
+      doc(db, "trainees", currentUser.uid)
+    );
+
+    if (!traineeSnap.exists()) {
+      alert("بيانات المتدرب غير موجودة");
+      return;
+    }
+
+    const trainee = traineeSnap.data();
+
+    const formData = {
+      goal: document.getElementById("goal").value.trim(),
+      experience: document.getElementById("experience").value,
+      preferredTime: document.getElementById("preferredTime").value.trim(),
+      notes: document.getElementById("notes").value.trim()
+    };
+
+    try {
+      await addDoc(collection(db, "requests"), {
+
+        coachId: coachId,
+        traineeId: currentUser.uid,
+
+        coachName: currentCoach.fullName,
+        coachEmail: currentCoach.email,
+
+        traineeName: trainee.name,
+        traineeEmail: currentUser.email,
+
+        formData: formData,
+
+        status: "pending",
+
+        createdAt: serverTimestamp()
+
+      });
+
+      alert("تم إرسال طلب التدريب بنجاح");
+
+      e.target.reset();
+
+    } catch (error) {
+      alert(error.message);
+    }
+
+  }
+);
+
       </script>
    </body>
 </html>
