@@ -179,6 +179,10 @@
           alert("بيانات المتدرب غير موجودة");
           return;
         }
+        const phone = document.getElementById("num").value.trim();
+        if (!/^\d{11}$/.test(phone)) {
+            throw new Error("رقم الهاتف يجب أن يتكون من 11 رقمًا");
+        }
         const trainee = traineeSnap.data();
         const batch = writeBatch(db);
         const requestRef = doc(collection(db, "requests"));
