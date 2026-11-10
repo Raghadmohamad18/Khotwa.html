@@ -1,412 +1,397 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>تفاصيل عن المدرب</title>
-      <style>
-         body{
-         font-family: Arial, sans-serif;
-         background:#D6D6D6;
-         text-align:center;
-         padding:30px;
-         }
-         .card{
-         background:white;
-         max-width:700px;
-         margin:auto;
-         padding:20px;
-         border-radius:15px;
-         box-shadow:0 5px 15px rgba(0,0,0,0.2);
-         }
-         img{
-         width:300px;
-         border-radius:15px;
-         }
-         ul{
-         list-style:none;
-         padding:0;
-         }
-         #places{
-         display:flex;
-         justify-content:center;
-         gap:10px;
-         flex-wrap:wrap;
-         }
-         li{
-         background:#eee;
-         margin:10px;
-         padding:10px;
-         border-radius:10px;
-         }
-         button{
-         background:#C62828;
-         color:white;
-         border:none;
-         padding:12px 20px;
-         border-radius:8px;
-         cursor:pointer;
-         }
-         button:hover{
-         background:#A00000;
-         }
-      </style>
-   </head>
-   <body>
-      <div class="card">
-         <h1 id="name"></h1>
-         <img id="img" alt="coach image">
-         <h3 id="sport"></h3>
-         <p><b>:المكان</b> <span id="area"></span></p>
-         <p><b>:رقم التواصل</b> <span id="phone"></span></p>
-         <p><b>:السعر</b> <span id="price"></span></p>
-         <p id="about"></p>
-         <h2>مكان التدريب</h2>
-         <div id="places"></div>
-         <h2>الشهادات الحاصل عليها المدرب</h2>
-         <ul id="certs"></ul>
-         <br>
-         
-<hr>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>تفاصيل عن المدرب</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #d6d6d6;
+        text-align: center;
+        padding: 30px;
+      }
+      .card {
+        background: white;
+        max-width: 700px;
+        margin: auto;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+      img {
+        width: 300px;
+        border-radius: 15px;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      #places {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      li {
+        background: #eee;
+        margin: 10px;
+        padding: 10px;
+        border-radius: 10px;
+      }
+      button {
+        background: #c62828;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #a00000;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1 id="name"></h1>
+      <img id="img" alt="coach image" />
+      <h3 id="sport"></h3>
+      <p>
+        <b>:المكان</b>
+        <span id="area"></span>
+      </p>
+      <p>
+        <b>:رقم التواصل</b>
+        <span id="phone"></span>
+      </p>
+      <p>
+        <b>:السعر</b>
+        <span id="price"></span>
+      </p>
+      <p id="about"></p>
+      <h2>مكان التدريب</h2>
+      <div id="places"></div>
+      <h2>الشهادات الحاصل عليها المدرب</h2>
+      <ul id="certs"></ul>
+      <br />
 
-<h2>طلب الانضمام للتدريب</h2>
+      <hr />
 
-<form id="requestForm">
+      <h2>طلب الانضمام للتدريب</h2>
 
-  <label>ما هدفك من التدريب؟</label>
-  <textarea
-    id="goal"
-    placeholder="اكتب هدفك من التدريب"
-    required
-  ></textarea>
+      <form id="requestForm">
+        <label>ما هدفك من التدريب؟</label>
+        <textarea id="goal" placeholder="اكتب هدفك من التدريب" required=""></textarea>
 
-  <label>مستوى خبرتك</label>
-  <select id="experience" required>
-    <option value="">اختار مستواك</option>
-    <option value="Beginner">مبتدئ</option>
-    <option value="Intermediate">متوسط</option>
-    <option value="Advanced">متقدم</option>
-  </select>
+        <label>مستوى خبرتك</label>
+        <select id="experience" required="">
+          <option value="">اختار مستواك</option>
+          <option value="Beginner">مبتدئ</option>
+          <option value="Intermediate">متوسط</option>
+          <option value="Advanced">متقدم</option>
+        </select>
 
-  <label>الوقت المناسب لك</label>
-  <input
-    type="text"
-    id="preferredTime"
-    placeholder="مثلاً السبت والثلاثاء مساءً"
-    required
-  >
+        <label>الوقت المناسب لك</label>
+        <input type="text" id="preferredTime" placeholder="مثلاً السبت والثلاثاء مساءً" required="" />
 
-  <label>ملاحظات إضافية</label>
-  <textarea id="notes"></textarea>
+        <label>ملاحظات إضافية</label>
+        <textarea id="notes"></textarea>
 
-  <button type="submit">إرسال طلب التدريب</button>
+        <button type="submit">إرسال طلب التدريب</button>
+      </form>
 
-</form>
+      <button onclick="history.back()">العودة</button>
+    </div>
+    <script type="module">
+      const data = {
+        "أحمد حسن محمد": {
+          img: "https://ftcdn.net",
+          name: "احمد حسن محمد",
+          sport: "كرة القدم",
+          governorate: "الإسكندرية",
+          area: "نادي الشمس - الإسكندرية",
+          phone: "+20 101 234 5678",
+          price: "100 ج.م / حصة",
+          about:
+            "لاعب كرة قدم سابق يتمتع بخبرة تدريبية تزيد عن 5 سنوات. متخصص في تطوير اللياقة البدنية، التحكم بالكرة، دقة التمرير، والتكتيكات المباريات للمبتدئين والمستوى المتوسط.",
+          certs: ["رخصة تدريب الاتحاد الأوروبي (UEFA)", "دبلومة اللياقة البدنية"],
+          trainingPlaces: ["https://youm7.com"],
+        },
 
-         <button onclick="history.back()">
-         العودة
-         </button>
-      </div>
-      <script type="module">
-         const data = {
-         
-         "أحمد حسن محمد": {
-         img: "https://ftcdn.net",
-         name: "احمد حسن محمد",
-         sport: "كرة القدم",
-         governorate: "الإسكندرية",
-         area: "نادي الشمس - الإسكندرية",
-         phone: "+20 101 234 5678",
-         price: "100 ج.م / حصة",
-         about: "لاعب كرة قدم سابق يتمتع بخبرة تدريبية تزيد عن 5 سنوات. متخصص في تطوير اللياقة البدنية، التحكم بالكرة، دقة التمرير، والتكتيكات المباريات للمبتدئين والمستوى المتوسط.",
-         certs: ["رخصة تدريب الاتحاد الأوروبي (UEFA)", "دبلومة اللياقة البدنية"],
-         trainingPlaces: ["https://youm7.com"]
-         },
-         
-         "سارة محمد": {
-         img: "https://istockphoto.com",
-         name: "ساره محمد حسن",
-         sport: "سباحة",
-         governorate: "القاهرة",
-         area: "جولدز - القاهرة",
-         phone: "+20 102 456 7812",
-         price: "50 ج.م / حصة",
-         about: "مدربة سباحة معتمدة بخبرة تتجاوز 10 سنوات. تساعد العملاء على تحقيق أهدافهم من خلال خطط تمارين مخصصة، توجيهات غذائية، وتحفيز مستمر.",
-         certs: ["شهادة NASM العالمية للمحترفين", "دورة التغذية الرياضية"],
-         trainingPlaces: ["https://gstatic.com"]
-         },
-         
-         "عمر علي": {
-         img: "https://shutterstock.com",
-         name: "عمر حسام محمد",
-         sport: "كرة السلة",
-         governorate: "الإسكندرية",
-         area: "النادي الرياضي - الإسكندرية",
-         phone: "+20 109 876 5432",
-         price: "80 ج.م / حصة",
-         about: "مدرب كرة سلة محترف بخبرة تزيد عن 7 سنوات. يركز على تقنيات التسديد، مهارات العمل الجماعي، التحكم بالكرة، والأداء الرياضي العام.",
-         certs: ["رخصة تدريب كرة السلة", "دبلومة العلوم الرياضية"],
-         trainingPlaces: ["https://gstatic.com"]
-         },
-         
-         "يوسف عادل": {
-         img: "https://vecteezy.com",
-         name: "يوسف عادل محي",
-         sport: "كاراتيه",
-         governorate: "الإسكندرية",
-         area: "النادي الأوليمبي - الإسكندرية",
-         phone: "+20 100 987 6543",
-         price: "120 ج.م / حصة",
-         about: "مدرب كاراتيه يتمتع بخبرة تزيد عن 15 عاماً. متخصص في تدريب جميع الفئات العمرية، وتطوير المهارات الفنية، وتعزيز القدرة على التحمل، والتحضير للمنافسات",
-         certs: ["شهادة مدرب كاراتيه معتمد"],
-         trainingPlaces: ["https://gstatic.com"]
-         },
-         
-         "مريم عادل": {
-         img: "https://gstatic.com",
-         name: "مريم عادل",
-         sport: "الفنون والأشغال اليدوية",
-         governorate: "الإسكندرية",
-         area: "مركز الفنون الإبداعية - الإسكندرية",
-         phone: "+20 111 222 3333",
-         price: "90 ج.م / حصة",
-         about: "مدربة فنون متخصصة في أشغال الكروشيه والريزن. تساعد المبتدئين على تعلم المهارات اليدوية الإبداعية خطوة بخطوة.",
-         certs: ["دورة الكروشيه المتقدمة", "ورشة عمل فنون الريزن"],
-         trainingPlaces: ["https://google.com"]
-         },
-         
-         "فاطمة علي": {
-         img: "https://logomakerr.ai",
-         name: "فاطمة علي",
-         sport: "الأعمال اليدوية",
-         governorate: "القاهرة",
-         area: "استوديو الأشغال اليدوية - القاهرة",
-         phone: "+20 112 333 4444",
-         price: "80 ج.م / حصة",
-         about: "فنانة أشغال يدوية متخصصة في صناعة الشموع والمنتجات الديكورية بتصاميم إبداعية حديثة وعصرية.",
-         certs: ["شهادة احتراف صناعة الشموع"],
-         trainingPlaces: ["https://jwwb.nl"]
-         },
-         
-         "ندى أحمد": {
-         img: "https://dreamstime.com",
-         name: "ندى أحمد",
-         sport: "الموسيقى",
-         governorate: "الإسكندرية",
-         area: "أكاديمية الموسيقى - الإسكندرية",
-         phone: "+20 113 444 5555",
-         price: "130 ج.م / حصة",
-         about: "مدرسة بيانو تمتلك خبرة قوية في تدريس النظريات الموسيقية ومهارات العزف العملي على البيانو لجميع المستويات.",
-         certs: ["دبلومة معلم بيانو معتمد"],
-         trainingPlaces: ["https://google.com"]
-         },
-         
-         "عمر مصطفى": {
-         img: "https://etsystatic.com",
-         name: "عمر مصطفى",
-         sport: "الموسيقى",
-         governorate: "الجيزة",
-         area: "مركز الجيتار - الجيزة",
-         phone: "+20 114 555 6666",
-         price: "120 ج.م / حصة",
-         about: "مدرس جيتار يقوم بتدريس الجيتار الأكوستيك والكهربائي مع التركيز على الطلاب المبتدئين والمتوسطين.",
-         certs: ["شهادة في النظريات الموسيقية"],
-         trainingPlaces: ["https://gstatic.com"]
-         },
-         
-         "محمد خالد": {
-         img: "https://freepik.com",
-         name: "محمد خالد",
-         sport: "البرمجة",
-         governorate: "القاهرة",
-         area: "مركز التكنولوجيا (تيك هاب) - القاهرة",
-         phone: "+20 115 666 7777",
-         price: "150 ج.م / حصة",
-         about: "مهندس برمجيات يقوم بتدريس تطوير المواقع الإلكترونية بما في ذلك لغات HTML، CSS، JavaScript والعمل على مشاريع حقيقية.",
-         certs: ["شهادة مطور الويب المتكامل (Full Stack)"],
-         trainingPlaces: ["https://cio.com"]
-         },
-         
-         "أحمد سمير": {
-         img: "https://123rf.com",
-         name: "أحمد سمير",
-         sport: "البرمجة",
-         governorate: "الإسكندرية",
-         area: "أكاديمية البرمجة (كودينج أكاديمي) - الإسكندرية",
-         phone: "+20 116 777 8888",
-         price: "180 ج.م / حصة",
-         about: "مطور بايثون (Python) متخصص في حل المشكلات، الأتمتة، والتدريب البرمجي الشامل للمبتدئين.",
-         certs: ["شهادة معتمدة في لغة بايثون", "دورة أتمتة المهام البرمجية"],
-         trainingPlaces: ["https://licdn.com"]
-         }
-};
+        "سارة محمد": {
+          img: "https://istockphoto.com",
+          name: "ساره محمد حسن",
+          sport: "سباحة",
+          governorate: "القاهرة",
+          area: "جولدز - القاهرة",
+          phone: "+20 102 456 7812",
+          price: "50 ج.م / حصة",
+          about:
+            "مدربة سباحة معتمدة بخبرة تتجاوز 10 سنوات. تساعد العملاء على تحقيق أهدافهم من خلال خطط تمارين مخصصة، توجيهات غذائية، وتحفيز مستمر.",
+          certs: ["شهادة NASM العالمية للمحترفين", "دورة التغذية الرياضية"],
+          trainingPlaces: ["https://gstatic.com"],
+        },
 
-          
-import { auth, db, authReady } from "./firebase.js";
+        "عمر علي": {
+          img: "https://shutterstock.com",
+          name: "عمر حسام محمد",
+          sport: "كرة السلة",
+          governorate: "الإسكندرية",
+          area: "النادي الرياضي - الإسكندرية",
+          phone: "+20 109 876 5432",
+          price: "80 ج.م / حصة",
+          about:
+            "مدرب كرة سلة محترف بخبرة تزيد عن 7 سنوات. يركز على تقنيات التسديد، مهارات العمل الجماعي، التحكم بالكرة، والأداء الرياضي العام.",
+          certs: ["رخصة تدريب كرة السلة", "دبلومة العلوم الرياضية"],
+          trainingPlaces: ["https://gstatic.com"],
+        },
 
-import {
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+        "يوسف عادل": {
+          img: "https://vecteezy.com",
+          name: "يوسف عادل محي",
+          sport: "كاراتيه",
+          governorate: "الإسكندرية",
+          area: "النادي الأوليمبي - الإسكندرية",
+          phone: "+20 100 987 6543",
+          price: "120 ج.م / حصة",
+          about:
+            "مدرب كاراتيه يتمتع بخبرة تزيد عن 15 عاماً. متخصص في تدريب جميع الفئات العمرية، وتطوير المهارات الفنية، وتعزيز القدرة على التحمل، والتحضير للمنافسات",
+          certs: ["شهادة مدرب كاراتيه معتمد"],
+          trainingPlaces: ["https://gstatic.com"],
+        },
 
-import {
-  doc,
-getDoc,
-collection,
-writeBatch,
-serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+        "مريم عادل": {
+          img: "https://gstatic.com",
+          name: "مريم عادل",
+          sport: "الفنون والأشغال اليدوية",
+          governorate: "الإسكندرية",
+          area: "مركز الفنون الإبداعية - الإسكندرية",
+          phone: "+20 111 222 3333",
+          price: "90 ج.م / حصة",
+          about:
+            "مدربة فنون متخصصة في أشغال الكروشيه والريزن. تساعد المبتدئين على تعلم المهارات اليدوية الإبداعية خطوة بخطوة.",
+          certs: ["دورة الكروشيه المتقدمة", "ورشة عمل فنون الريزن"],
+          trainingPlaces: ["https://google.com"],
+        },
 
-await authReady;
+        "فاطمة علي": {
+          img: "https://logomakerr.ai",
+          name: "فاطمة علي",
+          sport: "الأعمال اليدوية",
+          governorate: "القاهرة",
+          area: "استوديو الأشغال اليدوية - القاهرة",
+          phone: "+20 112 333 4444",
+          price: "80 ج.م / حصة",
+          about: "فنانة أشغال يدوية متخصصة في صناعة الشموع والمنتجات الديكورية بتصاميم إبداعية حديثة وعصرية.",
+          certs: ["شهادة احتراف صناعة الشموع"],
+          trainingPlaces: ["https://jwwb.nl"],
+        },
 
-const params = new URLSearchParams(window.location.search);
-const coachId = params.get("id");
+        "ندى أحمد": {
+          img: "https://dreamstime.com",
+          name: "ندى أحمد",
+          sport: "الموسيقى",
+          governorate: "الإسكندرية",
+          area: "أكاديمية الموسيقى - الإسكندرية",
+          phone: "+20 113 444 5555",
+          price: "130 ج.م / حصة",
+          about:
+            "مدرسة بيانو تمتلك خبرة قوية في تدريس النظريات الموسيقية ومهارات العزف العملي على البيانو لجميع المستويات.",
+          certs: ["دبلومة معلم بيانو معتمد"],
+          trainingPlaces: ["https://google.com"],
+        },
 
-let currentCoach = null;
-let currentUser = null;
+        "عمر مصطفى": {
+          img: "https://etsystatic.com",
+          name: "عمر مصطفى",
+          sport: "الموسيقى",
+          governorate: "الجيزة",
+          area: "مركز الجيتار - الجيزة",
+          phone: "+20 114 555 6666",
+          price: "120 ج.م / حصة",
+          about: "مدرس جيتار يقوم بتدريس الجيتار الأكوستيك والكهربائي مع التركيز على الطلاب المبتدئين والمتوسطين.",
+          certs: ["شهادة في النظريات الموسيقية"],
+          trainingPlaces: ["https://gstatic.com"],
+        },
 
-onAuthStateChanged(auth, async (user) => {
-  currentUser = user;
+        "محمد خالد": {
+          img: "https://freepik.com",
+          name: "محمد خالد",
+          sport: "البرمجة",
+          governorate: "القاهرة",
+          area: "مركز التكنولوجيا (تيك هاب) - القاهرة",
+          phone: "+20 115 666 7777",
+          price: "150 ج.م / حصة",
+          about:
+            "مهندس برمجيات يقوم بتدريس تطوير المواقع الإلكترونية بما في ذلك لغات HTML، CSS، JavaScript والعمل على مشاريع حقيقية.",
+          certs: ["شهادة مطور الويب المتكامل (Full Stack)"],
+          trainingPlaces: ["https://cio.com"],
+        },
 
-  if (!user) {
-  sessionStorage.setItem("pendingCoachId", coachId);
-  window.location.href = "log.html";
-  return;
-}
+        "أحمد سمير": {
+          img: "https://123rf.com",
+          name: "أحمد سمير",
+          sport: "البرمجة",
+          governorate: "الإسكندرية",
+          area: "أكاديمية البرمجة (كودينج أكاديمي) - الإسكندرية",
+          phone: "+20 116 777 8888",
+          price: "180 ج.م / حصة",
+          about: "مطور بايثون (Python) متخصص في حل المشكلات، الأتمتة، والتدريب البرمجي الشامل للمبتدئين.",
+          certs: ["شهادة معتمدة في لغة بايثون", "دورة أتمتة المهام البرمجية"],
+          trainingPlaces: ["https://licdn.com"],
+        },
+      };
 
-  const userSnap = await getDoc(doc(db, "users", user.uid));
+      import { auth, db, authReady } from "./firebase.js";
 
-  if (!userSnap.exists() ||
-      userSnap.data().role !== "trainee") {
-    alert("يجب تسجيل الدخول بحساب متدرب");
-    return;
-  }
+      import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-  if (!coachId) {
-    document.getElementById("requestForm").style.display = "none";
-    alert("هذا المدرب غير مرتبط بحساب على الموقع");
-    return;
-  }
+      import {
+        doc,
+        getDoc,
+        collection,
+        writeBatch,
+        serverTimestamp,
+      } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-  const coachSnap = await getDoc(doc(db, "coaches", coachId));
+      await authReady;
 
-  if (!coachSnap.exists()) {
-    alert("لم يتم العثور على المدرب");
-    return;
-  }
+      const params = new URLSearchParams(window.location.search);
+      const coachId = params.get("id");
 
-  currentCoach = coachSnap.data();
+      let currentCoach = null;
+      let currentUser = null;
 
-  document.getElementById("name").textContent =
-    currentCoach.fullName;
+      onAuthStateChanged(auth, async (user) => {
+        currentUser = user;
 
-  document.getElementById("sport").textContent =
-    currentCoach.specialization;
+        if (!user) {
+          sessionStorage.setItem("pendingCoachId", coachId);
+          window.location.href = "log.html";
+          return;
+        }
 
-  document.getElementById("img").src =
-    currentCoach.imageUrl || "";
+        const userSnap = await getDoc(doc(db, "users", user.uid));
 
-  document.getElementById("area").textContent =
-    currentCoach.area || "";
+        if (!userSnap.exists() || userSnap.data().role !== "trainee") {
+          alert("يجب تسجيل الدخول بحساب متدرب");
+          return;
+        }
 
- document.getElementById("phone").textContent =
-    "رقم التواصل هيظهر بعد قبول طلب التدريب";
+        if (!coachId) {
+          document.getElementById("requestForm").style.display = "none";
+          alert("هذا المدرب غير مرتبط بحساب على الموقع");
+          return;
+        }
 
-  document.getElementById("price").textContent =
-    currentCoach.price + " EGP / " +
-    (currentCoach.priceType === "monthly" ? "Month" : "Session");
+        const coachSnap = await getDoc(doc(db, "coaches", coachId));
 
-  document.getElementById("about").textContent =
-    currentCoach.about || "";
+        if (!coachSnap.exists()) {
+          alert("لم يتم العثور على المدرب");
+          return;
+        }
 
-  const certs = document.getElementById("certs");
-  const places = document.getElementById("places");
+        currentCoach = coachSnap.data();
 
-  certs.innerHTML = "";
-  places.innerHTML = "";
+        document.getElementById("name").textContent = currentCoach.fullName;
 
-  (currentCoach.certs || []).forEach(url => {
-    const li = document.createElement("li");
-    const img = document.createElement("img");
-    img.src = url;
-    img.style.width = "150px";
-    li.appendChild(img);
-    certs.appendChild(li);
-  });
+        document.getElementById("sport").textContent = currentCoach.specialization;
 
-  (currentCoach.trainingPlaces || []).forEach(url => {
-    const img = document.createElement("img");
-    img.src = url;
-    img.style.width = "150px";
-    places.appendChild(img);
-  });
-});
+        document.getElementById("img").src = currentCoach.imageUrl || "";
 
-document.getElementById("requestForm").addEventListener(
-  "submit",
-  async (e) => {
-    e.preventDefault();
+        document.getElementById("area").textContent = currentCoach.area || "";
 
-    if (!currentUser || !currentCoach) {
-      alert("بيانات الحساب أو المدرب غير جاهزة");
-      return;
-    }
+        document.getElementById("phone").textContent = "رقم التواصل هيظهر بعد قبول طلب التدريب";
 
-    const traineeSnap = await getDoc(
-      doc(db, "trainees", currentUser.uid)
-    );
+        document.getElementById("price").textContent =
+          currentCoach.price + " EGP / " + (currentCoach.priceType === "monthly" ? "Month" : "Session");
 
-    if (!traineeSnap.exists()) {
-      alert("بيانات المتدرب غير موجودة");
-      return;
-    }
+        document.getElementById("about").textContent = currentCoach.about || "";
 
-    const trainee = traineeSnap.data();
+        const certs = document.getElementById("certs");
+        const places = document.getElementById("places");
 
-    const formData = {
-      goal: document.getElementById("goal").value.trim(),
-      experience: document.getElementById("experience").value,
-      preferredTime: document.getElementById("preferredTime").value.trim(),
-      notes: document.getElementById("notes").value.trim()
-    };
+        certs.innerHTML = "";
+        places.innerHTML = "";
 
-    try {
-      const batch = writeBatch(db);
+        (currentCoach.certs || []).forEach((url) => {
+          const li = document.createElement("li");
+          const img = document.createElement("img");
+          img.src = url;
+          img.style.width = "150px";
+          li.appendChild(img);
+          certs.appendChild(li);
+        });
 
-      const requestRef = doc(collection(db, "requests"));
-      const notificationRef = doc(collection(db, "notifications"));
-
-      batch.set(requestRef, {
-        coachId: coachId,
-        traineeId: currentUser.uid,
-        coachName: currentCoach.fullName,
-        traineeName: trainee.name,
-        traineeEmail: currentUser.email,
-        formData: formData,
-        status: "pending",
-        createdAt: serverTimestamp()
+        (currentCoach.trainingPlaces || []).forEach((url) => {
+          const img = document.createElement("img");
+          img.src = url;
+          img.style.width = "150px";
+          places.appendChild(img);
+        });
       });
 
-      batch.set(notificationRef, {
-        userId: coachId,
-        requestId: requestRef.id,
-        type: "new_request",
-        title: "طلب تدريب جديد",
-        message: "أرسل " + trainee.name + " طلب تدريب جديد.",
-        isRead: false,
-        createdAt: serverTimestamp()
+      document.getElementById("requestForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        if (!currentUser || !currentCoach) {
+          alert("بيانات الحساب أو المدرب غير جاهزة");
+          return;
+        }
+
+        const traineeSnap = await getDoc(doc(db, "trainees", currentUser.uid));
+
+        if (!traineeSnap.exists()) {
+          alert("بيانات المتدرب غير موجودة");
+          return;
+        }
+
+        const trainee = traineeSnap.data();
+
+        const formData = {
+          goal: document.getElementById("goal").value.trim(),
+          experience: document.getElementById("experience").value,
+          preferredTime: document.getElementById("preferredTime").value.trim(),
+          notes: document.getElementById("notes").value.trim(),
+        };
+
+        try {
+          const batch = writeBatch(db);
+
+          const requestRef = doc(collection(db, "requests"));
+          const notificationRef = doc(collection(db, "notifications"));
+
+          batch.set(requestRef, {
+            coachId: coachId,
+            traineeId: currentUser.uid,
+            coachName: currentCoach.fullName,
+            traineeName: trainee.name,
+            traineeEmail: currentUser.email,
+            formData: formData,
+            status: "pending",
+            createdAt: serverTimestamp(),
+          });
+
+          batch.set(notificationRef, {
+            userId: coachId,
+            requestId: requestRef.id,
+            type: "new_request",
+            title: "طلب تدريب جديد",
+            message: "أرسل " + trainee.name + " طلب تدريب جديد.",
+            isRead: false,
+            createdAt: serverTimestamp(),
+          });
+
+          await batch.commit();
+
+          alert("تم إرسال طلب التدريب بنجاح");
+          e.target.reset();
+        } catch (error) {
+          console.error(error);
+          alert("حدث خطأ: " + error.message);
+        }
       });
-
-      await batch.commit();
-
-      alert("تم إرسال طلب التدريب بنجاح");
-      e.target.reset();
-
-    } catch (error) {
-      console.error(error);
-      alert("حدث خطأ: " + error.message);
-    }
-  }
-);
-      </script>
-   </body>
+    </script>
+  </body>
 </html>
