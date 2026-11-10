@@ -50,6 +50,7 @@
         <p id="coachSpecialization"></p>
         <p id="coachPrice"></p>
         <button id="logout">تسجيل الخروج</button>
+        </div>
       <div class="card">
         <h2>طلبات المتدربين</h2>
         <div id="requests">جاري تحميل الطلبات...</div>
@@ -116,23 +117,11 @@
           requestsQuery,
           (snapshot) => {
             const list = document.getElementById("requests");
-            const trainees = document.getElementById("myTrainees");
-
-            list.innerHTML = "";
-            trainees.innerHTML = "";
-
-            let pending = 0;
-            let accepted = 0;
-
-            document.getElementById("total").textContent = snapshot.size;
-
+            const trainees = document.getElementById("myTrainees"); list.innerHTML = ""; trainees.innerHTML = "";
             const requests = snapshot.docs.sort((a, b) => {
-              const dateA = a.data().createdAt?.toMillis?.() || 0;
-              const dateB = b.data().createdAt?.toMillis?.() || 0;
-              return dateB - dateA;
-            });
-
-            requests.forEach((requestDoc) => {
+            const dateA = a.data().createdAt?.toMillis?.() || 0;
+            const dateB = b.data().createdAt?.toMillis?.() || 0;
+            return dateB - dateA;}); requests.forEach((requestDoc) => {
               const data = requestDoc.data();
 
               const card = document.createElement("div");
@@ -162,37 +151,22 @@
               card.append(title, email, goal, experience, time, notes, status);
 
               if (data.status === "pending") {
-                pending++;
-
-                const accept = document.createElement("button");
-                accept.textContent = "قبول";
-
+                const accept = document.createElement("button");accept.textContent = "قبول";
                 accept.onclick = () => changeStatus(requestDoc.id, data, user.uid, "accepted");
-
-                const decline = document.createElement("button");
-                decline.textContent = "رفض";
-
+                const decline = document.createElement("button");decline.textContent = "رفض";
                 decline.onclick = () => changeStatus(requestDoc.id, data, user.uid, "declined");
-
                 card.append(accept, decline);
               }
 
               if (data.status === "accepted") {
-                accepted++;
-
                 const traineeCard = document.createElement("div");
                 traineeCard.className = "request";
                 traineeCard.textContent = (data.traineeName || "متدرب") + " - " + (data.traineeEmail || "");
-
                 trainees.appendChild(traineeCard);
               }
 
               list.appendChild(card);
             });
-
-            document.getElementById("pending").textContent = pending;
-            document.getElementById("accepted").textContent = accepted;
-
             if (requests.length === 0) {
               list.textContent = "لا توجد طلبات حتى الآن";
             }
@@ -261,51 +235,50 @@
       }
 
       async function changeStatus(requestId, requestData, coachId, status) {
-        try {
-          const privateSnap = await getDoc(doc(db, "coachPrivate", coachId));
+  try {
+    const batch = writeBatch(db);
+    const requestRef = doc(db, "requests", requestId);
+    const notificationRef = doc(collection(db, "notifications"));
 
-          if (!privateSnap.exists()) {
-            alert("بيانات التواصل الخاصة بالمدرب غير موجودة");
-            return;
-          }
+    const requestUpdate = {
+      status,
+      updatedAt: serverTimestamp(),
+    };
 
-          const batch = writeBatch(db);
+    if (status === "accepted") {
+      const privateSnap = await getDoc(doc(db, "coachPrivate", coachId));
 
-          const requestRef = doc(db, "requests", requestId);
-          const notificationRef = doc(collection(db, "notifications"));
-
-          const requestUpdate = {
-            status,
-            updatedAt: serverTimestamp(),
-          };
-
-          if (status === "accepted") {
-            requestUpdate.coachPhone = privateSnap.data().phone || "";
-          }
-
-          batch.update(requestRef, requestUpdate);
-
-          batch.set(notificationRef, {
-            userId: requestData.traineeId,
-            requestId,
-            type: "request_response",
-            title: status === "accepted" ? "تم قبول طلبك" : "تم رفض طلبك",
-            message:
-              status === "accepted"
-                ? "وافق المدرب على طلب التدريب. يمكنك رؤية بيانات التواصل في صفحتك."
-                : "المدرب اعتذر عن قبول طلب التدريب.",
-            isRead: false,
-            createdAt: serverTimestamp(),
-          });
-
-          await batch.commit();
-
-          alert(status === "accepted" ? "تم قبول الطلب" : "تم رفض الطلب");
-        } catch (error) {
-          console.error(error);
-          alert("حدث خطأ: " + error.message);
-        }
+      if (!privateSnap.exists()) {
+        alert("بيانات التواصل الخاصة بالمدرب غير موجودة");
+        return;
       }
+
+      requestUpdate.coachPhone = privateSnap.data().phone || "";
+    }
+
+    batch.update(requestRef, requestUpdate);
+
+    batch.set(notificationRef, {
+      userId: requestData.traineeId,
+      requestId,
+      type: "request_response",
+      title: status === "accepted" ? "تم قبول طلبك" : "تم رفض طلبك",
+      message: status === "accepted"
+        ? "وافق المدرب على طلب التدريب."
+        : "المدرب اعتذر عن قبول طلب التدريب.",
+      isRead: false,
+      createdAt: serverTimestamp(),
+    });
+
+    await batch.commit();
+
+    alert(status === "accepted" ? "تم قبول الطلب" : "تم رفض الطلب");
+
+  } catch (error) {
+    console.error(error);
+    alert("حدث خطأ: " + error.message);
+  }
+}
 
       document.getElementById("logout").addEventListener("click", async () => {
         if (stopRequests) stopRequests();
