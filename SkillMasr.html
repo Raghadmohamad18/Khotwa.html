@@ -328,55 +328,52 @@
       <footer>
          <p>© 2026 SkillMasr - جميع الحقوق محفوظة</p>
       </footer>
-      <script>
-         function order(phone, product) {const message = `Hello, I want to book a session with ${product}`;
-         window.open(`https://wa.me/2${phone}?text=${encodeURIComponent(message)}`,
-         "_blank"
-         );
-         }
-         function showCategory(categoryId){
-             const sections =
-             document.querySelectorAll('.category');
-             sections.forEach(section=>{
-                 section.style.display='none';});
-             document.getElementById(categoryId).style.display='block';}
-                 function goDetails(name){
-                         if(localStorage.getItem("loggedIn") !== "true"){
-                             localStorage.setItem("coachName", name);
-                             window.location.href="log.html";
-                             return;
-                         }
-                     
-                         window.location.href =
-                         "details.html?name=" + encodeURIComponent(name);
-                     }
-                     
-                     function goDetailsFirebase(id){
-                         if(localStorage.getItem("loggedIn") !== "true"){
-                             localStorage.setItem("coachId", id);
-                             window.location.href="log.html";
-                             return;
-                         }
-                     
-                         window.location.href =
-                         "details.html?id=" + id;
-                     }
-                         window.order = order;
-                         window.goDetails = goDetails;
-                         window.goDetailsFirebase = goDetailsFirebase;
-             const search = document.getElementById("search");
-             search.addEventListener("input", function () {
-             const value = this.value.toLowerCase();
-             document.querySelectorAll(".coach-card").forEach(card => {
-             const text = card.innerText.toLowerCase();
-             if (text.includes(value)) {
-                 card.style.display = "flex";
-             } else {
-                 card.style.display = "none";
-             }
-         });
-         });
-      </script>
+         <script>
+function order() {
+  alert("اختاري مدربًا مسجلًا على الموقع لإرسال طلب تدريب.");
+}
+
+function showCategory(categoryId) {
+  document.querySelectorAll(".category").forEach(section => {
+    section.style.display = "none";
+  });
+
+  const selected = document.getElementById(categoryId);
+
+  if (selected) {
+    selected.style.display = "block";
+  }
+}
+
+function goDetails(name) {
+  alert("هذا مدرب تجريبي. طلبات التدريب متاحة للمدربين المسجلين فقط.");
+}
+
+function goDetailsFirebase(id) {
+  if (!id) return;
+
+  window.location.href =
+    "details.html?id=" + encodeURIComponent(id);
+}
+
+window.order = order;
+window.showCategory = showCategory;
+window.goDetails = goDetails;
+window.goDetailsFirebase = goDetailsFirebase;
+
+const search = document.getElementById("search");
+
+if (search) {
+  search.addEventListener("input", function () {
+    const value = this.value.toLowerCase();
+
+    document.querySelectorAll(".coach-card").forEach(card => {
+      card.style.display =
+        card.innerText.toLowerCase().includes(value) ? "flex" : "none";
+    });
+  });
+}
+</script>
       <script type="module">
          import { db } from "./firebase.js";
          import {
