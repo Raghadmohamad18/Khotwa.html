@@ -4,7 +4,6 @@
     <meta charset="UTF-8" /> 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>حساب المتدرب - SkillMasr</title>
-
     <style>
       body {
         font-family: Arial;
@@ -31,34 +30,28 @@
       }
     </style>
   </head>
-
   <body>
     <div class="container">
       <h1>SkillMasr - حساب المتدرب</h1>
-
       <div class="card">
         <h2 id="name">جاري التحميل...</h2>
         <p id="email"></p>
         <button id="logout">تسجيل الخروج</button>
       </div>
-
       <div class="card">
         <h2>طلباتي</h2>
         <div id="requests"></div>
       </div>
-
       <div class="card">
         <h2>الإشعارات</h2>
         <div id="notifications"></div>
       </div>
       <a href="SkillMasr.html"><button>عرض المدربين</button></a>
     </div>
-
+    
     <script type="module">
       import { auth, db, authReady } from "./firebase.js";
-
       import { signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
       import {
         doc,
         getDoc,
@@ -68,80 +61,57 @@
         onSnapshot,
         updateDoc,
       } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
       await authReady;
-
       let stopRequests = null;
       let stopNotifications = null;
-
       async function startDashboard() {
         const user = auth.currentUser;
-
         if (!user) {
           window.location.href = "log.html";
           return;
         }
-
         const userSnap = await getDoc(doc(db, "users", user.uid));
-
         if (!userSnap.exists() || userSnap.data().role !== "trainee") {
           alert("هذا الحساب ليس حساب متدرب");
           window.location.href = "log.html";
           return;
         }
-
         const traineeSnap = await getDoc(doc(db, "trainees", user.uid));
-
         if (!traineeSnap.exists()) {
           alert("بيانات المتدرب غير موجودة");
           return;
         }
-
         const trainee = traineeSnap.data();
-
         document.getElementById("name").textContent = "أهلاً " + (trainee.name || "");
-
         document.getElementById("email").textContent = trainee.email || user.email || "";
-
         const requestsQuery = query(collection(db, "requests"), where("traineeId", "==", user.uid));
-
         stopRequests = onSnapshot(
           requestsQuery,
           (snapshot) => {
             const list = document.getElementById("requests");
             list.innerHTML = "";
-
             const requests = snapshot.docs.sort((a, b) => {
               const dateA = a.data().createdAt?.toMillis?.() || 0;
               const dateB = b.data().createdAt?.toMillis?.() || 0;
               return dateB - dateA;
             });
-
             if (requests.length === 0) {
               list.textContent = "لم ترسل أي طلبات حتى الآن";
               return;
             }
-
             requests.forEach((item) => {
               const data = item.data();
-
               const card = document.createElement("div");
               card.className = "card";
-
               const title = document.createElement("h3");
               title.textContent = "المدرب: " + (data.coachName || "");
-
               const goal = document.createElement("p");
               goal.textContent = "هدف التدريب: " + (data.formData?.goal || "");
-
               const experience = document.createElement("p");
               experience.textContent = "مستوى الخبرة: " + (data.formData?.experience || "");
-
               const time = document.createElement("p");
               time.textContent = "الوقت المناسب: " + (data.formData?.preferredTime || "");
-
               const status = document.createElement("p");
-
               if (data.status === "pending") {
                 status.textContent = "حالة الطلب: قيد الانتظار";
               } else if (data.status === "accepted") {
@@ -149,16 +119,12 @@
               } else if (data.status === "declined") {
                 status.textContent = "حالة الطلب: تم الرفض";
               }
-
               card.append(title, goal, experience, time, status);
-
               if (data.status === "accepted") {
                 const phone = document.createElement("p");
                 phone.textContent = "رقم المدرب: " + (data.coachPhone || "غير متاح");
-
                 card.appendChild(phone);
               }
-
               list.appendChild(card);
             });
           },
@@ -168,17 +134,14 @@
           },
         );
         const notificationsQuery = query(collection(db, "notifications"), where("userId", "==", user.uid));
-
         stopNotifications = onSnapshot(notificationsQuery, (snapshot) => {
           const list = document.getElementById("notifications");
           list.innerHTML = "";
-
           const notifications = snapshot.docs.sort((a, b) => {
             const dateA = a.data().createdAt?.toMillis?.() || 0;
             const dateB = b.data().createdAt?.toMillis?.() || 0;
             return dateB - dateA;
           });
-
           if (notifications.length === 0) {
             list.textContent = "لا توجد إشعارات";
             return;
