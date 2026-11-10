@@ -20,3 +20,42 @@
 
         <button type="submit">إرسال طلب التدريب</button>
       </form>
+<script type="module">
+import { auth, db, authReady } from "./firebase.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+import {
+  doc,
+  getDoc,
+  collection,
+  writeBatch,
+  serverTimestamp,
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+      let isDemoCoach = false;
+let currentCoach = null;
+let currentUser = null;
+document.getElementById("requestForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (isDemoCoach) {
+  const demoRequests = JSON.parse(
+    localStorage.getItem("demoRequests") || "[]"
+  );
+  demoRequests.push({
+    coachName: currentCoach.name,
+    goal: document.getElementById("goal").value,
+    experience: document.getElementById("experience").value,
+    preferredTime: document.getElementById("preferredTime").value,
+    notes: document.getElementById("notes").value,
+    date: new Date().toLocaleString()
+  });
+
+  localStorage.setItem(
+    "demoRequests",
+    JSON.stringify(demoRequests)
+  );
+
+  alert("تم إرسال طلب التدريب التجريبي بنجاح!");
+  e.target.reset();
+  return;
+}
+</script>
