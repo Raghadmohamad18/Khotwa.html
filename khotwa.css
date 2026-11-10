@@ -9,7 +9,7 @@ body {
     direction: rtl; 
     max-width: 800px;
     margin: 40px auto; 
-    padding: 0 20px;
+    padding: 0 21px; 
 }
 .about-section p {
     line-height: 1.8;
