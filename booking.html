@@ -54,6 +54,11 @@
   <h3>طلب حجز مع المدرب</h3>
 
   <p id="coachName">جاري تحميل اسم المدرب...</p>
+  <label>اسمك:</label>
+<input id="traineeName" type="text" placeholder="اكتب اسمك" required>
+
+<label>البريد الإلكتروني:</label>
+<input id="traineeEmail" type="email" placeholder="اكتب إيميلك" required>
 
   <label>هدفك من التدريب:</label>
   <textarea id="goal" placeholder="اكتب هدفك من التدريب" required></textarea>
@@ -170,6 +175,8 @@ form.addEventListener("submit", async (e) => {
   }
 
   const formData = {
+    traineeName: document.getElementById("traineeName").value.trim(),
+    traineeEmail: document.getElementById("traineeEmail").value.trim(),
     goal: document.getElementById("goal").value.trim(),
     experience: document.getElementById("experience").value,
     governorate: document.getElementById("gov").value.trim(),
@@ -225,8 +232,8 @@ form.addEventListener("submit", async (e) => {
       coachId: coachId,
       traineeId: currentUser.uid,
       coachName: currentCoach.fullName,
-      traineeName: trainee.name,
-      traineeEmail: currentUser.email,
+      traineeName: formData.traineeName,
+      traineeEmail: formData.traineeEmail,
       formData: formData,
       status: "pending",
       createdAt: serverTimestamp()
@@ -237,7 +244,7 @@ form.addEventListener("submit", async (e) => {
       requestId: requestRef.id,
       type: "new_request",
       title: "طلب تدريب جديد",
-      message: "أرسل " + trainee.name + " طلب تدريب جديد.",
+      message: "أرسل " + formData.traineeName + " طلب تدريب جديد.",
       isRead: false,
       createdAt: serverTimestamp()
     });
