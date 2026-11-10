@@ -264,11 +264,15 @@
 function showBookingFormIfNeeded() {
   if (mode === "booking") {
     setTimeout(() => {
-      document.getElementById("requestForm")?.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-    }, 150);
+      const form = document.getElementById("requestForm");
+
+      if (form) {
+        form.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+      }
+    }, 500);
   }
 }
       
@@ -363,12 +367,13 @@ function showBookingFormIfNeeded() {
         });
 
         (currentCoach.trainingPlaces || []).forEach((url) => {
-          const img = document.createElement("img");
-          img.src = url;
-          img.style.width = "150px";
-          places.appendChild(img);
-          showBookingFormIfNeeded();
-        });
+        const img = document.createElement("img");
+        img.src = url;
+        img.style.width = "150px";
+        places.appendChild(img);
+      });
+      
+      showBookingFormIfNeeded();
       });
 
       document.getElementById("requestForm").addEventListener("submit", async (e) => {
