@@ -1,1 +1,22 @@
+<hr />
+      <h2>طلب الانضمام للتدريب</h2>
+      <form id="requestForm">
+        <label>ما هدفك من التدريب؟</label>
+        <textarea id="goal" placeholder="اكتب هدفك من التدريب" required=""></textarea>
 
+        <label>مستوى خبرتك</label>
+        <select id="experience" required="">
+          <option value="">اختار مستواك</option>
+          <option value="Beginner">مبتدئ</option>
+          <option value="Intermediate">متوسط</option>
+          <option value="Advanced">متقدم</option>
+        </select>
+
+        <label>الوقت المناسب لك</label>
+        <input type="text" id="preferredTime" placeholder="مثلاً السبت والثلاثاء مساءً" required="" />
+
+        <label>ملاحظات إضافية</label>
+        <textarea id="notes"></textarea>
+
+        <button type="submit">إرسال طلب التدريب</button>
+      </form>
