@@ -366,7 +366,7 @@ function order(phone, name) {
   }
 
   window.location.href =
-    "details.html?id=" + encodeURIComponent(coachName) + "&mode=booking";
+    "booking.html?id=" + encodeURIComponent(coachName);
 }
 function showCategory(categoryId) {
   document.querySelectorAll(".category").forEach(section => {
@@ -405,18 +405,15 @@ function goDetails(name) {
     "details.html?id=" + encodeURIComponent(coachName);
 }
 
-function goDetailsFirebase(id) {
+function goBookingFirebase(id) {
   if (!id) return;
-
-  window.location.href =
-    "details.html?id=" + encodeURIComponent(id);
+  window.location.href = "booking.html?id=" + encodeURIComponent(id);
 }
-
 window.order = order;
 window.showCategory = showCategory;
 window.goDetails = goDetails;
 window.goDetailsFirebase = goDetailsFirebase;
-
+window.goBookingFirebase = goBookingFirebase;
 const search = document.getElementById("search");
 
 if (search) {
@@ -473,8 +470,8 @@ if (search) {
          ${coach.priceType === "monthly"
     ? `<p class="price">${coach.price} EGP / Month</p>`
     : `<p class="price">${coach.price} EGP / Session</p>`}
-         <button onclick="goDetailsFirebase('${doc.id}')">الحجز مع المدرب</button>
-         <button onclick="goDetailsFirebase('${doc.id}')">عرض المزيد</button>
+         <button onclick="goBookingFirebase('${doc.id}')">الحجز مع المدرب</button>
+<button onclick="goDetailsFirebase('${doc.id}')">عرض المزيد</button>
          </div>`;
          });
       </script>
