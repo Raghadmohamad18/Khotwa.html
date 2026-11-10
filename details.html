@@ -217,195 +217,124 @@
         },
       };
 
-      import { auth, db, authReady } from "./firebase.js";
-
-      import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
-      import {
-        doc,
-        getDoc,
-        collection,
-        writeBatch,
-        serverTimestamp,
-      } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
-      await authReady;
-
-      const params = new URLSearchParams(window.location.search);
-      const coachId = params.get("id");
-      const mode = params.get("mode");
-
-function showBookingFormIfNeeded() {
-  if (mode === "booking") {
-    setTimeout(() => {
-      const form = document.getElementById("requestForm");
-
-      if (form) {
-        form.scrollIntoView({
-          behavior: "smooth",
-          block: "center"
-        });
-      }
-    }, 500);
-  }
-}
       
-      const demoCoach = data[coachId] || null;
-      let isDemoCoach = false;
+import { auth, db, authReady } from "./firebase.js";
 
-      let currentCoach = null;
-      let currentUser = null;
+import {
+  doc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-      onAuthStateChanged(auth, async (user) => {
-        currentUser = user;
-        if (demoCoach) {
-  isDemoCoach = true;
-  currentCoach = demoCoach;
+await authReady;
 
-  document.getElementById("name").textContent = demoCoach.name;
-  document.getElementById("sport").textContent = demoCoach.sport;
-  document.getElementById("img").src = demoCoach.img;
+const params = new URLSearchParams(window.location.search);
+const coachId = params.get("id");
+
+const demoCoach = data[coachId] || null;
+
+function displayDemoCoach(coach) {
+  document.getElementById("name").textContent = coach.name;
+  document.getElementById("sport").textContent = coach.sport;
+  document.getElementById("img").src = coach.img;
   document.getElementById("area").textContent =
-    demoCoach.area + " - " + demoCoach.governorate;
-  document.getElementById("phone").textContent = demoCoach.phone;
-  document.getElementById("price").textContent = demoCoach.price;
-  document.getElementById("about").textContent = demoCoach.about;
+    coach.area + " - " + coach.governorate;
+  document.getElementById("phone").textContent = coach.phone;
+  document.getElementById("price").textContent = coach.price;
+  document.getElementById("about").textContent = coach.about;
 
   document.getElementById("certs").innerHTML =
-    demoCoach.certs.map(c => `<li>${c}</li>`).join("");
+    coach.certs.map(c => `<li>${c}</li>`).join("");
 
   document.getElementById("places").innerHTML =
-    demoCoach.trainingPlaces.map(p =>
+    coach.trainingPlaces.map(p =>
       `<a href="${p}" target="_blank">مكان التدريب</a>`
     ).join("");
- showBookingFormIfNeeded();
-  return;
 }
 
-        if (!user) {
-          sessionStorage.setItem("pendingCoachId", coachId);
-          window.location.href = "log.html";
-          return;
-        }
+async function displayFirebaseCoach(coachId) {
+  const user = auth.currentUser;
 
-        const userSnap = await getDoc(doc(db, "users", user.uid));
+  if (!user) {
+    sessionStorage.setItem("pendingCoachId", coachId);
+    window.location.href = "log.html";
+    return;
+  }
 
-        if (!userSnap.exists() || userSnap.data().role !== "trainee") {
-          alert("يجب تسجيل الدخول بحساب متدرب");
-          return;
-        }
+  const userSnap = await getDoc(doc(db, "users", user.uid));
 
-        if (!coachId) {
-          document.getElementById("requestForm").style.display = "none";
-          alert("هذا المدرب غير مرتبط بحساب على الموقع");
-          return;
-        }
+  if (!userSnap.exists() || userSnap.data().role !== "trainee") {
+    alert("يجب تسجيل الدخول بحساب متدرب");
+    return;
+  }
 
-        const coachSnap = await getDoc(doc(db, "coaches", coachId));
+  const coachSnap = await getDoc(doc(db, "coaches", coachId));
 
-        if (!coachSnap.exists()) {
-          alert("لم يتم العثور على المدرب");
-          return;
-        }
+  if (!coachSnap.exists()) {
+    alert("لم يتم العثور على المدرب");
+    return;
+  }
 
-        currentCoach = coachSnap.data();
+  const coach = coachSnap.data();
 
-        document.getElementById("name").textContent = currentCoach.fullName;
+  document.getElementById("name").textContent = coach.fullName || "";
+  document.getElementById("sport").textContent = coach.specialization || "";
+  document.getElementById("img").src = coach.imageUrl || "";
+  document.getElementById("area").textContent = coach.area || "";
+  document.getElementById("phone").textContent =
+    "رقم التواصل هيظهر بعد قبول طلب التدريب";
 
-        document.getElementById("sport").textContent = currentCoach.specialization;
+  document.getElementById("price").textContent =
+    (coach.price || "") + " EGP / " +
+    (coach.priceType === "monthly" ? "Month" : "Session");
 
-        document.getElementById("img").src = currentCoach.imageUrl || "";
+  document.getElementById("about").textContent = coach.about || "";
 
-        document.getElementById("area").textContent = currentCoach.area || "";
+  const certs = document.getElementById("certs");
+  const places = document.getElementById("places");
 
-        document.getElementById("phone").textContent = "رقم التواصل هيظهر بعد قبول طلب التدريب";
+  certs.innerHTML = "";
+  places.innerHTML = "";
 
-        document.getElementById("price").textContent =
-          currentCoach.price + " EGP / " + (currentCoach.priceType === "monthly" ? "Month" : "Session");
+  (coach.certs || []).forEach(url => {
+    const li = document.createElement("li");
+    const img = document.createElement("img");
 
-        document.getElementById("about").textContent = currentCoach.about || "";
+    img.src = url;
+    img.style.width = "150px";
 
-        const certs = document.getElementById("certs");
-        const places = document.getElementById("places");
+    li.appendChild(img);
+    certs.appendChild(li);
+  });
 
-        certs.innerHTML = "";
-        places.innerHTML = "";
+  (coach.trainingPlaces || []).forEach(url => {
+    const img = document.createElement("img");
 
-        (currentCoach.certs || []).forEach((url) => {
-          const li = document.createElement("li");
-          const img = document.createElement("img");
-          img.src = url;
-          img.style.width = "150px";
-          li.appendChild(img);
-          certs.appendChild(li);
-        });
+    img.src = url;
+    img.style.width = "150px";
 
-        (currentCoach.trainingPlaces || []).forEach((url) => {
-        const img = document.createElement("img");
-        img.src = url;
-        img.style.width = "150px";
-        places.appendChild(img);
-      });
-      
-      showBookingFormIfNeeded();
-      });
-        if (!currentUser || !currentCoach) {
-          alert("بيانات الحساب أو المدرب غير جاهزة");
-          return;
-        }
+    places.appendChild(img);
+  });
+}
 
-        const traineeSnap = await getDoc(doc(db, "trainees", currentUser.uid));
+async function loadCoachDetails() {
+  try {
+    if (!coachId) {
+      alert("لم يتم تحديد المدرب");
+      return;
+    }
 
-        if (!traineeSnap.exists()) {
-          alert("بيانات المتدرب غير موجودة");
-          return;
-        }
+    if (demoCoach) {
+      displayDemoCoach(demoCoach);
+    } else {
+      await displayFirebaseCoach(coachId);
+    }
+  } catch (error) {
+    console.error(error);
+    alert("حدث خطأ أثناء تحميل تفاصيل المدرب");
+  }
+}
 
-        const trainee = traineeSnap.data();
-
-        const formData = {
-          goal: document.getElementById("goal").value.trim(),
-          experience: document.getElementById("experience").value,
-          preferredTime: document.getElementById("preferredTime").value.trim(),
-          notes: document.getElementById("notes").value.trim(),
-        };
-
-        try {
-          const batch = writeBatch(db);
-
-          const requestRef = doc(collection(db, "requests"));
-          const notificationRef = doc(collection(db, "notifications"));
-
-          batch.set(requestRef, {
-            coachId: coachId,
-            traineeId: currentUser.uid,
-            coachName: currentCoach.fullName,
-            traineeName: trainee.name,
-            traineeEmail: currentUser.email,
-            formData: formData,
-            status: "pending",
-            createdAt: serverTimestamp(),
-          });
-
-          batch.set(notificationRef, {
-            userId: coachId,
-            requestId: requestRef.id,
-            type: "new_request",
-            title: "طلب تدريب جديد",
-            message: "أرسل " + trainee.name + " طلب تدريب جديد.",
-            isRead: false,
-            createdAt: serverTimestamp(),
-          });
-
-          await batch.commit();
-
-          alert("تم إرسال طلب التدريب بنجاح");
-          e.target.reset();
-        } catch (error) {
-          console.error(error);
-          alert("حدث خطأ: " + error.message);
-        }
-      });
+loadCoachDetails();
     </script>
   </body>
 </html>
