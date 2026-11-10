@@ -214,7 +214,6 @@ async function uploadToCloudinary(file) {
       body: formData
     }
   );
-
   const data = await response.json();
 
   if (!response.ok || !data.secure_url) {
@@ -275,8 +274,6 @@ form.addEventListener("submit", async (e) => {
     if (!priceType || !category || !governorate || !area) {
       throw new Error("من فضلك أكمل البيانات المطلوبة");
     }
-
-    // إنشاء حساب Firebase Auth
     const result = await createUserWithEmailAndPassword(
       auth,
       email,
@@ -285,8 +282,6 @@ form.addEventListener("submit", async (e) => {
 
     createdUser = result.user;
     const uid = createdUser.uid;
-
-    // رفع الصور
     let imageUrl = "";
 
     if (photo) {
@@ -319,8 +314,6 @@ form.addEventListener("submit", async (e) => {
   trainingPlaces,
   createdAt: serverTimestamp()
 };
-
-    // حفظ بيانات المدرب والحساب في عملية واحدة
     const batch = writeBatch(db);
 
     batch.set(doc(db, "coaches", uid), coachData);
@@ -346,7 +339,6 @@ form.addEventListener("submit", async (e) => {
   } catch (error) {
     console.error(error);
 
-    // لو فشل التسجيل بعد إنشاء حساب Auth، نحاول حذف الحساب غير المكتمل
     if (createdUser) {
       try {
         await deleteUser(createdUser);
