@@ -305,28 +305,31 @@ form.addEventListener("submit", async (e) => {
     }
 
     const coachData = {
-      uid,
-      fullName,
-      email,
-      category,
-      specialization,
-      governorate,
-      area,
-      phone,
-      price,
-      priceType,
-      about,
-      imageUrl,
-      certs,
-      trainingPlaces,
-      createdAt: serverTimestamp()
-    };
+  uid,
+  fullName,
+  category,
+  specialization,
+  governorate,
+  area,
+  price,
+  priceType,
+  about,
+  imageUrl,
+  certs,
+  trainingPlaces,
+  createdAt: serverTimestamp()
+};
 
     // حفظ بيانات المدرب والحساب في عملية واحدة
     const batch = writeBatch(db);
 
     batch.set(doc(db, "coaches", uid), coachData);
-
+    batch.set(doc(db, "coachPrivate", uid), {
+  uid,
+  email,
+  phone,
+  createdAt: serverTimestamp()
+});
     batch.set(doc(db, "users", uid), {
       uid,
       name: fullName,
