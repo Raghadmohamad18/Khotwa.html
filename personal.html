@@ -1,359 +1,346 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Personal Dashboard - SkillMasr</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Personal Dashboard - SkillMasr</title>
 
-<style>
-body {
-  font-family: Arial;
-  background: #F5F5F5;
-  padding: 20px;
-}
-.container {
-  max-width: 900px;
-  margin: auto;
-}
-.card {
-  background: white;
-  padding: 20px;
-  margin: 18px 0;
-  border-radius: 12px;
-  box-shadow: 0 3px 12px #ddd;
-}
-button {
-  background: #C62828;
-  color: white;
-  border: 0;
-  padding: 10px 18px;
-  border-radius: 7px;
-  cursor: pointer;
-  margin: 5px;
-}
-button:hover {
-  background: #A00000;
-}
-.request {
-  border: 1px solid #ddd;
-  padding: 15px;
-  border-radius: 9px;
-  margin: 12px 0;
-}
-</style>
-</head>
+    <style>
+      body {
+        font-family: Arial;
+        background: #f5f5f5;
+        padding: 20px;
+      }
+      .container {
+        max-width: 900px;
+        margin: auto;
+      }
+      .card {
+        background: white;
+        padding: 20px;
+        margin: 18px 0;
+        border-radius: 12px;
+        box-shadow: 0 3px 12px #ddd;
+      }
+      button {
+        background: #c62828;
+        color: white;
+        border: 0;
+        padding: 10px 18px;
+        border-radius: 7px;
+        cursor: pointer;
+        margin: 5px;
+      }
+      button:hover {
+        background: #a00000;
+      }
+      .request {
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 9px;
+        margin: 12px 0;
+      }
+    </style>
+  </head>
 
-<body>
+  <body>
+    <div class="container">
+      <h1>SkillMasr - لوحة المدرب</h1>
 
-<div class="container">
+      <div class="card">
+        <h2 id="coachName">جاري التحميل...</h2>
+        <p id="coachEmail"></p>
+        <p id="coachSpecialization"></p>
+        <p id="coachPrice"></p>
+        <button id="logout">تسجيل الخروج</button>
+      </div>
 
-<h1>SkillMasr - لوحة المدرب</h1>
+      <div class="card">
+        <h2>إحصائيات التدريب</h2>
+        <p>
+          كل الطلبات:
+          <span id="total">0</span>
+        </p>
+        <p>
+          طلبات جديدة:
+          <span id="pending">0</span>
+        </p>
+        <p>
+          المتدربون المقبولون:
+          <span id="accepted">0</span>
+        </p>
+      </div>
 
-<div class="card">
-  <h2 id="coachName">جاري التحميل...</h2>
-  <p id="coachEmail"></p>
-  <p id="coachSpecialization"></p>
-  <p id="coachPrice"></p>
-  <button id="logout">تسجيل الخروج</button>
-</div>
+      <div class="card">
+        <h2>طلبات المتدربين</h2>
+        <div id="requests">جاري تحميل الطلبات...</div>
+      </div>
 
-<div class="card">
-  <h2>إحصائيات التدريب</h2>
-  <p>كل الطلبات: <span id="total">0</span></p>
-  <p>طلبات جديدة: <span id="pending">0</span></p>
-  <p>المتدربون المقبولون: <span id="accepted">0</span></p>
-</div>
+      <div class="card">
+        <h2>المتدربون المقبولون</h2>
+        <div id="myTrainees"></div>
+      </div>
+      <div class="card">
+        <h2>الإشعارات</h2>
+        <div id="notifications"></div>
+      </div>
+    </div>
+    <script type="module">
+      import { auth, db, authReady } from "./firebase.js";
+      import { signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+      import {
+        doc,
+        getDoc,
+        collection,
+        query,
+        where,
+        onSnapshot,
+        updateDoc,
+        writeBatch,
+        serverTimestamp,
+      } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+      await authReady;
+      let stopRequests = null;
+      let stopNotifications = null;
+      async function startDashboard() {
+        const user = auth.currentUser;
+        if (!user) {
+          window.location.href = "signCoach.html";
+          return;
+        }
+        const userSnap = await getDoc(doc(db, "users", user.uid));
+        if (!userSnap.exists() || userSnap.data().role !== "coach") {
+          alert("هذا الحساب ليس حساب مدرب");
+          window.location.href = "log.html";
+          return;
+        }
 
-<div class="card">
-  <h2>طلبات المتدربين</h2>
-  <div id="requests">جاري تحميل الطلبات...</div>
-</div>
+        const coachSnap = await getDoc(doc(db, "coaches", user.uid));
 
-<div class="card">
-  <h2> المتدربون المقبولون</h2>
-  <div id="myTrainees"></div>
-</div>
-<div class="card">
-  <h2>الإشعارات</h2>
-  <div id="notifications"></div>
-</div>
-</div>
-<script type="module">
-import { auth, db, authReady } from "./firebase.js";
-import {signOut} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-import {
-  doc,
-  getDoc,
-  collection,
-  query,
-  where,
-  onSnapshot,
-  updateDoc,
-  writeBatch,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-await authReady;
-let stopRequests = null;
-let stopNotifications = null;
-async function startDashboard() {
-  const user = auth.currentUser;
-  if (!user) {window.location.href = "signCoach.html";
-    return;}
-  const userSnap = await getDoc(doc(db, "users", user.uid));
-  if (!userSnap.exists() || userSnap.data().role !== "coach") {
-    alert("هذا الحساب ليس حساب مدرب");
-    window.location.href = "log.html";
-    return;
-  }
+        if (!coachSnap.exists()) {
+          alert("بيانات المدرب غير موجودة");
+          return;
+        }
 
-  const coachSnap = await getDoc(doc(db, "coaches", user.uid));
+        const coach = coachSnap.data();
 
-  if (!coachSnap.exists()) {
-    alert("بيانات المدرب غير موجودة");
-    return;
-  }
+        document.getElementById("coachName").textContent = "أهلاً " + (coach.fullName || "");
 
-  const coach = coachSnap.data();
+        document.getElementById("coachEmail").textContent = user.email || "";
 
-  document.getElementById("coachName").textContent =
-    "أهلاً " + (coach.fullName || "");
+        document.getElementById("coachSpecialization").textContent = coach.specialization || "";
 
-  document.getElementById("coachEmail").textContent =
-    user.email || "";
+        document.getElementById("coachPrice").textContent =
+          (coach.price || "") + " جنيه / " + (coach.priceType === "monthly" ? "شهر" : "حصة");
+        const requestsQuery = query(collection(db, "requests"), where("coachId", "==", user.uid));
 
-  document.getElementById("coachSpecialization").textContent =
-    coach.specialization || "";
+        stopRequests = onSnapshot(
+          requestsQuery,
+          (snapshot) => {
+            const list = document.getElementById("requests");
+            const trainees = document.getElementById("myTrainees");
 
-  document.getElementById("coachPrice").textContent =
-    (coach.price || "") + " جنيه / " +
-    (coach.priceType === "monthly" ? "شهر" : "حصة");
-  const requestsQuery = query(
-    collection(db, "requests"),
-    where("coachId", "==", user.uid)
-  );
+            list.innerHTML = "";
+            trainees.innerHTML = "";
 
-  stopRequests = onSnapshot(requestsQuery, snapshot => {
-    const list = document.getElementById("requests");
-    const trainees = document.getElementById("myTrainees");
+            let pending = 0;
+            let accepted = 0;
 
-    list.innerHTML = "";
-    trainees.innerHTML = "";
+            document.getElementById("total").textContent = snapshot.size;
 
-    let pending = 0;
-    let accepted = 0;
+            const requests = snapshot.docs.sort((a, b) => {
+              const dateA = a.data().createdAt?.toMillis?.() || 0;
+              const dateB = b.data().createdAt?.toMillis?.() || 0;
+              return dateB - dateA;
+            });
 
-    document.getElementById("total").textContent = snapshot.size;
+            requests.forEach((requestDoc) => {
+              const data = requestDoc.data();
 
-    const requests = snapshot.docs.sort((a, b) => {
-      const dateA = a.data().createdAt?.toMillis?.() || 0;
-      const dateB = b.data().createdAt?.toMillis?.() || 0;
-      return dateB - dateA;
-    });
+              const card = document.createElement("div");
+              card.className = "request";
 
-    requests.forEach(requestDoc => {
-      const data = requestDoc.data();
+              const title = document.createElement("h3");
+              title.textContent = data.traineeName || "متدرب";
 
-      const card = document.createElement("div");
-      card.className = "request";
+              const email = document.createElement("p");
+              email.textContent = "البريد: " + (data.traineeEmail || "");
 
-      const title = document.createElement("h3");
-      title.textContent = data.traineeName || "متدرب";
+              const goal = document.createElement("p");
+              goal.textContent = "الهدف: " + (data.formData?.goal || "");
 
-      const email = document.createElement("p");
-      email.textContent = "البريد: " + (data.traineeEmail || "");
+              const experience = document.createElement("p");
+              experience.textContent = "الخبرة: " + (data.formData?.experience || "");
 
-      const goal = document.createElement("p");
-      goal.textContent = "الهدف: " + (data.formData?.goal || "");
+              const time = document.createElement("p");
+              time.textContent = "الوقت المناسب: " + (data.formData?.preferredTime || "");
 
-      const experience = document.createElement("p");
-      experience.textContent =
-        "الخبرة: " + (data.formData?.experience || "");
+              const notes = document.createElement("p");
+              notes.textContent = "ملاحظات: " + (data.formData?.notes || "");
 
-      const time = document.createElement("p");
-      time.textContent =
-        "الوقت المناسب: " + (data.formData?.preferredTime || "");
+              const status = document.createElement("p");
+              status.textContent = "الحالة: " + statusText(data.status);
 
-      const notes = document.createElement("p");
-      notes.textContent =
-        "ملاحظات: " + (data.formData?.notes || "");
+              card.append(title, email, goal, experience, time, notes, status);
 
-      const status = document.createElement("p");
-      status.textContent =
-        "الحالة: " + statusText(data.status);
+              if (data.status === "pending") {
+                pending++;
 
-      card.append(title, email, goal, experience, time, notes, status);
+                const accept = document.createElement("button");
+                accept.textContent = "قبول";
 
-      if (data.status === "pending") {
-        pending++;
+                accept.onclick = () => changeStatus(requestDoc.id, data, user.uid, "accepted");
 
-        const accept = document.createElement("button");
-        accept.textContent = "قبول";
+                const decline = document.createElement("button");
+                decline.textContent = "رفض";
 
-        accept.onclick = () =>
-          changeStatus(requestDoc.id, data, user.uid, "accepted");
+                decline.onclick = () => changeStatus(requestDoc.id, data, user.uid, "declined");
 
-        const decline = document.createElement("button");
-        decline.textContent = "رفض";
+                card.append(accept, decline);
+              }
 
-        decline.onclick = () =>
-          changeStatus(requestDoc.id, data, user.uid, "declined");
+              if (data.status === "accepted") {
+                accepted++;
 
-        card.append(accept, decline);
+                const traineeCard = document.createElement("div");
+                traineeCard.className = "request";
+                traineeCard.textContent = (data.traineeName || "متدرب") + " - " + (data.traineeEmail || "");
+
+                trainees.appendChild(traineeCard);
+              }
+
+              list.appendChild(card);
+            });
+
+            document.getElementById("pending").textContent = pending;
+            document.getElementById("accepted").textContent = accepted;
+
+            if (requests.length === 0) {
+              list.textContent = "لا توجد طلبات حتى الآن";
+            }
+
+            if (trainees.children.length === 0) {
+              trainees.textContent = "لا يوجد متدربون مقبولون حتى الآن";
+            }
+          },
+          (error) => {
+            console.error(error);
+            document.getElementById("requests").textContent = "تعذر تحميل الطلبات: " + error.message;
+          },
+        );
+        const notificationsQuery = query(collection(db, "notifications"), where("userId", "==", user.uid));
+
+        stopNotifications = onSnapshot(notificationsQuery, (snapshot) => {
+          const list = document.getElementById("notifications");
+          list.innerHTML = "";
+
+          const notifications = snapshot.docs.sort((a, b) => {
+            const dateA = a.data().createdAt?.toMillis?.() || 0;
+            const dateB = b.data().createdAt?.toMillis?.() || 0;
+            return dateB - dateA;
+          });
+
+          if (notifications.length === 0) {
+            list.textContent = "لا توجد إشعارات";
+            return;
+          }
+
+          notifications.forEach((item) => {
+            const data = item.data();
+
+            const card = document.createElement("div");
+            card.className = "request";
+
+            const title = document.createElement("h3");
+            title.textContent = data.title || "إشعار";
+
+            const message = document.createElement("p");
+            message.textContent = data.message || "";
+
+            card.append(title, message);
+
+            if (!data.isRead) {
+              const button = document.createElement("button");
+              button.textContent = "تحديد كمقروء";
+
+              button.onclick = async () => {
+                await updateDoc(doc(db, "notifications", item.id), { isRead: true });
+              };
+
+              card.appendChild(button);
+            }
+
+            list.appendChild(card);
+          });
+        });
       }
 
-      if (data.status === "accepted") {
-        accepted++;
-
-        const traineeCard = document.createElement("div");
-        traineeCard.className = "request";
-        traineeCard.textContent =
-          (data.traineeName || "متدرب") + " - " +
-          (data.traineeEmail || "");
-
-        trainees.appendChild(traineeCard);
+      function statusText(status) {
+        if (status === "pending") return "قيد الانتظار";
+        if (status === "accepted") return "مقبول";
+        if (status === "declined") return "مرفوض";
+        return status || "";
       }
 
-      list.appendChild(card);
-    });
+      async function changeStatus(requestId, requestData, coachId, status) {
+        try {
+          const privateSnap = await getDoc(doc(db, "coachPrivate", coachId));
 
-    document.getElementById("pending").textContent = pending;
-    document.getElementById("accepted").textContent = accepted;
+          if (!privateSnap.exists()) {
+            alert("بيانات التواصل الخاصة بالمدرب غير موجودة");
+            return;
+          }
 
-    if (requests.length === 0) {
-      list.textContent = "لا توجد طلبات حتى الآن";
-    }
+          const batch = writeBatch(db);
 
-    if (trainees.children.length === 0) {
-      trainees.textContent = "لا يوجد متدربون مقبولون حتى الآن";
-    }
+          const requestRef = doc(db, "requests", requestId);
+          const notificationRef = doc(collection(db, "notifications"));
 
-  }, error => {
-    console.error(error);
-    document.getElementById("requests").textContent =
-      "تعذر تحميل الطلبات: " + error.message;
-  });
-  const notificationsQuery = query(
-    collection(db, "notifications"),
-    where("userId", "==", user.uid)
-  );
+          const requestUpdate = {
+            status,
+            updatedAt: serverTimestamp(),
+          };
 
-  stopNotifications = onSnapshot(notificationsQuery, snapshot => {
-    const list = document.getElementById("notifications");
-    list.innerHTML = "";
+          if (status === "accepted") {
+            requestUpdate.coachPhone = privateSnap.data().phone || "";
+          }
 
-    const notifications = snapshot.docs.sort((a, b) => {
-      const dateA = a.data().createdAt?.toMillis?.() || 0;
-      const dateB = b.data().createdAt?.toMillis?.() || 0;
-      return dateB - dateA;
-    });
+          batch.update(requestRef, requestUpdate);
 
-    if (notifications.length === 0) {
-      list.textContent = "لا توجد إشعارات";
-      return;
-    }
+          batch.set(notificationRef, {
+            userId: requestData.traineeId,
+            requestId,
+            type: "request_response",
+            title: status === "accepted" ? "تم قبول طلبك" : "تم رفض طلبك",
+            message:
+              status === "accepted"
+                ? "وافق المدرب على طلب التدريب. يمكنك رؤية بيانات التواصل في صفحتك."
+                : "المدرب اعتذر عن قبول طلب التدريب.",
+            isRead: false,
+            createdAt: serverTimestamp(),
+          });
 
-    notifications.forEach(item => {
-      const data = item.data();
+          await batch.commit();
 
-      const card = document.createElement("div");
-      card.className = "request";
-
-      const title = document.createElement("h3");
-      title.textContent = data.title || "إشعار";
-
-      const message = document.createElement("p");
-      message.textContent = data.message || "";
-
-      card.append(title, message);
-
-      if (!data.isRead) {
-        const button = document.createElement("button");
-        button.textContent = "تحديد كمقروء";
-
-        button.onclick = async () => {
-          await updateDoc(
-            doc(db, "notifications", item.id),
-            { isRead: true }
-          );
-        };
-
-        card.appendChild(button);
+          alert(status === "accepted" ? "تم قبول الطلب" : "تم رفض الطلب");
+        } catch (error) {
+          console.error(error);
+          alert("حدث خطأ: " + error.message);
+        }
       }
 
-      list.appendChild(card);
-    });
-  });
-}
+      document.getElementById("logout").addEventListener("click", async () => {
+        if (stopRequests) stopRequests();
+        if (stopNotifications) stopNotifications();
 
-function statusText(status) {
-  if (status === "pending") return "قيد الانتظار";
-  if (status === "accepted") return "مقبول";
-  if (status === "declined") return "مرفوض";
-  return status || "";
-}
+        await signOut(auth);
+        window.location.href = "signCoach.html";
+      });
 
-async function changeStatus(requestId, requestData, coachId, status) {
-  try {
-    const privateSnap = await getDoc(
-      doc(db, "coachPrivate", coachId)
-    );
-
-    if (!privateSnap.exists()) {
-      alert("بيانات التواصل الخاصة بالمدرب غير موجودة");
-      return;
-    }
-
-    const batch = writeBatch(db);
-
-    const requestRef = doc(db, "requests", requestId);
-    const notificationRef = doc(collection(db, "notifications"));
-
-    const requestUpdate = {
-      status,
-      updatedAt: serverTimestamp()
-    };
-
-    if (status === "accepted") {
-      requestUpdate.coachPhone = privateSnap.data().phone || "";
-    }
-
-    batch.update(requestRef, requestUpdate);
-
-    batch.set(notificationRef, {
-      userId: requestData.traineeId,
-      requestId,
-      type: "request_response",
-      title: status === "accepted" ? "تم قبول طلبك" : "تم رفض طلبك",
-      message: status === "accepted"
-        ? "وافق المدرب على طلب التدريب. يمكنك رؤية بيانات التواصل في صفحتك."
-        : "المدرب اعتذر عن قبول طلب التدريب.",
-      isRead: false,
-      createdAt: serverTimestamp()
-    });
-
-    await batch.commit();
-
-    alert(status === "accepted" ? "تم قبول الطلب" : "تم رفض الطلب");
-
-  } catch (error) {
-    console.error(error);
-    alert("حدث خطأ: " + error.message);
-  }
-}
-
-document.getElementById("logout").addEventListener("click", async () => {
-  if (stopRequests) stopRequests();
-  if (stopNotifications) stopNotifications();
-
-  await signOut(auth);
-  window.location.href = "signCoach.html";
-});
-
-startDashboard().catch(error => {
-  console.error(error);
-  alert("تعذر فتح لوحة المدرب: " + error.message);
-});
-</script>
-</body>
+      startDashboard().catch((error) => {
+        console.error(error);
+        alert("تعذر فتح لوحة المدرب: " + error.message);
+      });
+    </script>
+  </body>
 </html>
-
