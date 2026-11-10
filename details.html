@@ -230,7 +230,10 @@ await authReady;
 const params = new URLSearchParams(window.location.search);
 const coachId = params.get("id");
 
-const demoCoach = data[coachId] || null;
+const demoCoach = data[coachId] ||
+  Object.values(data).find(coach => coach.name === coachId) ||
+  null;
+
 
 function displayDemoCoach(coach) {
   document.getElementById("name").textContent = coach.name;
