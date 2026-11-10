@@ -58,58 +58,196 @@ button {
 </div>
 
 <script type="module">
-<script type="module">
 import { auth, db, authReady } from "./firebase.js";
 
 import {
-  signInWithEmailAndPassword
+  signOut
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 import {
   doc,
-  getDoc
+  getDoc,
+  collection,
+  query,
+  where,
+  onSnapshot,
+  updateDoc
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 await authReady;
 
-const loginForm = document.getElementById("loginForm");
+let stopRequests = null;
+let stopNotifications = null;
 
-loginForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
+async function startDashboard() {
+  const user = auth.currentUser;
 
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
+  if (!user) {
+    window.location.href = "log.html";
+    return;
+  }
 
-  try {
-    const result = await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
+  const userSnap = await getDoc(doc(db, "users", user.uid));
 
-    const uid = result.user.uid;
+  if (!userSnap.exists() || userSnap.data().role !== "trainee") {
+    alert("هذا الحساب ليس حساب متدرب");
+    window.location.href = "log.html";
+    return;
+  }
 
-    const userSnap = await getDoc(doc(db, "users", uid));
+  const traineeSnap = await getDoc(doc(db, "trainees", user.uid));
 
-    if (!userSnap.exists()) {
-      alert("بيانات الحساب غير موجودة");
+  if (!traineeSnap.exists()) {
+    alert("بيانات المتدرب غير موجودة");
+    return;
+  }
+
+  const trainee = traineeSnap.data();
+
+  document.getElementById("name").textContent =
+    "أهلاً " + (trainee.name || "");
+
+  document.getElementById("email").textContent =
+    trainee.email || user.email || "";
+
+  // طلبات المتدرب
+  const requestsQuery = query(
+    collection(db, "requests"),
+    where("traineeId", "==", user.uid)
+  );
+
+  stopRequests = onSnapshot(requestsQuery, snapshot => {
+    const list = document.getElementById("requests");
+    list.innerHTML = "";
+
+    const requests = snapshot.docs.sort((a, b) => {
+      const dateA = a.data().createdAt?.toMillis?.() || 0;
+      const dateB = b.data().createdAt?.toMillis?.() || 0;
+      return dateB - dateA;
+    });
+
+    if (requests.length === 0) {
+      list.textContent = "لم ترسل أي طلبات حتى الآن";
       return;
     }
 
-    const role = userSnap.data().role;
+    requests.forEach(item => {
+      const data = item.data();
 
-    if (role === "trainee") {
-      window.location.href = "trainee_personal.html";
-    } else if (role === "coach") {
-      window.location.href = "personal.html";
-    } else {
-      alert("نوع الحساب غير معروف");
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const title = document.createElement("h3");
+      title.textContent = "المدرب: " + (data.coachName || "");
+
+      const goal = document.createElement("p");
+      goal.textContent =
+        "هدف التدريب: " + (data.formData?.goal || "");
+
+      const experience = document.createElement("p");
+      experience.textContent =
+        "مستوى الخبرة: " + (data.formData?.experience || "");
+
+      const time = document.createElement("p");
+      time.textContent =
+        "الوقت المناسب: " + (data.formData?.preferredTime || "");
+
+      const status = document.createElement("p");
+
+      if (data.status === "pending") {
+        status.textContent = "حالة الطلب: قيد الانتظار";
+      } else if (data.status === "accepted") {
+        status.textContent = "حالة الطلب: تم القبول";
+      } else if (data.status === "declined") {
+        status.textContent = "حالة الطلب: تم الرفض";
+      }
+
+      card.append(title, goal, experience, time, status);
+
+      // بيانات التواصل تظهر بعد القبول فقط
+      if (data.status === "accepted") {
+        const phone = document.createElement("p");
+        phone.textContent =
+          "رقم المدرب: " + (data.coachPhone || "غير متاح");
+
+        card.appendChild(phone);
+      }
+
+      list.appendChild(card);
+    });
+
+  }, error => {
+    console.error(error);
+    document.getElementById("requests").textContent =
+      "تعذر تحميل الطلبات: " + error.message;
+  });
+
+  // إشعارات المتدرب
+  const notificationsQuery = query(
+    collection(db, "notifications"),
+    where("userId", "==", user.uid)
+  );
+
+  stopNotifications = onSnapshot(notificationsQuery, snapshot => {
+    const list = document.getElementById("notifications");
+    list.innerHTML = "";
+
+    const notifications = snapshot.docs.sort((a, b) => {
+      const dateA = a.data().createdAt?.toMillis?.() || 0;
+      const dateB = b.data().createdAt?.toMillis?.() || 0;
+      return dateB - dateA;
+    });
+
+    if (notifications.length === 0) {
+      list.textContent = "لا توجد إشعارات";
+      return;
     }
 
-  } catch (error) {
-    console.error(error);
-    alert("تأكدي من البريد الإلكتروني وكلمة المرور");
-  }
+    notifications.forEach(item => {
+      const data = item.data();
+
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const title = document.createElement("h3");
+      title.textContent = data.title || "إشعار";
+
+      const message = document.createElement("p");
+      message.textContent = data.message || "";
+
+      card.append(title, message);
+
+      if (!data.isRead) {
+        const button = document.createElement("button");
+        button.textContent = "تحديد كمقروء";
+
+        button.onclick = async () => {
+          await updateDoc(
+            doc(db, "notifications", item.id),
+            { isRead: true }
+          );
+        };
+
+        card.appendChild(button);
+      }
+
+      list.appendChild(card);
+    });
+
+  });
+}
+
+document.getElementById("logout").addEventListener("click", async () => {
+  if (stopRequests) stopRequests();
+  if (stopNotifications) stopNotifications();
+
+  await signOut(auth);
+  window.location.href = "log.html";
+});
+
+startDashboard().catch(error => {
+  console.error(error);
+  alert("تعذر فتح صفحة المتدرب: " + error.message);
 });
 </script>
 </body>
