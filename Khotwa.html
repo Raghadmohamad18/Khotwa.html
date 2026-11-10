@@ -12,20 +12,20 @@
          <p>اكتشف شغفك.. ابنِ مهارتك</p>
       </header>
       <div style="text-align:center; margin:30px 0;">
-      <input id="search"type="search" placeholder="...ابحث عن رياضة او حرفة" style="width:500px; height:45px;">
+      <input id="search" type="search" placeholder="...ابحث عن رياضة او حرفة" style="width:500px; height:45px;">
       </div>
       <div class="categories">
-         <button onclick="showCategory('sports')">رياضة</button>
-         <button onclick="showCategory('handmade')"> حرف يدوية</button>
-         <button onclick="showCategory('music')"> موسيقى</button>
-         <button onclick="showCategory('programming')">برمجة</button>
-         <button onclick="showCategory('quran')"> القرآن الكريم والعلوم الدينية</button>
-         <button onclick="showCategory('other')">غيرهم</button>
+         <button onclick="showCategory("sports")">رياضة</button>
+         <button onclick="showCategory('"handmade")"> حرف يدوية</button>
+         <button onclick="showCategory("music")"> موسيقى</button>
+         <button onclick="showCategory("programming")">برمجة</button>
+         <button onclick="showCategory("quran")"> القرآن الكريم والعلوم الدينية</button>
+         <button onclick="showCategory('"other")">غيرهم</button>
       </div>
       <section id="sports" class="category" style="display:block;">
          <h2 class="section-title">رياضة</h2>
-         <div class="products" id="sportsFirebase">
-            <div class="product coach-card">
+         <div class="trainers" id="sportsFirebase">
+            <div class="trainer coach-card">
                <img src="https://t4.ftcdn.net/jpg/02/11/51/53/360_F_211515361_bnIbyKadClzn3hJT0zCPPuPApcG7k3lC.jpg" alt="Football player">
                <h3>احمد حسن محمد</h3>
                <h3>كرة القدم</h3>
@@ -35,9 +35,9 @@
                </p>
                <p class="price">١٠٠ جنيه مصري / جلسة</p>
                <button onclick="order('01100351797','Ahmed Hassan')">الحجز مع المدرب</button>
-               <button onclick="goDetails('Ahmed Hassan')">عرض المزيد</button>
+               <button onclick="Details('Ahmed Hassan')">عرض المزيد</button>
             </div>
-            <div class="product coach-card">
+            <div class="trainer coach-card">
                <img src="https://static.vecteezy.com/system/resources/previews/065/434/247/non_2x/swimming-sport-logo-icon-flat-illustration-vector.jpg" alt="swimmer"">
                <h3>ساره محمد حسن</h3>
                <h3>سباحة</h3>
@@ -45,11 +45,11 @@
 يساعد العملاء على تحقيق أهدافهم من خلال خطط تمارين مخصصة،
 وتوجيهات غذائية، وتحفيز مستمر.
                </p>
-               <p class="price">٥٠ جنيه مصري / جلسة</p>
+               <p class="price"> ٥٠جنيه مصري / جلسة</p>
                <button onclick="order('01100351797','Sara Mohamed')">الحجز مع المدرب</button>
-               <button onclick="goDetails('Sara Mohamed')">عرض المزيد</button>
+               <button onclick="Details('Sara Mohamed')">عرض المزيد</button>
             </div>
-            <div class="product coach-card">
+            <div class="trainer coach-card">
                <img src="https://www.shutterstock.com/image-vector/basketball-player-silhouette-logo-vector-260nw-2717047395.jpg" alt="basketball player">
                <h3>عمر حسام محمد</h3>
                <h3>كرة سلة</h3>
@@ -59,9 +59,9 @@
                </p>
                <p class="price">٨٠ جنيه مصري/ جلسة</p>
                <button onclick="order('01100351797','Omar Ali')">الحجز مع المدرب</button>
-               <button onclick="goDetails('Omar Ali')">عرض المزيد</button>
+               <button onclick="Details('Omar Ali')">عرض المزيد</button>
             </div>
-            <div class="product coach-card">
+            <div class="trainer coach-card">
                <img src="https://media.istockphoto.com/id/1397734203/vector/couple-fitness-logo-vector.jpg?s=612x612&w=0&k=20&c=o-MflGLdwx7Z5R2ZUyOwggGNCsMabFxCkODsRg4iMY0=" alt="fitness player">
                <h3>يوسف عادل محي</h3>
                <h3>كاراتيه</h3>
@@ -71,14 +71,14 @@
                </p>
                <p class="price">٩٠ جنيه مصري / جلسة</p> 
                <button onclick="order('01100351797','Youssef Adel')">الحجز مع المدرب</button>
-               <button onclick="goDetails('Youssef Adel')">عرض المزيد</button>
+               <button onclick="Details('Youssef Adel')">عرض المزيد</button>
             </div>
          </div>
       </section>
       <section id="handmade" class="category" style="display:none;">
          <h2 class="section-title">حرف يدوية</h2>
-         <div class="products" id="handmadeFirebase">
-            <div class="product coach-card">
+         <div class="trainers" id="handmadeFirebase">
+            <div class="trainer coach-card">
                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPYAbSu1Lk2gaa1_VZMByeW9G6tsT0EvE8vg&s" alt="Handmade">
                <h3>مريم عادل حسين</h3>
                <h3>فن الكروشيه والريزن</h3>
@@ -88,9 +88,9 @@
                </p>
                <p class="price">٩٠ جنيه مصري / جلسة</p>
                <button onclick="order('01100351797','Mariam Adel')">الحجز مع المدرب</button>
-               <button onclick="goDetails('Mariam Adel')">عرض المزيد</button>
+               <button onclick="Details('Mariam Adel')">عرض المزيد</button>
             </div>
-            <div class="product coach-card">
+            <div class="trainer coach-card">
                <img src="https://logomakerr.ai/blog/wp-content/uploads/2023/11/illumine-candles-logo-design.jpg" alt="Handmade">
                <h3>فاطمة علي السيد</h3>
                <h3>منتجات الشموع والديكور</h3>
@@ -98,14 +98,14 @@
                </p>
                <p class="price">٨٠ جنيه مصري / جلسة</p>
                <button onclick="order('01100351797','Fatma Ali')">الحجز مع المدرب</button>
-               <button onclick="goDetails('Fatma Ali')">عرض المزيد</button>
+               <button onclick="Details('Fatma Ali')">عرض المزيد</button>
             </div>
          </div>
       </section>
       <section id="music" class="category" style="display:none;">
          <h2 class="section-title">موسيقى</h2>
-         <div class="products" id="musicFirebase">
-            <div class="product coach-card">
+         <div class="trainers" id="musicFirebase">
+            <div class="trainer coach-card">
                <img src="https://thumbs.dreamstime.com/b/piano-lessons-poster-musical-note-36625482.jpg" alt="Music">
                <h3>ندى احمد نبيل</h3>
                <h3>تعليم البيانو</h3>
@@ -115,9 +115,9 @@
                </p>
                <p class="price">٥٠ جنيه مصري / جلسة</p>
                <button onclick="order('01100351797','Nada Ahmed')">الحجز مع المدرب</button>
-               <button onclick="goDetails('Nada Ahmed')">عرض المزيد</button>
+               <button onclick="Details('Nada Ahmed')">عرض المزيد</button>
             </div>
-            <div class="product coach-card">
+            <div class="trainer coach-card">
                <img src="https://i.etsystatic.com/18154652/r/il/f22387/1629260272/il_fullxfull.1629260272_d6io.jpg" alt="Music">
                <h3>عمر عمرو مصطفى</h3>
                <h3>تعليم العزف على الجيتار</h3>
@@ -125,14 +125,14 @@
                </p>
                <p class="price">٨٠ جنيه مصري / جلسة</p>
                <button onclick="order('01100351797','Omar Mostafa')">الحجز مع المدرب</button>
-               <button onclick="goDetails('Omar Mostafa')">عرض المزيد</button>
+               <button onclick="Details('Omar Mostafa')">عرض المزيد</button>
             </div>
          </div>
       </section>
       <section id="programming" class="category" style="display:none;">
          <h2 class="section-title">البرمجة</h2>
-         <div class="products" id="programmingFirebase">
-            <div class="product coach-card">
+         <div class="trainers" id="programmingFirebase">
+            <div class="trainer coach-card">
                <img src="https://img.freepik.com/free-vector/creative-gradient-code-logo_23-2148820572.jpg?semt=ais_hybrid&w=740&q=80" alt="Programming">
                <h3>محمد خالد جمعة</h3>
                <h3>تطوير الويب</h3>
@@ -142,9 +142,9 @@
                </p>
                <p class="price"> ٨٠ جنيه مصري / جلسة</p>
                <button onclick="order('01100351797','Mohamed Khaled')">الحجز مع المدرب</button>
-               <button onclick="goDetails('Mohamed Khaled')">عرض المزيد</button>
+               <button onclick="Details('Mohamed Khaled')">عرض المزيد</button>
             </div>
-            <div class="product coach-card">
+            <div class="trainer coach-card">
                <img src="https://previews.123rf.com/images/captainvector/captainvector2208/captainvector220829703/189851058-problem-solving-icon.jpg" alt="Programming">
                <h3>أحمد سمير عصام</h3>
                <h3>حل المشكلات والأتمتة</h3>
@@ -152,17 +152,17 @@
                </p>
                <p class="price">٩٠ جنيه مصري / جلسة</p>
                <button onclick="order('01100351797','Ahmed Samir')">الحجز مع المدرب</button>
-               <button onclick="goDetails('Ahmed Samir')">عرض المزيد</button>
+               <button onclick="Details('Ahmed Samir')">عرض المزيد</button>
             </div>
          </div>
          <section id="quran" class="category" style="display:none;">
              <h2 class="section-title">القرآن الكريم والعلوم الدينية</h2>
-             <div class="products" id="quranFirebase"></div>
+             <div class="trainers" id="quranFirebase"></div>
          </section>
       </section>
       <section id="other" class="category" style="display:none;">
          <h2 class="section-title">غيرهم</h2>
-         <div id="otherFirebase" class="products"></div>
+         <div id="otherFirebase" class="trainers"></div>
       </section>
       <section class="about-section">
          <h2 class="section-title">:معلومات عنا</h2>
