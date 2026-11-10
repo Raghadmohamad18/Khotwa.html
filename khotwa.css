@@ -9,9 +9,12 @@ body {
     direction: rtl;
     max-width: 800px;
     margin: 40px auto; 
+    padding: 0 20px;
 }
 .about-section p {
     line-height: 1.8;
+    font-size: 16px;
+    color: #333333;
 }
 header { 
     text-align: center;
@@ -27,6 +30,7 @@ header h1 {
 }
 header p {
     font-size: 18px;
+    margin-top: 10px;
 }
 .section-title {
     font-size: 28px;
@@ -36,11 +40,28 @@ header p {
     display: table;
     margin: 0 auto 30px;
 }
+#search {
+    width: 100%;
+    max-width: 500px;
+    height: 45px;
+    padding: 10px 20px;
+    border: 2px solid #ccc;
+    border-radius: 25px;
+    font-size: 16px;
+    outline: none;
+    transition: 0.3s;
+    box-sizing: border-box;
+}
+#search:focus {
+    border-color: #C62828;
+    box-shadow: 0 0 8px rgba(198, 40, 40, 0.2);
+}
 .trainers {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     gap: 20px;
+    padding: 20px;
 }
 .coach-card {
     background: #000000;
@@ -55,6 +76,11 @@ header p {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.coach-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
 }
 .coach-card button + button {
     margin-top: 10px;
@@ -76,6 +102,7 @@ header p {
 .price {
     font-size: 24px;
     margin: 10px 0;
+    color: #FFF;
 }
 button {
     background: #C62828;
@@ -100,7 +127,8 @@ section {
     color: white;
     padding: 30px;
     border-radius: 15px;
-    margin: 30px 0;
+    margin: 30px auto;
+    max-width: 600px;
 }
 .contact-section h2 {
     border-bottom: 3px solid #C62828;
@@ -109,6 +137,11 @@ section {
 }
 .contact-section a {
     color: #D4AF37;
+    text-decoration: none;
+    font-weight: bold;
+}
+.contact-section a:hover {
+    text-decoration: underline;
 }
 footer {
     margin-top: 40px;
@@ -137,6 +170,7 @@ footer {
 }
 .categories button:hover {
     background: #A00000;
+    border-color: #A00000;
 }
 .category {
     display: none;
