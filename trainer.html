@@ -1,358 +1,348 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>إنشاء حساب المدرب</title>
-      <style> 
-         body{     
-         background:linear-gradient(134deg, rgba(212, 175, 55, 0.18) 0%, rgba(212, 175, 55, 0.03) 100%);;
-         }
-         .form-box{
-         background:beige;
-         width:90%;
-         max-width:600px;
-         padding:25px;
-         border-radius:15px;
-         box-shadow:0 0 10px rgba(0,0,0,0.1);
-         }
-         h2{
-         text-align:center;
-         color:#333;
-         }
-         form{
-            display:flex;
-            flex-direction: column;
-            gap:5px;
-         }
-         input, select, textarea{
-         width:90%;
-         padding:12px;
-         margin:10px 0;
-         border-radius:8px;
-         border:1px solid #ccc;
-         }
-         button{
-         width:90%;
-         padding:12px;
-         background:#C62828;
-         color:white;
-         border:none;
-         border-radius:8px;
-         font-size:16px;
-         cursor:pointer;
-         }
-         button:hover{
-         background:#CE1126;
-         }
-         label{
-         font-weight:100px;
-         }
-         .contact-section {
-         background: #000000;
-         color: white;
-         padding: 30px;
-         border-radius: 15px;
-         margin: 30px 0;
-         text-align: center;
-         }
-         .contact-section h2 {
-         color: #FFFFFF;
-         border-bottom: 3px solid #C62828;
-         display: inline-block;
-         padding-bottom: 10px;
-         }
-         .contact-section a {
-         color: #D4AF37;
-         text-decoration: none;
-         }
-         footer {
-         margin-top: 40px;
-         text-align: center;
-         background:#000000;
-         color:white;
-         padding: 20px;
-         border-top: 3px solid #C62828;
-         }
-      </style>
-   </head>
-   <body>
-      <center>
-         <div class="form-box">
-            <h2><mark>بيانات عن المدرب</mark></h2>
-            <form id="coachForm">
-               <label>الاسم كامل</label><input type="text" id="fullName" placeholder="ادخله هنا" required>
-               <label>البريد الالكتروني</label>
-               <input type="email" id="email" placeholder="ادخله هنا" required>
-               <label>كلمة المرور</label>
-               <input type="password" id="password" placeholder="ادخله هنا" required>
-               <label>تأكيد كلمة المرور</label>
-               <input type="password" id="confirmPassword"required>
-               <label>المجال</label>
-               <select id="category" required>
-                  <option value="">اختار مجالك</option>
-                  <option value="Sports">رياضة</option>
-                  <option value="Handmade">حرف يدوية</option>
-                  <option value="Music">موسيقى و غناء</option>
-                  <option value="Programming">برمجة</option>
-                  <option value="Quran"> القرآن الكريم و العلوم الدينية</option>
-                  <option value="Other">غيره</option>
-               </select>
-               <label>اكتب الرياضة او المهارة</label>
-               <input type="text"
-                  id="specialization"
-                  placeholder="مثال:كرة القدم,رسم,العزف">
-               <label>محافظة</label>
-               <select id="governorate" required>
-                  <option value="">اختر المحافظة</option>
-                  <option>الإسكندرية</option>
-                  <option>أسوان</option>
-                  <option>أسيوط</option>
-                  <option>البحيرة</option>
-                  <option>بني سويف</option>
-                  <option>القاهرة</option>
-                  <option>الدقهلية</option>
-                  <option>دمياط</option>
-                  <option>الفيوم</option>
-                  <option>الغربية</option>
-                  <option>الجيزة</option>
-                  <option>الإسماعيلية</option>
-                  <option>كفر الشيخ</option>
-                  <option>الأقصر</option>
-                  <option>مطروح</option>
-                  <option>المنيا</option>
-                  <option>المنوفية</option>
-                  <option>الوادي الجديد</option>
-                  <option>شمال سيناء</option>
-                  <option>بورسعيد</option>
-                  <option>القليوبية</option>
-                  <option>قنا</option>
-                  <option>البحر الأحمر</option>
-                  <option>الشرقية</option>
-                  <option>سوهاج</option>
-                  <option>جنوب سيناء</option>
-                  <option>السويس</option>
-               </select>
-               <label id="areaLabel"> منطقة التدريب </label>
-               <input type="text" id="area" placeholder="يمكن كتابة المنطقة او اونلاين" required>
-               <label>رقم الهاتف</label>
-               <input type="tel" id="phone" placeholder="01XXXXXXXXX">
-               <label>طريقة الدفع</label>
-               <select id="priceType" required>
-               <option value="">اختر طريقة الدفع </option>
-               <option value="per_session">الدفع بالحصه</option>
-               <option value="monthly"> الدفع بالشهر</option>
-               </select><label id="priceLabel">ثمن التدريب(جنيه مصري)</label>
-               <input type="number" id="price" placeholder="اكتب السعر بالجنيه المصري" min="1" step="1" required>
-               <label>تفاصيل عنك</label>
-               <textarea id="about" placeholder="اخبرنا اكثر عن خبرتك و مجالك"></textarea>
-               <label>صورة للمدرب</label>
-               <input type="file" id="photo" accept="image/*">
-               <label>صور لشهادات المدرب</label>
-               <input id="certificates" type="file" multiple accept="image/*">
-               <label>صور لمكان التدريب</label>
-               <input id="trainingPlaces" type="file" multiple accept="image/*">
-               <button type="submit">
-               سجل
-               </button>
-            </form>
-         </div>
-         <section id="contact" class="contact-section">
-           <h2> :تواصل معنا</h2>
-           <p>📱عبر الهاتف: +201100351797</p>
-           <p>💬 عن طريق واتساب:<a href="https://wa.me/201100351797">اضغط هنا</a></p>
-           <p>skillmasr@gmail.com :عن طريق الايميل</p>
-         </section>
-      </center>
-      <footer>
-         <p id="footer-text">© 2026 SkillMasr - جميع الحقوق محفوظة</p>
-      </footer>
-      <script type="module">
-         
-
-import { auth, db, authReady } from "./firebase.js";
-
-import {
-  createUserWithEmailAndPassword,
-  deleteUser
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
-import {
-  doc,
-  writeBatch,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
-await authReady;
-
-const form = document.getElementById("coachForm");
-
-const priceTypeSelect = document.getElementById("priceType");
-const priceLabel = document.getElementById("priceLabel");
-const priceInput = document.getElementById("price");
-
-priceTypeSelect.addEventListener("change", () => {
-  if (priceTypeSelect.value === "monthly") {
-    priceLabel.textContent = "سعر الشهر (جنيه)";
-    priceInput.placeholder = "سعر الشهر بالجنيه المصري";
-  } else if (priceTypeSelect.value === "per_session") {
-    priceLabel.textContent = "سعر الحصة (جنيه)";
-    priceInput.placeholder = "سعر الحصة بالجنيه المصري";
-  }
-});
-
-async function uploadToCloudinary(file) {
-  const formData = new FormData();
-
-  formData.append("file", file);
-  formData.append("upload_preset", "rbqrpayg");
-
-  const response = await fetch(
-    "https://api.cloudinary.com/v1_1/i1ia28nc/image/upload",
-    {
-      method: "POST",
-      body: formData
-    }
-  );
-  const data = await response.json();
-
-  if (!response.ok || !data.secure_url) {
-    throw new Error("فشل رفع إحدى الصور إلى Cloudinary");
-  }
-
-  return data.secure_url;
-}
-
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const button = form.querySelector('button[type="submit"]');
-  if (button) button.disabled = true;
-
-  let createdUser = null;
-
-  try {
-    const fullName = document.getElementById("fullName").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
-    const confirmPassword =
-      document.getElementById("confirmPassword").value;
-
-    const category = document.getElementById("category").value;
-    const specialization =
-      document.getElementById("specialization").value.trim();
-
-    const governorate = document.getElementById("governorate").value;
-    const area = document.getElementById("area").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-
-    const price = Number(document.getElementById("price").value);
-    const priceType = document.getElementById("priceType").value;
-
-    const about = document.getElementById("about").value.trim();
-
-    const photo = document.getElementById("photo").files[0];
-    const certFiles = document.getElementById("certificates").files;
-    const placeFiles = document.getElementById("trainingPlaces").files;
-
-    if (password !== confirmPassword) {
-      throw new Error("كلمتا المرور غير متطابقتين");
-    }
-
-    if (password.length < 6) {
-      throw new Error("كلمة المرور يجب ألا تقل عن 6 أحرف");
-    }
-
-    if (!/^\d{11}$/.test(phone)) {
-      throw new Error("رقم الهاتف يجب أن يتكون من 11 رقمًا");
-    }
-
-    if (!Number.isFinite(price) || price <= 0) {
-      throw new Error("اكتبي سعرًا صحيحًا");
-    }
-
-    if (!priceType || !category || !governorate || !area) {
-      throw new Error("من فضلك أكمل البيانات المطلوبة");
-    }
-    const result = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-
-    createdUser = result.user;
-    const uid = createdUser.uid;
-    let imageUrl = "";
-
-    if (photo) {
-      imageUrl = await uploadToCloudinary(photo);
-    }
-
-    const certs = [];
-    const trainingPlaces = [];
-
-    for (const file of certFiles) {
-      certs.push(await uploadToCloudinary(file));
-    }
-
-    for (const file of placeFiles) {
-      trainingPlaces.push(await uploadToCloudinary(file));
-    }
-
-    const coachData = {
-  uid,
-  fullName,
-  category,
-  specialization,
-  governorate,
-  area,
-  price,
-  priceType,
-  about,
-  imageUrl,
-  certs,
-  trainingPlaces,
-  createdAt: serverTimestamp()
-};
-    const batch = writeBatch(db);
-
-    batch.set(doc(db, "coaches", uid), coachData);
-    batch.set(doc(db, "coachPrivate", uid), {
-  uid,
-  email,
-  phone,
-  createdAt: serverTimestamp()
-});
-    batch.set(doc(db, "users", uid), {
-      uid,
-      name: fullName,
-      email,
-      role: "coach",
-      createdAt: serverTimestamp()
-    });
-
-    await batch.commit();
-
-    alert("تم إنشاء حساب المدرب بنجاح");
-    window.location.href = "personal.html";
-
-  } catch (error) {
-    console.error(error);
-
-    if (createdUser) {
-      try {
-        await deleteUser(createdUser);
-      } catch (deleteError) {
-        console.error("تعذر حذف الحساب غير المكتمل:", deleteError);
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إنشاء حساب المدرب</title>
+    <style>
+      body {
+        background: linear-gradient(134deg, rgba(212, 175, 55, 0.18) 0%, rgba(212, 175, 55, 0.03) 100%);
       }
-    }
+      .form-box {
+        background: beige;
+        width: 90%;
+        max-width: 600px;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        text-align: center;
+        color: #333;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+      input,
+      select,
+      textarea {
+        width: 90%;
+        padding: 12px;
+        margin: 10px 0;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+      }
+      button {
+        width: 90%;
+        padding: 12px;
+        background: #c62828;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #ce1126;
+      }
+      label {
+        font-weight: 100px;
+      }
+      .contact-section {
+        background: #000000;
+        color: white;
+        padding: 30px;
+        border-radius: 15px;
+        margin: 30px 0;
+        text-align: center;
+      }
+      .contact-section h2 {
+        color: #ffffff;
+        border-bottom: 3px solid #c62828;
+        display: inline-block;
+        padding-bottom: 10px;
+      }
+      .contact-section a {
+        color: #d4af37;
+        text-decoration: none;
+      }
+      footer {
+        margin-top: 40px;
+        text-align: center;
+        background: #000000;
+        color: white;
+        padding: 20px;
+        border-top: 3px solid #c62828;
+      }
+    </style>
+  </head>
+  <body>
+    <center>
+      <div class="form-box">
+        <h2><mark>بيانات عن المدرب</mark></h2>
+        <form id="coachForm">
+          <label>الاسم كامل</label>
+          <input type="text" id="fullName" placeholder="ادخله هنا" required="" />
+          <label>البريد الالكتروني</label>
+          <input type="email" id="email" placeholder="ادخله هنا" required="" />
+          <label>كلمة المرور</label>
+          <input type="password" id="password" placeholder="ادخله هنا" required="" />
+          <label>تأكيد كلمة المرور</label>
+          <input type="password" id="confirmPassword" required="" />
+          <label>المجال</label>
+          <select id="category" required="">
+            <option value="">اختار مجالك</option>
+            <option value="Sports">رياضة</option>
+            <option value="Handmade">حرف يدوية</option>
+            <option value="Music">موسيقى و غناء</option>
+            <option value="Programming">برمجة</option>
+            <option value="Quran">القرآن الكريم و العلوم الدينية</option>
+            <option value="Other">غيره</option>
+          </select>
+          <label>اكتب الرياضة او المهارة</label>
+          <input type="text" id="specialization" placeholder="مثال:كرة القدم,رسم,العزف" />
+          <label>محافظة</label>
+          <select id="governorate" required="">
+            <option value="">اختر المحافظة</option>
+            <option>الإسكندرية</option>
+            <option>أسوان</option>
+            <option>أسيوط</option>
+            <option>البحيرة</option>
+            <option>بني سويف</option>
+            <option>القاهرة</option>
+            <option>الدقهلية</option>
+            <option>دمياط</option>
+            <option>الفيوم</option>
+            <option>الغربية</option>
+            <option>الجيزة</option>
+            <option>الإسماعيلية</option>
+            <option>كفر الشيخ</option>
+            <option>الأقصر</option>
+            <option>مطروح</option>
+            <option>المنيا</option>
+            <option>المنوفية</option>
+            <option>الوادي الجديد</option>
+            <option>شمال سيناء</option>
+            <option>بورسعيد</option>
+            <option>القليوبية</option>
+            <option>قنا</option>
+            <option>البحر الأحمر</option>
+            <option>الشرقية</option>
+            <option>سوهاج</option>
+            <option>جنوب سيناء</option>
+            <option>السويس</option>
+          </select>
+          <label id="areaLabel">منطقة التدريب</label>
+          <input type="text" id="area" placeholder="يمكن كتابة المنطقة او اونلاين" required="" />
+          <label>رقم الهاتف</label>
+          <input type="tel" id="phone" placeholder="01XXXXXXXXX" />
+          <label>طريقة الدفع</label>
+          <select id="priceType" required="">
+            <option value="">اختر طريقة الدفع</option>
+            <option value="per_session">الدفع بالحصه</option>
+            <option value="monthly">الدفع بالشهر</option>
+          </select>
+          <label id="priceLabel">ثمن التدريب(جنيه مصري)</label>
+          <input type="number" id="price" placeholder="اكتب السعر بالجنيه المصري" min="1" step="1" required="" />
+          <label>تفاصيل عنك</label>
+          <textarea id="about" placeholder="اخبرنا اكثر عن خبرتك و مجالك"></textarea>
+          <label>صورة للمدرب</label>
+          <input type="file" id="photo" accept="image/*" />
+          <label>صور لشهادات المدرب</label>
+          <input id="certificates" type="file" multiple="" accept="image/*" />
+          <label>صور لمكان التدريب</label>
+          <input id="trainingPlaces" type="file" multiple="" accept="image/*" />
+          <button type="submit">سجل</button>
+        </form>
+      </div>
+      <section id="contact" class="contact-section">
+        <h2>:تواصل معنا</h2>
+        <p>📱عبر الهاتف: +201100351797</p>
+        <p>
+          💬 عن طريق واتساب:
+          <a href="https://wa.me/201100351797">اضغط هنا</a>
+        </p>
+        <p>skillmasr@gmail.com :عن طريق الايميل</p>
+      </section>
+    </center>
+    <footer>
+      <p id="footer-text">© 2026 SkillMasr - جميع الحقوق محفوظة</p>
+    </footer>
+    <script type="module">
+      import { auth, db, authReady } from "./firebase.js";
 
-    alert("حدث خطأ: " + error.message);
+      import {
+        createUserWithEmailAndPassword,
+        deleteUser,
+      } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-  } finally {
-    if (button) button.disabled = false;
-  }
-});
-      </script>
-   </body>
+      import {
+        doc,
+        writeBatch,
+        serverTimestamp,
+      } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+      await authReady;
+
+      const form = document.getElementById("coachForm");
+
+      const priceTypeSelect = document.getElementById("priceType");
+      const priceLabel = document.getElementById("priceLabel");
+      const priceInput = document.getElementById("price");
+
+      priceTypeSelect.addEventListener("change", () => {
+        if (priceTypeSelect.value === "monthly") {
+          priceLabel.textContent = "سعر الشهر (جنيه)";
+          priceInput.placeholder = "سعر الشهر بالجنيه المصري";
+        } else if (priceTypeSelect.value === "per_session") {
+          priceLabel.textContent = "سعر الحصة (جنيه)";
+          priceInput.placeholder = "سعر الحصة بالجنيه المصري";
+        }
+      });
+
+      async function uploadToCloudinary(file) {
+        const formData = new FormData();
+
+        formData.append("file", file);
+        formData.append("upload_preset", "rbqrpayg");
+
+        const response = await fetch("https://api.cloudinary.com/v1_1/i1ia28nc/image/upload", {
+          method: "POST",
+          body: formData,
+        });
+        const data = await response.json();
+
+        if (!response.ok || !data.secure_url) {
+          throw new Error("فشل رفع إحدى الصور إلى Cloudinary");
+        }
+
+        return data.secure_url;
+      }
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const button = form.querySelector('button[type="submit"]');
+        if (button) button.disabled = true;
+
+        let createdUser = null;
+
+        try {
+          const fullName = document.getElementById("fullName").value.trim();
+          const email = document.getElementById("email").value.trim();
+          const password = document.getElementById("password").value;
+          const confirmPassword = document.getElementById("confirmPassword").value;
+
+          const category = document.getElementById("category").value;
+          const specialization = document.getElementById("specialization").value.trim();
+
+          const governorate = document.getElementById("governorate").value;
+          const area = document.getElementById("area").value.trim();
+          const phone = document.getElementById("phone").value.trim();
+
+          const price = Number(document.getElementById("price").value);
+          const priceType = document.getElementById("priceType").value;
+
+          const about = document.getElementById("about").value.trim();
+
+          const photo = document.getElementById("photo").files[0];
+          const certFiles = document.getElementById("certificates").files;
+          const placeFiles = document.getElementById("trainingPlaces").files;
+
+          if (password !== confirmPassword) {
+            throw new Error("كلمتا المرور غير متطابقتين");
+          }
+
+          if (password.length < 6) {
+            throw new Error("كلمة المرور يجب ألا تقل عن 6 أحرف");
+          }
+
+          if (!/^\d{11}$/.test(phone)) {
+            throw new Error("رقم الهاتف يجب أن يتكون من 11 رقمًا");
+          }
+
+          if (!Number.isFinite(price) || price <= 0) {
+            throw new Error("اكتبي سعرًا صحيحًا");
+          }
+
+          if (!priceType || !category || !governorate || !area) {
+            throw new Error("من فضلك أكمل البيانات المطلوبة");
+          }
+          const result = await createUserWithEmailAndPassword(auth, email, password);
+
+          createdUser = result.user;
+          const uid = createdUser.uid;
+          let imageUrl = "";
+
+          if (photo) {
+            imageUrl = await uploadToCloudinary(photo);
+          }
+
+          const certs = [];
+          const trainingPlaces = [];
+
+          for (const file of certFiles) {
+            certs.push(await uploadToCloudinary(file));
+          }
+
+          for (const file of placeFiles) {
+            trainingPlaces.push(await uploadToCloudinary(file));
+          }
+
+          const coachData = {
+            uid,
+            fullName,
+            category,
+            specialization,
+            governorate,
+            area,
+            price,
+            priceType,
+            about,
+            imageUrl,
+            certs,
+            trainingPlaces,
+            createdAt: serverTimestamp(),
+          };
+          const batch = writeBatch(db);
+
+          batch.set(doc(db, "coaches", uid), coachData);
+          batch.set(doc(db, "coachPrivate", uid), {
+            uid,
+            email,
+            phone,
+            createdAt: serverTimestamp(),
+          });
+          batch.set(doc(db, "users", uid), {
+            uid,
+            name: fullName,
+            email,
+            role: "coach",
+            createdAt: serverTimestamp(),
+          });
+
+          await batch.commit();
+
+          alert("تم إنشاء حساب المدرب بنجاح");
+          window.location.href = "personal.html";
+        } catch (error) {
+          console.error(error);
+
+          if (createdUser) {
+            try {
+              await deleteUser(createdUser);
+            } catch (deleteError) {
+              console.error("تعذر حذف الحساب غير المكتمل:", deleteError);
+            }
+          }
+
+          alert("حدث خطأ: " + error.message);
+        } finally {
+          if (button) button.disabled = false;
+        }
+      });
+    </script>
+  </body>
 </html>
