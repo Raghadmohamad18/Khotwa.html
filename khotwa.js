@@ -99,7 +99,7 @@ function showCategory(categoryId) {
       return;
   }
   container.innerHTML +=`
-  <div class="product coach-card">
+  <div class="trainer coach-card">
   <img src="${coach.imageUrl || 'https://via.placeholder.com/250x180'}" alt="Coach Photo">
   <h3>${coach.fullName}</h3>
   <h3>${coach.specialization}</h3>
@@ -109,7 +109,7 @@ function showCategory(categoryId) {
   ${coach.priceType === "monthly"? 
   `<p class="price">${coach.price} EGP / Month</p>`: 
   `<p class="price">${coach.price} EGP / Session</p>`}
-  <button onclick="goBookingFirebase('${doc.id}')">الحجز مع المدرب</button>
-  <button onclick="goDetailsFirebase('${doc.id}')">عرض المزيد</button>
+  <button onclick="BookingFirebase('${doc.id}')">الحجز مع المدرب</button>
+  <button onclick="DetailsFirebase('${doc.id}')">عرض المزيد</button>
 </div>`;
 });
