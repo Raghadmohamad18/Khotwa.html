@@ -259,12 +259,38 @@
 
       const params = new URLSearchParams(window.location.search);
       const coachId = params.get("id");
+      
+      const demoCoach = data[coachId] || null;
+      let isDemoCoach = false;
 
       let currentCoach = null;
       let currentUser = null;
 
       onAuthStateChanged(auth, async (user) => {
         currentUser = user;
+        if (demoCoach) {
+  isDemoCoach = true;
+  currentCoach = demoCoach;
+
+  document.getElementById("name").textContent = demoCoach.name;
+  document.getElementById("sport").textContent = demoCoach.sport;
+  document.getElementById("img").src = demoCoach.img;
+  document.getElementById("area").textContent =
+    demoCoach.area + " - " + demoCoach.governorate;
+  document.getElementById("phone").textContent = demoCoach.phone;
+  document.getElementById("price").textContent = demoCoach.price;
+  document.getElementById("about").textContent = demoCoach.about;
+
+  document.getElementById("certs").innerHTML =
+    demoCoach.certs.map(c => `<li>${c}</li>`).join("");
+
+  document.getElementById("places").innerHTML =
+    demoCoach.trainingPlaces.map(p =>
+      `<a href="${p}" target="_blank">مكان التدريب</a>`
+    ).join("");
+
+  return;
+}
 
         if (!user) {
           sessionStorage.setItem("pendingCoachId", coachId);
@@ -334,6 +360,29 @@
 
       document.getElementById("requestForm").addEventListener("submit", async (e) => {
         e.preventDefault();
+        if (isDemoCoach) {
+  const demoRequests = JSON.parse(
+    localStorage.getItem("demoRequests") || "[]"
+  );
+
+  demoRequests.push({
+    coachName: currentCoach.name,
+    goal: document.getElementById("goal").value,
+    experience: document.getElementById("experience").value,
+    preferredTime: document.getElementById("preferredTime").value,
+    notes: document.getElementById("notes").value,
+    date: new Date().toLocaleString()
+  });
+
+  localStorage.setItem(
+    "demoRequests",
+    JSON.stringify(demoRequests)
+  );
+
+  alert("تم إرسال طلب التدريب التجريبي بنجاح!");
+  e.target.reset();
+  return;
+}
 
         if (!currentUser || !currentCoach) {
           alert("بيانات الحساب أو المدرب غير جاهزة");
