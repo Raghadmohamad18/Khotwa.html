@@ -6,7 +6,7 @@ body {
 }
 .about-section {  
     text-align: center;
-    direction: rtl;
+    direction: rtl; 
     max-width: 800px;
     margin: 40px auto; 
     padding: 0 20px;
