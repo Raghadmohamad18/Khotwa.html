@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Personal Dashboard - SkillMasr</title>
-
     <style>
       body {
         font-family: Arial;
@@ -45,39 +44,18 @@
 
   <body>
     <div class="container">
-      <h1>SkillMasr - لوحة المدرب</h1>
-
       <div class="card">
-        <h2 id="coachName">جاري التحميل...</h2>
+        <h2 id="coachName">جاري التحميل</h2>
         <p id="coachEmail"></p>
         <p id="coachSpecialization"></p>
         <p id="coachPrice"></p>
         <button id="logout">تسجيل الخروج</button>
-      </div>
-
-      <div class="card">
-        <h2>إحصائيات التدريب</h2>
-        <p>
-          كل الطلبات:
-          <span id="total">0</span>
-        </p>
-        <p>
-          طلبات جديدة:
-          <span id="pending">0</span>
-        </p>
-        <p>
-          المتدربون المقبولون:
-          <span id="accepted">0</span>
-        </p>
-      </div>
-
       <div class="card">
         <h2>طلبات المتدربين</h2>
         <div id="requests">جاري تحميل الطلبات...</div>
       </div>
-
       <div class="card">
-        <h2>المتدربون المقبولون</h2>
+        <h2> المقبولون</h2>
         <div id="myTrainees"></div>
       </div>
       <div class="card">
@@ -115,14 +93,14 @@
           return;
         }
 
-        const coachSnap = await getDoc(doc(db, "coaches", user.uid));
+        const coachData = await getDoc(doc(db, "coaches", user.uid));
 
-        if (!coachSnap.exists()) {
+        if (!coachData.exists()) {
           alert("بيانات المدرب غير موجودة");
           return;
         }
 
-        const coach = coachSnap.data();
+        const coach = coachData.data();
 
         document.getElementById("coachName").textContent = "أهلاً " + (coach.fullName || "");
 
