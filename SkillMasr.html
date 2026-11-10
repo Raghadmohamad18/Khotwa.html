@@ -341,8 +341,8 @@
          <p>© 2026 SkillMasr - جميع الحقوق محفوظة</p>
       </footer>
          <script>
-function order() {
-  alert("اختاري مدربًا مسجلًا على الموقع لإرسال طلب تدريب.");
+function order(phone, name) {
+  goDetails(name);
 }
 
 function showCategory(categoryId) {
@@ -358,7 +358,28 @@ function showCategory(categoryId) {
 }
 
 function goDetails(name) {
-  alert("هذا مدرب تجريبي. طلبات التدريب متاحة للمدربين المسجلين فقط.");
+  const demoCoaches = {
+    "Ahmed Hassan": "أحمد حسن محمد",
+    "Sara Mohamed": "سارة محمد",
+    "Omar Ali": "عمر علي",
+    "Youssef Adel": "يوسف عادل",
+    "Mariam Adel": "مريم عادل",
+    "Fatma Ali": "فاطمة علي",
+    "Nada Ahmed": "ندى أحمد",
+    "Omar Mostafa": "عمر مصطفى",
+    "Mohamed Khaled": "محمد خالد",
+    "Ahmed Samir": "أحمد سمير"
+  };
+
+  const coachName = demoCoaches[name];
+
+  if (!coachName) {
+    alert("لم يتم العثور على المدرب");
+    return;
+  }
+
+  window.location.href =
+    "details.html?id=" + encodeURIComponent(coachName);
 }
 
 function goDetailsFirebase(id) {
