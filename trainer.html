@@ -172,26 +172,20 @@
     </footer>
     <script type="module">
       import { auth, db, authReady } from "./firebase.js";
-
       import {
         createUserWithEmailAndPassword,
         deleteUser,
       } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
       import {
         doc,
         writeBatch,
         serverTimestamp,
       } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
       await authReady;
-
       const form = document.getElementById("coachForm");
-
       const priceTypeSelect = document.getElementById("priceType");
       const priceLabel = document.getElementById("priceLabel");
       const priceInput = document.getElementById("price");
-
       priceTypeSelect.addEventListener("change", () => {
         if (priceTypeSelect.value === "monthly") {
           priceLabel.textContent = "سعر الشهر (جنيه)";
@@ -201,96 +195,71 @@
           priceInput.placeholder = "سعر الحصة بالجنيه المصري";
         }
       });
-
       async function uploadToCloudinary(file) {
         const formData = new FormData();
-
         formData.append("file", file);
         formData.append("upload_preset", "rbqrpayg");
-
         const response = await fetch("https://api.cloudinary.com/v1_1/i1ia28nc/image/upload", {
           method: "POST",
           body: formData,
         });
         const data = await response.json();
-
         if (!response.ok || !data.secure_url) {
           throw new Error("فشل رفع إحدى الصور إلى Cloudinary");
         }
-
         return data.secure_url;
       }
-
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
-
         const button = form.querySelector('button[type="submit"]');
         if (button) button.disabled = true;
-
         let createdUser = null;
-
         try {
           const fullName = document.getElementById("fullName").value.trim();
           const email = document.getElementById("email").value.trim();
           const password = document.getElementById("password").value;
           const confirmPassword = document.getElementById("confirmPassword").value;
-
           const category = document.getElementById("category").value;
           const specialization = document.getElementById("specialization").value.trim();
-
           const governorate = document.getElementById("governorate").value;
           const area = document.getElementById("area").value.trim();
           const phone = document.getElementById("phone").value.trim();
-
           const price = Number(document.getElementById("price").value);
           const priceType = document.getElementById("priceType").value;
-
           const about = document.getElementById("about").value.trim();
-
           const photo = document.getElementById("photo").files[0];
           const certFiles = document.getElementById("certificates").files;
           const placeFiles = document.getElementById("trainingPlaces").files;
-
           if (password !== confirmPassword) {
             throw new Error("كلمتا المرور غير متطابقتين");
           }
-
           if (password.length < 6) {
             throw new Error("كلمة المرور يجب ألا تقل عن 6 أحرف");
           }
-
           if (!/^\d{11}$/.test(phone)) {
             throw new Error("رقم الهاتف يجب أن يتكون من 11 رقمًا");
           }
-
           if (!Number.isFinite(price) || price <= 0) {
             throw new Error("اكتبي سعرًا صحيحًا");
           }
-
           if (!priceType || !category || !governorate || !area) {
             throw new Error("من فضلك أكمل البيانات المطلوبة");
           }
           const result = await createUserWithEmailAndPassword(auth, email, password);
-
           createdUser = result.user;
           const uid = createdUser.uid;
           let imageUrl = "";
-
           if (photo) {
             imageUrl = await uploadToCloudinary(photo);
           }
-
           const certs = [];
           const trainingPlaces = [];
-
           for (const file of certFiles) {
             certs.push(await uploadToCloudinary(file));
           }
-
           for (const file of placeFiles) {
             trainingPlaces.push(await uploadToCloudinary(file));
           }
-
           const coachData = {
             uid,
             fullName,
@@ -307,7 +276,6 @@
             createdAt: serverTimestamp(),
           };
           const batch = writeBatch(db);
-
           batch.set(doc(db, "coaches", uid), coachData);
           batch.set(doc(db, "coachPrivate", uid), {
             uid,
@@ -322,14 +290,11 @@
             role: "coach",
             createdAt: serverTimestamp(),
           });
-
           await batch.commit();
-
           alert("تم إنشاء حساب المدرب بنجاح");
           window.location.href = "personal.html";
         } catch (error) {
           console.error(error);
-
           if (createdUser) {
             try {
               await deleteUser(createdUser);
@@ -337,7 +302,6 @@
               console.error("تعذر حذف الحساب غير المكتمل:", deleteError);
             }
           }
-
           alert("حدث خطأ: " + error.message);
         } finally {
           if (button) button.disabled = false;
