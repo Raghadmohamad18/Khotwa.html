@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -200,51 +199,22 @@ async function startDashboard() {
 
     if (notifications.length === 0) {
       list.textContent = "لا توجد إشعارات";
-      return;
-    }
-
-    notifications.forEach(item => {
+      return;}
+      notifications.forEach(item => {
       const data = item.data();
-
-      const card = document.createElement("div");
-      card.className = "card";
-
-      const title = document.createElement("h3");
-      title.textContent = data.title || "إشعار";
-
-      const message = document.createElement("p");
-      message.textContent = data.message || "";
-
-      card.append(title, message);
-
-      if (!data.isRead) {
-        const button = document.createElement("button");
-        button.textContent = "تحديد كمقروء";
-
+      const card = document.createElement("div");card.className = "card";
+      const title = document.createElement("h3");title.textContent = data.title || "إشعار";
+      const message = document.createElement("p");message.textContent = data.message || "";card.append(title, message);
+      if (!data.isRead) {const button = document.createElement("button");button.textContent = "تحديد كمقروء";
         button.onclick = async () => {
-          await updateDoc(
-            doc(db, "notifications", item.id),
-            { isRead: true }
-          );
-        };
-
-        card.appendChild(button);
-      }
-
-      list.appendChild(card);
-    });
-
-  });
-}
-
+          await updateDoc(doc(db, "notifications", item.id),
+            { isRead: true });};card.appendChild(button);}list.appendChild(card);});});}
 document.getElementById("logout").addEventListener("click", async () => {
   if (stopRequests) stopRequests();
   if (stopNotifications) stopNotifications();
-
   await signOut(auth);
   window.location.href = "log.html";
 });
-
 startDashboard().catch(error => {
   console.error(error);
   alert("تعذر فتح صفحة المتدرب: " + error.message);
