@@ -110,63 +110,48 @@
          <p>📱عبر الهاتف: +201100351797</p>
          <p> :💬عن طريق واتس آب<ahref="https://wa.me/201100351797">اضغط هنا</a></p>
          <p>skillmasr@gmail.com :عن طريق الايميل</p>
-      </section>
-         
-<script type="module">
-import { auth, db, authReady } from "./firebase.js";
-
-import {
-  signInWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
-import {
-  doc,
-  getDoc
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
-await authReady;
-
-document.getElementById("loginForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
-
-  try {
-    const result = await signInWithEmailAndPassword(auth, email, password);
-
-    const userSnap = await getDoc(doc(db, "users", result.user.uid));
-
-    if (!userSnap.exists()) {
-      alert("بيانات الحساب غير موجودة");
-      return;
-    }
-
-    const role = userSnap.data().role;
-
-    if (role === "trainee") {
-      const pendingCoachId = sessionStorage.getItem("pendingCoachId");
-
-      if (pendingCoachId) {
-        sessionStorage.removeItem("pendingCoachId");
-        window.location.href =
-          "details.html?id=" + encodeURIComponent(pendingCoachId);
-      } else {
-        window.location.href = "trainee_personal.html";
-      }
-
-    } else if (role === "coach") {
-      window.location.href = "personal.html";
-
-    } else {
-      alert("نوع الحساب غير معروف");
-    }
-
-  } catch (error) {
-    console.error(error);
-    alert("تأكدي من البريد الإلكتروني وكلمة المرور");
-  }
-});
-</script>
+      </section>     
+      <script type="module">
+      import { auth, db, authReady } from "./firebase.js";
+      import {
+        signInWithEmailAndPassword
+      } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+      import {
+        doc,
+        getDoc
+      } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+      await authReady;
+      document.getElementById("loginForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+        try {
+          const result = await signInWithEmailAndPassword(auth, email, password);
+          const userSnap = await getDoc(doc(db, "users", result.user.uid));
+          if (!userSnap.exists()) {
+            alert("بيانات الحساب غير موجودة");
+            return;
+          }
+          const role = userSnap.data().role;
+          if (role === "trainee") {
+            const pendingCoachId = sessionStorage.getItem("pendingCoachId");
+            if (pendingCoachId) {
+              sessionStorage.removeItem("pendingCoachId");
+              window.location.href =
+                "details.html?id=" + encodeURIComponent(pendingCoachId);
+            } else {
+              window.location.href = "trainee_personal.html";
+            }
+          } else if (role === "coach") {
+            window.location.href = "personal.html";
+          } else {
+            alert("نوع الحساب غير معروف");
+          }
+        } catch (error) {
+          console.error(error);
+          alert("تأكدي من البريد الإلكتروني وكلمة المرور");
+        }
+      });
+      </script>
    </body>
 </html>
