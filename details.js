@@ -127,7 +127,6 @@ function displayDemoCoach(coach) {
 async function displayFirebaseCoach(coachId) {
   const coachSnap = await getDoc(doc(db, "coaches", coachId));
   if (!coachSnap.exists()) {
-    alert("لم يتم العثور على المدرب");
     return;
   }
   const coach = coachSnap.data();
@@ -159,10 +158,9 @@ async function displayFirebaseCoach(coachId) {
 async function loadCoachDetails() {
   try {
     if (!coachId) {
-      alert("لم يتم تحديد المدرب");
       return;}
   if (demoCoach) 
     {displayDemoCoach(demoCoach);} 
   else {
     await displayFirebaseCoach(coachId);}} 
-  catch (error) {console.error(error);alert("حدث خطأ أثناء تحميل تفاصيل المدرب");}}loadCoachDetails();
+  catch (error) {console.error(error);}}loadCoachDetails();
