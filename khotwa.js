@@ -29,20 +29,28 @@ function order(name) {
   const coachName = CoachesNames[name];
 
   if (!coachName) {
-    alert("لم يتم العثور على المدرب");
+    alert("لم يتم العثور على المدرب: " + name);
     return;
   }
 
-  window.location.href =
-    "booking.html?id=" + encodeURIComponent(coachName) + "&demo=true";
+  const bookingUrl = new URL("./booking.html", window.location.href);
+  bookingUrl.searchParams.set("id", coachName);
+  bookingUrl.searchParams.set("demo", "true");
+
+  window.location.assign(bookingUrl.href);
 }
 function Details(name) {
   const coachName = CoachesNames[name];
+
   if (!coachName) {
-    alert("لم يتم العثور على المدرب");
+    alert("لم يتم العثور على المدرب: " + name);
     return;
   }
-  window.location.href = "details.html?id=" + encodeURIComponent(coachName);
+
+  const detailsUrl = new URL("./details.html", window.location.href);
+  detailsUrl.searchParams.set("id", coachName);
+
+  window.location.assign(detailsUrl.href);
 }
 function showCategory(categoryId) {
   document.querySelectorAll(".category").forEach(section => {
