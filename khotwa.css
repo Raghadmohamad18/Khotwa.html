@@ -615,3 +615,51 @@
     text-decoration: none;
     font-weight: bold;
 }
+.log-page .form {
+    background: white;
+    width: 90%;
+    max-width: 500px;
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,.15);
+    text-align: center;
+}
+
+.log-page .sign {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.log-page .sign p {
+    color: #444;
+}
+
+.log-page .sign a {
+    color: #D4AF37;
+    text-decoration: none;
+    font-weight: bold;
+}
+.log-page .contact-section {
+    background: #000000;
+    color: white;
+    padding: 30px;
+    border-radius: 15px;
+    margin: 30px auto;
+    max-width: 600px;
+}
+
+.log-page .contact-section h2 {
+    border-bottom: 3px solid #C62828;
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+.log-page .contact-section a {
+    color: #D4AF37;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.log-page .contact-section a:hover {
+    text-decoration: underline;
+}
