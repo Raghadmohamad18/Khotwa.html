@@ -42,9 +42,10 @@
       async function startDashboard() {
         const user = auth.currentUser;
         if (!user) {
-          window.location.href = "log.html";
-          return;
-        }
+        alert("سجلي الدخول أولًا لعرض ملفك الشخصي");
+        window.location.href = "Khotwa.html";
+        return;
+      }
         const userSnap = await getDoc(doc(db, "users", user.uid));
         if (!userSnap.exists() || userSnap.data().role !== "trainee") {
           alert("هذا الحساب ليس حساب متدرب");
