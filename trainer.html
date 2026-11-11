@@ -100,12 +100,12 @@
       import { auth, db, authReady } from "./firebase.js";
       import {
         createUserWithEmailAndPassword,
-        deleteUser,
+        deleteUser
       } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
       import {
         doc,
         writeBatch,
-        serverTimestamp,
+        serverTimestamp
       } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
       await authReady;
       const form = document.getElementById("coachForm");
@@ -127,7 +127,7 @@
         formData.append("upload_preset", "rbqrpayg");
         const response = await fetch("https://api.cloudinary.com/v1_1/i1ia28nc/image/upload", {
           method: "POST",
-          body: formData,
+          body: formData
         });
         const data = await response.json();
         if (!response.ok || !data.secure_url) {
@@ -199,7 +199,7 @@
             imageUrl,
             certs,
             trainingPlaces,
-            createdAt: serverTimestamp(),
+            createdAt: serverTimestamp()
           };
           const batch = writeBatch(db);
           batch.set(doc(db, "coaches", uid), coachData);
@@ -207,14 +207,14 @@
             uid,
             email,
             phone,
-            createdAt: serverTimestamp(),
+            createdAt: serverTimestamp()
           });
           batch.set(doc(db, "users", uid), {
             uid,
             name: fullName,
             email,
             role: "coach",
-            createdAt: serverTimestamp(),
+            createdAt: serverTimestamp()
           });
           await batch.commit();
           alert("تم إنشاء حساب المدرب بنجاح");
