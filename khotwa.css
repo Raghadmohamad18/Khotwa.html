@@ -1,180 +1,129 @@
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: #FFFFFF;
-  color: #222222;
-  margin: 0;
-  padding: 0;
+.home-page, .log-page {
+    font-family: Arial, sans-serif;
+    background-color: #FFFFFF;
+    margin: 30px;
+    padding: 0;
+    color: #222;
 }
-header {
-  text-align: center;
-  padding: 80px 20px;
-  background: #000000;
-  border-bottom: 5px solid #C62828;
-  color: #FFFFFF;
-} 
-header h1 {
-  font-size: 70px;
-  margin-bottom: 0;
-  font-weight: bold;
+.home-page .about-section, .log-page .about-section {
+    text-align: center;
+    direction: rtl;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 21px;
 }
-header p {
-  font-size: 18px;
+.home-page .about-section p, .log-page .about-section p {
+    line-height: 1.8;
+    font-size: 16px;
+    color: #333333;
 }
-.section-title {
-  font-size: 28px;
-  color: #000000;
-  padding-bottom: 10px;
-  border-bottom: 3px solid #C62828;
-  display: table;
-  margin: 0 auto 30px;
+.home-page header, .log-page header {
+    text-align: center;
+    padding: 80px 20px;
+    background: #000000;
+    border-bottom: 5px solid #C62828;
+    color: white;
 }
-.categories {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  flex-wrap: wrap;
-  margin: 30px 0;
-  text-align: center;
+.home-page header h1, .log-page header h1 {
+    font-size: 70px;
+    margin-bottom: 0;
+    font-weight: bold;
 }
-.categories button {
-  width: auto;
-  padding: 12px 25px;
-  border-radius: 30px;
-  background: #C62828;
-  color: #FFFFFF;
-  border: 2px solid #C62828;
-  transition: 0.3s;
+.home-page header p,.log-page header p {
+    font-size: 18px;
+    margin-top: 10px;
 }
-.categories button:hover {
-  background: #A00000;
+.home-page .section-title, .log-page .section-title {
+    font-size: 28px;
+    color: #000000;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #C62828;
+    display: table;
+    margin: 0 auto 30px;
 }
-.trainers {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 20px;
+.home-page #search, .log-page #search {
+    width: 100%;
+    max-width: 500px;
+    height: 45px;
+    padding: 10px 20px;
+    border: 2px solid #ccc;
+    border-radius: 25px;
+    font-size: 16px;
+    box-sizing: border-box;
 }
-.trainer {
-  background: #000000;
-  color: #FFFFFF;
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
-  text-align: center;
-  min-height: 550px;
-  height: auto;
-  width: 250px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+.home-page #search:focus, .log-page #search:focus {
+    border-color: #C62828;
+    box-shadow: 0 0 8px rgba(198, 40, 40, 0.2);
 }
-.trainer img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 10px;
+.home-page .trainers, .log-page .trainers {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
 }
-.trainer h3 {
-  margin: 15px 0 10px;
-  font-size: 20px;
+.home-page .coach-card, .log-page .coach-card {
+    background: #000000;
+    color: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+    text-align: center;
+    min-height: 550px;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
-.trainer p {
-  color: #FFFFFF;
-  line-height: 1.6;
+.home-page .coach-card:hover, .log-page .coach-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
 }
-.trainer button + button {
-  margin-top: 10px;
+.home-page .coach-card button + button, .log-page .coach-card button + button {
+    margin-top: 10px;
 }
-.price {
-  font-size: 24px;
-  margin: 10px 0;
+.home-page .coach-card img, .log-page .coach-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
 }
-button {
-  background: #C62828;
-  color: #FFFFFF;
-  border: none;
-  padding: 12px 18px;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s;
-  width: 100%;
+.home-page .coach-card h3, .log-page .coach-card h3 {
+    margin: 15px 0 10px;
+    font-size: 20px;
 }
-button:hover {
-  background: #A00000;
+.home-page .coach-card p, .log-page .coach-card p {
+    color: #FFFFFF;
+    line-height: 1.6;
 }
-section {
-  margin: 40px 0 20px;
-  text-align: center;
+.home-page .price, .log-page .price {
+    font-size: 24px;
+    margin: 10px 0;
+    color: #FFF;
 }
-.about-section {
-  text-align: center;
-  direction: rtl;
-  max-width: 800px;
-  margin: 40px auto;
+.home-page button, .log-page button {
+    background-color: #C62828;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 8px;
+    cursor: pointer;
 }
-.about-section p {
-  line-height: 1.8;
+.home-page button:hover, .log-page button:hover {
+    background: #A00000;
 }
-.category {
-  display: none;
+.home-page section, .log-page section {
+    margin: 40px 0 20px;
+    text-align: center;
 }
-/* .contact-section {
-  width: 100%;
-  max-width: 600px;
-  margin: 40px auto;
-  background: #1F1F1F;
-  color: white;
-  padding: 30px;
-  border-radius: 15px;
-  text-align: center;
+.home-page footer, .log-page footer {
+    margin-top: 40px;
+    text-align: center;
+    background: #000000;
+    color: white;
+    padding: 20px;
+    border-top: 3px solid #C62828;
 }
-.contact-section h2 {
-  color: #D4AF37;
-  margin-bottom: 20px;
-}
-.contact-section p {
-  margin: 12px 0;
-}
-.contact-section a {
-  color: #D4AF37;
-} */
-/*booking style*/
-.booking-form {
-  max-width: 450px;
-  margin: auto;
-}
-.booking-inputs {
-  display: block;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 10px;
-  margin: 8px 0 18px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 15px;
-}
-.booking-label {
-  font-weight: bold;
-}
-/*coach style*/
-.coach-page {
-   display: flex;
-   align-items: center;
-   justify-content: center;
-}
-.coach-dev {
-  border: 2px solid;
-  background: #C5A059;
-  border-radius: 11px;
-  height: 550px;
-  width: 450px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 3px 4px grey;
-}
-.coach-h1 {
-  font-size: 40px;
-}
+.home-page .categories, .log-page .categories {
+    display: flex;
