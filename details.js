@@ -160,16 +160,9 @@ async function loadCoachDetails() {
   try {
     if (!coachId) {
       alert("لم يتم تحديد المدرب");
-      return;
-    }
-    if (demoCoach) {
-      displayDemoCoach(demoCoach);
-    } else {
-      await displayFirebaseCoach(coachId);
-    }
-  } catch (error) {
-    console.error(error);
-    alert("حدث خطأ أثناء تحميل تفاصيل المدرب");
-  }
-}
-loadCoachDetails();
+      return;}
+  if (demoCoach) 
+    {displayDemoCoach(demoCoach);} 
+  else {
+    await displayFirebaseCoach(coachId);}} 
+  catch (error) {console.error(error);alert("حدث خطأ أثناء تحميل تفاصيل المدرب");}}loadCoachDetails();
