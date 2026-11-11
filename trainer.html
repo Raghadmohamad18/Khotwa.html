@@ -215,28 +215,29 @@
             role: "coach",
             createdAt: serverTimestamp()
           });
-         await batch.commit(); 
-        alert("تم إنشاء حساب المدرب بنجاح");
-        window.location.href = "personal.html";
-      } catch (error) {
-        console.error("خطأ التسجيل:", error);
-        let errorMessage = "حدث خطأ أثناء التسجيل";
-        if (error.code === 'auth/email-already-in-use') {
-          errorMessage = "هذا البريد الإلكتروني مسجل مسبقاً، جرب بريداً آخر أو قم بتسجيل الدخول.";
-        } else {
-          errorMessage = error.message;
-        }
-        alert(errorMessage);
-        if (createdUser) {
-          try {
-            await deleteUser(createdUser);
-          } catch (deleteError) {
-            console.error("تعذر حذف الحساب غير المكتمل:", deleteError);
+          await batch.commit();
+          alert("تم إنشاء حساب المدرب بنجاح");
+          window.location.href = "personal.html";
+        } catch (error) {
+          console.error("خطأ أثناء التسجيل:", error);
+          let errorMessage = "حدث خطأ أثناء التسجيل";
+          if (error.code === 'auth/email-already-in-use') {
+            errorMessage = "هذا البريد الإلكتروني مسجل مسبقاً، يرجى استخدام بريد آخر.";
+          } else {
+            errorMessage = error.message;
           }
+          alert(errorMessage);
+          if (createdUser) {
+            try {
+              await deleteUser(createdUser);
+            } catch (deleteError) {
+              console.error("تعذر حذف الحساب غير المكتمل:", deleteError);
+            }
+          }
+        } finally {
+          if (button) button.disabled = false;
         }
-      } finally {
-        if (button) button.disabled = false;
-      }
+      });
     </script>
   </body>
 </html>
