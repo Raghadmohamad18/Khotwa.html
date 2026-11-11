@@ -1,4 +1,4 @@
-body {
+sobody {
   font-family: 'Arial', sans-serif;
   background-color: #FFFFFF;
   color: #222222;
@@ -396,4 +396,32 @@ section {
 .form input:focus {
   border-color: #C62828;
   outline: none;
+}
+/* personal */
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+}
+.request {
+  background: #111111;
+  border: 1px solid #333333;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+.request h3 {
+  color: #FFFFFF;
+  margin: 0 0 10px 0;
+  font-size: 16px;
+}
+.request p {
+  color: #DDDDDD;
+  margin: 5px 0;
+  font-size: 14px;
+}
+.request button {
+  margin-left: 10px;
+  padding: 6px 14px;
+  font-size: 13px;
 }
