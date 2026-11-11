@@ -1,12 +1,7 @@
 import { auth, db, authReady } from "./firebase.js";
 import {createUserWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-import {
-  doc,
-  getDoc,
-  collection,
-  writeBatch,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+import {doc,getDoc,collection, writeBatch,serverTimestamp} 
+from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 await authReady;
 const params = new URLSearchParams(window.location.search);
 const coachId = params.get("id");
@@ -60,26 +55,13 @@ form.addEventListener("submit", async (e) => {
   if (!auth.currentUser) {
     password = passwordInput.value;
     const confirmPassword = confirmPasswordInput.value;
-
     if (password.length < 6) {
-      alert("كلمة المرور يجب ألا تقل عن 6 أحرف");
-      return;
-    }
-
+      return;}
     if (password !== confirmPassword) {
-      alert("كلمتا المرور غير متطابقتين");
-      return;
-    }
-  }
+      return;}}
     let user = auth.currentUser;
-
     if (!user) {
-      const result = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password);
-      user = result.user;
-    }
+      const result = await createUserWithEmailAndPassword(auth,email,password);user = result.user;}
     const userRef = doc(db, "users", user.uid);
     const traineeRef = doc(db, "trainees", user.uid);
     const batch = writeBatch(db);
@@ -113,7 +95,6 @@ form.addEventListener("submit", async (e) => {
     });
     if (!currentCoach.isDemo) {
       const notificationRef = doc(collection(db, "notifications"));
-
       batch.set(notificationRef, {
         userId: coachId,
         requestId: requestRef.id,
@@ -124,11 +105,8 @@ form.addEventListener("submit", async (e) => {
         createdAt: serverTimestamp()
       });
     }
-
     await batch.commit();
-
     alert("تم إنشاء حسابك وإرسال طلب الحجز بنجاح!");
-
     window.location.href = "trainee_personal.html";
  }
 });
