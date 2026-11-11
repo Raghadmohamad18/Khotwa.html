@@ -102,6 +102,7 @@ button {
 }
 button:hover {
   background: #A00000;
+  border-color: #C62828;
 }
 section {
   margin: 40px 0 20px;
@@ -253,6 +254,7 @@ section {
  }
  .button:hover{
    background-color: #A00000;
+   border-color: #C62828;
  }
  body{
    background-color: #FFFFFF;
@@ -310,13 +312,7 @@ section {
   font-size: 15px;
   color: #D4AF37;
 }
-.form-box input[type="text"],
-.form-box input[type="email"],
-.form-box input[type="password"],
-.form-box input[type="tel"],
-.form-box input[type="number"],
-.form-box select,
-.form-box textarea {
+.form-box input,.form-box select,.form-box textarea {
   width: 100%;
   padding: 10px;
   border: 1px solid #444444;
@@ -326,9 +322,7 @@ section {
   box-sizing: border-box;
   font-size: 14px;
 }
-.form-box input:focus,
-.form-box select:focus,
-.form-box textarea:focus {
+.form-box input:focus,.form-box select:focus,.form-box textarea:focus {
   border-color: #C62828;
   outline: none;
 }
@@ -336,7 +330,7 @@ section {
   resize: vertical;
   height: 100px;
 }
-.form-box input[type="file"] {
+.form-box input{
   width: 100%;
   padding: 8px;
   background-color: #111111;
@@ -346,7 +340,7 @@ section {
   margin-top: 5px;
   box-sizing: border-box;
 }
-.form-box button[type="submit"] {
+.form-box button {
   background: #C62828;
   color: white;
   border: none;
