@@ -216,3 +216,61 @@ section {
   display: block;
   margin-top: 8px;
 }
+/* index */
+ .welcome{
+   text-align: center;
+   margin: 50px 0;
+   color: white;
+ }
+ .welcome h1{
+   font-size: 50px;
+   margin-bottom: 15px;
+   color: white;
+ }
+ .welcome h3{
+   font-size: 24px;
+   color: white;
+   font-weight: 300;
+   letter-spacing: 2px; 
+ }
+ .container{
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 50px;
+   height: 320px;
+   background: #000000;
+ }
+ .button{
+   height: 70px;
+   width: 120px;
+   background-color:#C62828;
+   color: white;
+   font-size: larger;
+   font-weight: bold;
+   letter-spacing: 2px;
+ }
+ .button:hover{
+   background-color: #A00000;
+ }
+ body{
+   background-color: #FFFFFF;
+   text-align:center;
+ }
+ .contact-section {
+   background: #000000;
+   color: white;
+   padding: 30px;
+   border-radius: 15px;
+   margin: 30px 0;
+   text-align: center;
+ }
+ .contact-section h2 {
+   border-bottom: 3px solid #C62828;
+   display: inline-block;
+   padding-bottom: 10px;
+ }
+ .contact-section a {
+   color: #D4AF37;
+   text-decoration: none;
+ }
