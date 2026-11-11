@@ -120,3 +120,21 @@ section {
   display: none;
 }
 /*booking style*/
+.booking-form {
+  max-width: 450px;
+  margin: auto;
+}
+.booking-inputs {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  margin: 8px 0 18px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+}
+.booking-label {
+  font-weight: bold;
+}
+/*coach style*/
