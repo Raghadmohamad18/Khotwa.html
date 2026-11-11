@@ -1,7 +1,5 @@
 import { auth, authReady } from "./firebase.js";
-
 await authReady;
-
 window.openMyProfile = function () {
   if (auth.currentUser) {
     window.location.href = "trainee_personal.html";
@@ -27,11 +25,9 @@ const CoachesNames = {
 
 function order(name) {
   const coachName = CoachesNames[name];
-
   if (!coachName) {
     alert("لم يتم العثور على المدرب: " + name);
-    return;
-  }
+    return;}
 
   const bookingUrl = new URL("./booking.html", window.location.href);
   bookingUrl.searchParams.set("id", coachName);
@@ -44,35 +40,24 @@ function Details(name) {
 
   if (!coachName) {
     alert("لم يتم العثور على المدرب: " + name);
-    return;
-  }
-
+    return;}
   const detailsUrl = new URL("./details.html", window.location.href);
   detailsUrl.searchParams.set("id", coachName);
-
-  window.location.assign(detailsUrl.href);
-}
+  window.location.assign(detailsUrl.href);}
 function showCategory(categoryId) {
   document.querySelectorAll(".category").forEach(section => {
-    section.style.display = "none";
-  });
-
+    section.style.display = "none";});
   const selected = document.getElementById(categoryId);
 
   if (selected) {
-    selected.style.display = "block";
-  }
+    selected.style.display = "block";}
 }
   function BookingFirebase(id) {
     if (!id) return;
-    window.location.href = "booking.html?id=" + encodeURIComponent(id);
-  }
+    window.location.href = "booking.html?id=" + encodeURIComponent(id);}
 function DetailsFirebase(id) {
     if (!id) return;
-
-    window.location.href =
-        "details.html?id=" + encodeURIComponent(id);
-}
+    window.location.href ="details.html?id=" + encodeURIComponent(id);}
   window.order = order;
   window.showCategory = showCategory;
   window.Details = Details;
@@ -83,41 +68,26 @@ function DetailsFirebase(id) {
     search.addEventListener("input", function () {
       const value = this.value.toLowerCase();
       document.querySelectorAll(".coach-card").forEach(card => {
-        card.style.display = card.innerText.toLowerCase().includes(value) ? "flex" : "none";
-      });
-    });
-  }
+        card.style.display = card.innerText.toLowerCase().includes(value) ? "flex" : "none";});});}
   import { db } from "./firebase.js";
-  import {
-    collection,
-    getDocs
-  } 
+  import {collection,getDocs} 
   from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
   const snapshot = await getDocs(collection(db, "coaches"));
   snapshot.forEach((doc) => {
   const coach = doc.data();
   let container;
   if (coach.category === "Sports") {
-      container = document.getElementById("sportsFirebase");
-  }
+      container = document.getElementById("sportsFirebase");}
   else if (coach.category === "Handmade") {
-      container = document.getElementById("handmadeFirebase");
-  }
+      container = document.getElementById("handmadeFirebase");}
   else if (coach.category === "Music") {
-      container = document.getElementById("musicFirebase");
-  }
+      container = document.getElementById("musicFirebase");}
   else if (coach.category === "Programming") {
-      container = document.getElementById("programmingFirebase");
-  }
+      container = document.getElementById("programmingFirebase");}
   else if (coach.category === "Quran") {
-   container = document.getElementById("quranFirebase");
-  }
+   container = document.getElementById("quranFirebase");}
   else if (coach.category === "Other") {
-  container = document.getElementById("otherFirebase");
-  }
-  else {
-      return;
-  }
+  container = document.getElementById("otherFirebase");}}
   container.innerHTML +=`
   <div class="trainer coach-card">
   <img src="${coach.imageUrl || 'https://via.placeholder.com/250x180'}" alt="Coach Photo">
