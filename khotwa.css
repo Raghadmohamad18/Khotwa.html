@@ -161,7 +161,12 @@ section {
   font-weight: bold;
 }
 /*coach style*/
-dev {
+.coach-page {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+.coach-dev {
   border: 2px solid;
   background: #C5A059;
   border-radius: 11px;
