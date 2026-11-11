@@ -1,4 +1,3 @@
-
 import { auth, db, authReady } from "./firebase.js";
 
 import {
@@ -17,6 +16,7 @@ await authReady;
 
 const params = new URLSearchParams(window.location.search);
 const coachId = params.get("id");
+const isDemo = params.get("demo") === "true";
 
 const form = document.getElementById("requestForm");
 const coachNameElement = document.getElementById("coachName");
@@ -28,13 +28,13 @@ const passwordInput = document.getElementById("password");
 const confirmPasswordInput = document.getElementById("confirmPassword");
 
 if (!currentUser) {
-  passwordInput.required = true;
-  confirmPasswordInput.required = true;
+  if (passwordInput) passwordInput.required = true;
+  if (confirmPasswordInput) confirmPasswordInput.required = true;
 } else {
-  passwordInput.closest("label")?.remove();
-  passwordInput.remove();
-  confirmPasswordInput.closest("label")?.remove();
-  confirmPasswordInput.remove();
+  passwordInput?.closest("label")?.remove();
+  passwordInput?.remove();
+  confirmPasswordInput?.closest("label")?.remove();
+  confirmPasswordInput?.remove();
 }
 
 async function loadCoach() {
@@ -42,13 +42,24 @@ async function loadCoach() {
     throw new Error("لم يتم تحديد المدرب");
   }
 
-  const coachSnap = await getDoc(doc(db, "coaches", coachId));
+  if (isDemo) {
+    currentCoach = {
+      fullName: coachId,
+      isDemo: true
+    };
+  } else {
+    const coachSnap = await getDoc(doc(db, "coaches", coachId));
 
-  if (!coachSnap.exists()) {
-    throw new Error("لم يتم العثور على المدرب");
+    if (!coachSnap.exists()) {
+      throw new Error("لم يتم العثور على المدرب");
+    }
+
+    currentCoach = {
+      ...coachSnap.data(),
+      isDemo: false
+    };
   }
 
-  currentCoach = coachSnap.data();
   coachNameElement.textContent = "المدرب: " + currentCoach.fullName;
 }
 
@@ -88,7 +99,12 @@ form.addEventListener("submit", async (e) => {
 
   let password = "";
 
-  if (!currentUser) {
+  if (!auth.currentUser) {
+    if (!passwordInput || !confirmPasswordInput) {
+      alert("حقول كلمة المرور غير موجودة");
+      return;
+    }
+
     password = passwordInput.value;
     const confirmPassword = confirmPasswordInput.value;
 
@@ -112,6 +128,7 @@ form.addEventListener("submit", async (e) => {
         email,
         password
       );
+
       user = result.user;
       currentUser = user;
     } else if (user.email.toLowerCase() !== email.toLowerCase()) {
@@ -143,17 +160,16 @@ form.addEventListener("submit", async (e) => {
       uid: user.uid,
       name,
       email,
-      phone,
-      createdAt: serverTimestamp()
+      phone
     }, { merge: true });
 
     const requestRef = doc(collection(db, "requests"));
-    const notificationRef = doc(collection(db, "notifications"));
 
     batch.set(requestRef, {
-      coachId,
-      traineeId: user.uid,
+      coachId: currentCoach.isDemo ? null : coachId,
       coachName: currentCoach.fullName,
+      isDemo: currentCoach.isDemo,
+      traineeId: user.uid,
       traineeName: name,
       traineeEmail: email,
       formData,
@@ -161,15 +177,20 @@ form.addEventListener("submit", async (e) => {
       createdAt: serverTimestamp()
     });
 
-    batch.set(notificationRef, {
-      userId: coachId,
-      requestId: requestRef.id,
-      type: "new_request",
-      title: "طلب تدريب جديد",
-      message: "أرسل " + name + " طلب تدريب جديد.",
-      isRead: false,
-      createdAt: serverTimestamp()
-    });
+    // إرسال إشعار فقط للمدربين المسجلين في Firebase
+    if (!currentCoach.isDemo) {
+      const notificationRef = doc(collection(db, "notifications"));
+
+      batch.set(notificationRef, {
+        userId: coachId,
+        requestId: requestRef.id,
+        type: "new_request",
+        title: "طلب تدريب جديد",
+        message: "أرسل " + name + " طلب تدريب جديد.",
+        isRead: false,
+        createdAt: serverTimestamp()
+      });
+    }
 
     await batch.commit();
 
