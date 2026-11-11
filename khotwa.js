@@ -36,7 +36,6 @@ function order(name) {
   window.location.href =
     "booking.html?id=" + encodeURIComponent(coachName) + "&demo=true";
 }
-
 function Details(name) {
   const coachName = CoachesNames[name];
   if (!coachName) {
