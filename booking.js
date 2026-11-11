@@ -126,9 +126,4 @@ form.addEventListener("submit", async (e) => {
         });
         await batch.commit();
         alert("تم إرسال طلب التدريب بنجاح!");
-        form.reset();
-    } catch (error) {
-        console.error(error);
-        alert("حدث خطأ أثناء إرسال الطلب: " + error.message);
-    }
-});
+        form.reset();});
