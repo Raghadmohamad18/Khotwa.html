@@ -1,10 +1,52 @@
 
 /* =========================
+   PERSONAL
+========================= */
+
+.personal-page {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    padding: 20px;
+}
+
+.personal-page .container {
+    max-width: 900px;
+    margin: auto;
+}
+
+.personal-page .card {
+    background: white;
+    padding: 20px;
+    margin: 18px 0;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px #ddd;
+}
+
+.personal-page button {
+    background: #c62828;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.personal-page .request {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 9px;
+    margin: 12px 0;
+}
+
+
+/* =========================
    SIGN
 ========================= */
 
 .sign-page {
     margin: 0;
+    background: #F5F5F5;
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
@@ -50,10 +92,6 @@
     font-weight: bold;
     cursor: pointer;
     transition: .3s;
-}
-
-.sign-page button:hover {
-    background: #388E3C;
 }
 
 
@@ -135,29 +173,32 @@
 
 
 /* =========================
-   PERSONAL PAGES
-   TRAINEE + TRAINER
+   TRAINEE PERSONAL + TRAINER
 ========================= */
 
-.personal-page {
+.trainee-personal-page,
+.trainer-page {
     font-family: Arial, sans-serif;
     background: #f5f5f5;
     padding: 20px;
 }
 
-.personal-page .container {
+.trainee-personal-page .container,
+.trainer-page .container {
     max-width: 850px;
     margin: auto;
 }
 
-.personal-page .card {
+.trainee-personal-page .card,
+.trainer-page .card {
     background: white;
     padding: 20px;
     margin: 15px 0;
     border-radius: 12px;
 }
 
-.personal-page button {
+.trainee-personal-page button,
+.trainer-page button {
     background: #c62828;
     color: white;
     padding: 10px 18px;
