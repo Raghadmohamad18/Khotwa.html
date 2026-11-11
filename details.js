@@ -123,7 +123,7 @@ function displayDemoCoach(coach) {
   document.getElementById("price").textContent = coach.price;
   document.getElementById("about").textContent = coach.about;
   document.getElementById("certs").innerHTML = coach.certs.map(c => `<li>${c}</li>`).join("");
-  document.getElementById("places").innerHTML = coach.trainingPlaces.map(p => `<a href="${p}" target="_blank">مكان التدريب</a>`).join("");
+  document.getElementById("places").innerHTML = coach.trainingPlaces.map(p => `<a href="${p}" target="_blank">مكان التدريب</a>`).join("");}
 async function displayFirebaseCoach(coachId) {
   const coachSnap = await getDoc(doc(db, "coaches", coachId));
   if (!coachSnap.exists()) {
