@@ -175,3 +175,37 @@ footer {
 .category {
     display: none;
 }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 30px;
+        background: #fff;
+        color: #222;
+      }
+      form {
+        max-width: 450px;
+        margin: auto;
+      }
+      input, select, textarea {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+        margin: 8px 0 18px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 15px;
+      }
+      label {
+        font-weight: bold;
+      }
+      button {
+        background: #C62828;
+        color: white;
+        border: none;
+        padding: 11px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #A00000;
+      }
