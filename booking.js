@@ -1,6 +1,11 @@
 import { auth, db, authReady } from "./firebase.js";
-import { doc, getDoc, collection, writeBatch, serverTimestamp } from "https://gstatic.com";
-await authReady;
+import {
+    doc,
+    getDoc,
+    collection,
+    writeBatch,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";await authReady;
 const params = new URLSearchParams(window.location.search);
 const coachId = params.get("id");
 const form = document.getElementById("requestForm");
