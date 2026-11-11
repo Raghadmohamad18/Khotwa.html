@@ -5,7 +5,8 @@ import {
     collection,
     writeBatch,
     serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";await authReady;
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+await authReady;
 const params = new URLSearchParams(window.location.search);
 const coachId = params.get("id");
 const form = document.getElementById("requestForm");
@@ -101,7 +102,7 @@ form.addEventListener("submit", async (e) => {
         const phone = document.getElementById("num").value.trim();
         if (!/^\d{11}$/.test(phone)) {
             throw new Error("رقم الهاتف يجب أن يتكون من 11 رقمًا");
-        } 
+        }
         const batch = writeBatch(db);
         const requestRef = doc(collection(db, "requests"));
         const notificationRef = doc(collection(db, "notifications"));
@@ -126,4 +127,9 @@ form.addEventListener("submit", async (e) => {
         });
         await batch.commit();
         alert("تم إرسال طلب التدريب بنجاح!");
-        form.reset();});
+        form.reset();
+    } catch (error) {
+        console.error(error);
+        alert("حدث خطأ أثناء إرسال الطلب: " + error.message);
+    }
+});
