@@ -7,36 +7,38 @@
     <link rel="stylesheet" href="khotwa.css">  
   </head>
   <body class="booking-page">
-    <form id="requestForm" class="booking-form">
-      <h3>طلب حجز مع المدرب</h3>
-      <p id="coachName">جاري تحميل اسم المدرب...</p>
-      <label class="booking-label">اسمك:</label>
-      <input id="traineeName" class="booking-inputs" type="text" placeholder="اكتب اسمك" autocomplete="name" required>
-      <label class="booking-label">البريد الإلكتروني:</label>
-      <input id="traineeEmail" class="booking-inputs" type="email" placeholder="اكتب إيميلك" autocomplete="email" required>
-      <label class="booking-label">كلمة المرور:</label>
-      <input id="password" class="booking-inputs" type="password" minlength="6" placeholder="كلمة المرور" autocomplete="new-password" required>
-      <label class="booking-label">تأكيد كلمة المرور:</label>
-      <input id="confirmPassword" class="booking-inputs" type="password" minlength="6" placeholder="تأكيد كلمة المرور" autocomplete="new-password" required>
-      <label class="booking-label">رقم التواصل:</label>
-      <input id="num" class="booking-inputs" type="tel" placeholder="اكتب الرقم" autocomplete="tel" required>
-      <label class="booking-label">هدفك من التدريب:</label>
-      <textarea id="goal" class="booking-inputs" placeholder="اكتب هدفك من التدريب" required></textarea>
-      <label class="booking-label">مستوى خبرتك:</label>
-      <select id="experience" class="booking-inputs" required>
-        <option value="">اختار مستواك</option>
-        <option value="Beginner">مبتدئ</option>
-        <option value="Intermediate">متوسط</option>
-        <option value="Advanced">متقدم</option>
-      </select>
-      <label class="booking-label">منطقة السكن:</label>
-      <input id="gov" class="booking-inputs" type="text" placeholder="اكتب المنطقة" required>
-      <label class="booking-label">الوقت المناسب ليك:</label>
-      <input id="preferredTime" class="booking-inputs" type="text" placeholder="مثلاً السبت والثلاثاء مساءً" required>
-      <label class="booking-label">ملاحظات إضافية:</label>
-      <textarea id="notes" class="booking-inputs" placeholder="اختياري"></textarea>
-      <button type="submit">إرسال الطلب</button>
-    </form>
+    <div class="form-box">
+      <form id="requestForm">
+        <h2>طلب حجز مع المدرب</h2>
+        <p id="coachName">جاري تحميل اسم المدرب...</p>
+        <label>اسمك</label>
+        <input id="traineeName" type="text" placeholder="اكتب اسمك" autocomplete="name" required>
+        <label>البريد الإلكتروني</label>
+        <input id="traineeEmail" type="email" placeholder="اكتب إيميلك" autocomplete="email" required>
+        <label>كلمة المرور</label>
+        <input id="password" type="password" minlength="6" placeholder="كلمة المرور" autocomplete="new-password" required>
+        <label>تأكيد كلمة المرور</label>
+        <input id="confirmPassword" type="password" minlength="6" placeholder="تأكيد كلمة المرور" autocomplete="new-password" required>
+        <label>رقم التواصل</label>
+        <input id="num" type="tel" placeholder="اكتب الرقم" autocomplete="tel" required>
+        <label>هدفك من التدريب</label>
+        <textarea id="goal" placeholder="اكتب هدفك من التدريب" required></textarea>
+        <label>مستوى خبرتك</label>
+        <select id="experience" required>
+          <option value="">اختار مستواك</option>
+          <option value="Beginner">مبتدئ</option>
+          <option value="Intermediate">متوسط</option>
+          <option value="Advanced">متقدم</option>
+        </select>
+        <label>منطقة السكن</label>
+        <input id="gov" type="text" placeholder="اكتب المنطقة" required>
+        <label>الوقت المناسب ليك</label>
+        <input id="preferredTime" type="text" placeholder="مثلاً السبت والثلاثاء مساءً" required>
+        <label>ملاحظات إضافية</label>
+        <textarea id="notes" placeholder="اختياري"></textarea>
+        <button type="submit">إرسال الطلب</button>
+      </form>
+    </div>
     <script type="module" src="booking.js"></script>
   </body>
 </html>
