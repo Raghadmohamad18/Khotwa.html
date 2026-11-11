@@ -275,3 +275,93 @@ section {
    color: #D4AF37;
    text-decoration: none;
  }
+/* trainer */
+تفضل كود الستايل (CSS) الخاص بصفحة تسجيل المدربين (`trainer.html` أو `register-coach.html`) مُصمماً ليتوافق مع الهوية البصرية (اللون الأسود والأحمر `#C62828`)، مع استبعاد العناصر المشتركة (مثل الـ `body` والأزرار إن وجدت بشكل عام) وتنظيم الكود بدون أي أسطر فارغة:
+
+```css
+.trainer-page {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 20px;
+  direction: rtl;
+}
+.form-box {
+  max-width: 600px;
+  margin: 40px auto;
+  background: #000000;
+  color: #FFFFFF;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+.form-box h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #FFFFFF;
+}
+.form-box h2 mark {
+  background-color: #C62828;
+  color: #FFFFFF;
+  padding: 5px 15px;
+  border-radius: 5px;
+}
+.form-box label {
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-size: 15px;
+  color: #D4AF37;
+}
+.form-box input[type="text"],
+.form-box input[type="email"],
+.form-box input[type="password"],
+.form-box input[type="tel"],
+.form-box input[type="number"],
+.form-box select,
+.form-box textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #444444;
+  background-color: #111111;
+  color: #FFFFFF;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+.form-box input:focus,
+.form-box select:focus,
+.form-box textarea:focus {
+  border-color: #C62828;
+  outline: none;
+}
+.form-box textarea {
+  resize: vertical;
+  height: 100px;
+}
+.form-box input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  background-color: #111111;
+  color: #FFFFFF;
+  border: 1px dashed #C62828;
+  border-radius: 6px;
+  margin-top: 5px;
+  box-sizing: border-box;
+}
+.form-box button[type="submit"] {
+  background: #C62828;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  width: 100%;
+  margin-top: 25px;
+  transition: background 0.3s ease;
+}
+.form-box button[type="submit"]:hover {
+  background: #A00000;
+}
