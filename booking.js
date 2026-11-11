@@ -1,9 +1,5 @@
 import { auth, db, authReady } from "./firebase.js";
-
-import {
-  createUserWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
+import {createUserWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 import {
   doc,
   getDoc,
@@ -11,23 +7,16 @@ import {
   writeBatch,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
 await authReady;
-
 const params = new URLSearchParams(window.location.search);
 const coachId = params.get("id");
 const isDemo = params.get("demo") === "true";
-
 const form = document.getElementById("requestForm");
 const coachNameElement = document.getElementById("coachName");
-
 let currentCoach = null;
-let currentUser = auth.currentUser;
-
 const passwordInput = document.getElementById("password");
 const confirmPasswordInput = document.getElementById("confirmPassword");
-
-if (!currentUser) {
+if (!auth.currentUser) {
   if (passwordInput) passwordInput.required = true;
   if (confirmPasswordInput) confirmPasswordInput.required = true;
 } else {
@@ -36,12 +25,10 @@ if (!currentUser) {
   confirmPasswordInput?.closest("label")?.remove();
   confirmPasswordInput?.remove();
 }
-
 async function loadCoach() {
   if (!coachId) {
     throw new Error("لم يتم تحديد المدرب");
   }
-
   if (isDemo) {
     currentCoach = {
       fullName: coachId,
@@ -49,40 +36,18 @@ async function loadCoach() {
     };
   } else {
     const coachSnap = await getDoc(doc(db, "coaches", coachId));
-
     if (!coachSnap.exists()) {
       throw new Error("لم يتم العثور على المدرب");
     }
-
-    currentCoach = {
-      ...coachSnap.data(),
-      isDemo: false
-    };
-  }
-
-  coachNameElement.textContent = "المدرب: " + currentCoach.fullName;
-}
-
-try {
-  await loadCoach();
-} catch (error) {
-  console.error(error);
-  alert(error.message);
-  form.style.display = "none";
-}
-
+    currentCoach = {...coachSnap.data(),
+      isDemo: false};}
+  coachNameElement.textContent = "المدرب: " + currentCoach.fullName;}
+await loadCoach();
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
-
-  if (!currentCoach) {
-    alert("بيانات المدرب غير جاهزة");
-    return;
-  }
-
   const name = document.getElementById("traineeName").value.trim();
   const email = document.getElementById("traineeEmail").value.trim();
   const phone = document.getElementById("num").value.trim();
-
   const formData = {
     goal: document.getElementById("goal").value.trim(),
     experience: document.getElementById("experience").value,
@@ -91,20 +56,8 @@ form.addEventListener("submit", async (e) => {
     preferredTime: document.getElementById("preferredTime").value.trim(),
     notes: document.getElementById("notes").value.trim()
   };
-
-  if (!/^\d{11}$/.test(phone)) {
-    alert("رقم الهاتف يجب أن يتكون من 11 رقمًا");
-    return;
-  }
-
   let password = "";
-
   if (!auth.currentUser) {
-    if (!passwordInput || !confirmPasswordInput) {
-      alert("حقول كلمة المرور غير موجودة");
-      return;
-    }
-
     password = passwordInput.value;
     const confirmPassword = confirmPasswordInput.value;
 
@@ -118,36 +71,18 @@ form.addEventListener("submit", async (e) => {
       return;
     }
   }
-
-  try {
     let user = auth.currentUser;
 
     if (!user) {
       const result = await createUserWithEmailAndPassword(
         auth,
         email,
-        password
-      );
-
+        password);
       user = result.user;
-      currentUser = user;
-    } else if (user.email.toLowerCase() !== email.toLowerCase()) {
-      alert("استخدمي نفس الإيميل المسجل في حسابك");
-      return;
     }
-
     const userRef = doc(db, "users", user.uid);
     const traineeRef = doc(db, "trainees", user.uid);
-
-    const existingUser = await getDoc(userRef);
-
-    if (existingUser.exists() && existingUser.data().role !== "trainee") {
-      alert("هذا الحساب ليس حساب متدرب");
-      return;
-    }
-
     const batch = writeBatch(db);
-
     batch.set(userRef, {
       uid: user.uid,
       name,
@@ -176,8 +111,6 @@ form.addEventListener("submit", async (e) => {
       status: "pending",
       createdAt: serverTimestamp()
     });
-
-    // إرسال إشعار فقط للمدربين المسجلين في Firebase
     if (!currentCoach.isDemo) {
       const notificationRef = doc(collection(db, "notifications"));
 
@@ -197,14 +130,5 @@ form.addEventListener("submit", async (e) => {
     alert("تم إنشاء حسابك وإرسال طلب الحجز بنجاح!");
 
     window.location.href = "trainee_personal.html";
-
-  } catch (error) {
-    console.error(error);
-
-    if (error.code === "auth/email-already-in-use") {
-      alert("الإيميل ده عنده حساب بالفعل. سجلي الدخول من صفحة Login ثم أعيدي الحجز.");
-    } else {
-      alert("حدث خطأ: " + error.message);
-    }
-  }
+ }
 });
