@@ -241,6 +241,7 @@ section {
    justify-content: center;
    gap: 50px;
    height: 320px;
+   width: 100%;
    background: #000000;
  }
  .button{
