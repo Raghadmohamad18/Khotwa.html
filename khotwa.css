@@ -283,7 +283,7 @@
     font-size: 40px;
 }
 
-.coach-page > div {
+.coach-page > dev {
     border: 2px solid;
     background: #C5A059;
     border-radius: 11px;
@@ -587,4 +587,31 @@
     border: none;
     border-radius: 7px;
     cursor: pointer;
+}
+.trainer-page .form-box {
+    background: white;
+    width: 90%;
+    max-width: 600px;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,.15);
+    margin: 50px auto;
+}
+.trainer-page .contact-section,
+.sign-page .contact-section,
+.sign-coach-page .contact-section {
+    background: #000000;
+    color: white;
+    padding: 30px;
+    border-radius: 15px;
+    margin: 30px auto;
+    max-width: 600px;
+}
+
+.trainer-page .contact-section a,
+.sign-page .contact-section a,
+.sign-coach-page .contact-section a {
+    color: #D4AF37;
+    text-decoration: none;
+    font-weight: bold;
 }
