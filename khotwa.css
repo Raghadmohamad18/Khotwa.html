@@ -276,9 +276,6 @@ section {
    text-decoration: none;
  }
 /* trainer */
-تفضل كود الستايل (CSS) الخاص بصفحة تسجيل المدربين (`trainer.html` أو `register-coach.html`) مُصمماً ليتوافق مع الهوية البصرية (اللون الأسود والأحمر `#C62828`)، مع استبعاد العناصر المشتركة (مثل الـ `body` والأزرار إن وجدت بشكل عام) وتنظيم الكود بدون أي أسطر فارغة:
-
-```css
 .trainer-page {
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
