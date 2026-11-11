@@ -804,5 +804,30 @@ footer {
          color:#D4AF37;
          }
       </style>
-           
+         //traimee personal
+               <style>
+      body {
+        font-family: Arial;
+        background: #f5f5f5;
+        padding: 20px;
+      }
+      .container {
+        max-width: 850px;
+        margin: auto;
+      }
+      .card {
+        background: white;
+        padding: 20px;
+        margin: 15px 0;
+        border-radius: 12px;
+      }
+      button {
+        background: #c62828;
+        color: white;
+        padding: 10px 18px;
+        border: none;
+        border-radius: 7px;
+        cursor: pointer;
+      }
+    </style>
 
