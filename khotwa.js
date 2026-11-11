@@ -13,10 +13,10 @@ window.openMyProfile = function () {
   }
 };
 const CoachesNames = {
-  "Ahmed Hassan": "أحمد حسن محمد",
-  "Sara Mohamed": "سارة محمد",
-  "Omar Ali": "عمر علي",
-  "Youssef Adel": "يوسف عادل",
+  "Ahmed Hassan": "احمد حسن محمد",
+  "Sara Mohamed": "ساره محمد حسن",
+  "Omar Ali": "عمر حسام محمد",
+  "Youssef Adel": "يوسف عادل محي",
   "Mariam Adel": "مريم عادل",
   "Fatma Ali": "فاطمة علي",
   "Nada Ahmed": "ندى أحمد",
@@ -27,11 +27,14 @@ const CoachesNames = {
 
 function order(name) {
   const coachName = CoachesNames[name];
+
   if (!coachName) {
     alert("لم يتم العثور على المدرب");
     return;
   }
-  window.location.href = "booking.html?id=" + encodeURIComponent(coachName);
+
+  window.location.href =
+    "booking.html?id=" + encodeURIComponent(coachName) + "&demo=true";
 }
 
 function Details(name) {
