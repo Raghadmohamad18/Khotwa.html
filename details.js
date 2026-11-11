@@ -127,17 +127,6 @@ function displayDemoCoach(coach) {
   document.getElementById("places").innerHTML = coach.trainingPlaces.map(p => `<a href="${p}" target="_blank">مكان التدريب</a>`).join("");
 }
 async function displayFirebaseCoach(coachId) {
-  const user = auth.currentUser;
-  if (!user) {
-    sessionStorage.setItem("pendingCoachId", coachId);
-    window.location.href = "log.html";
-    return;
-  }
-  const userSnap = await getDoc(doc(db, "users", user.uid));
-  if (!userSnap.exists() || userSnap.data().role !== "trainee") {
-    alert("يجب تسجيل الدخول بحساب متدرب");
-    return;
-  }
   const coachSnap = await getDoc(doc(db, "coaches", coachId));
   if (!coachSnap.exists()) {
     alert("لم يتم العثور على المدرب");
