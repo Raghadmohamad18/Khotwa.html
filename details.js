@@ -124,12 +124,6 @@ function displayDemoCoach(coach) {
   document.getElementById("about").textContent = coach.about;
   document.getElementById("certs").innerHTML = coach.certs.map(c => `<li>${c}</li>`).join("");
   document.getElementById("places").innerHTML = coach.trainingPlaces.map(p => `<a href="${p}" target="_blank">مكان التدريب</a>`).join("");
-  document.getElementById("bookBtn").onclick = () => {
- document.getElementById("bookBtn").onclick = () => {
-  window.location.href =
-    "booking.html?id=" + encodeURIComponent(coach.name) + "&demo=true";
-};
-}
 async function displayFirebaseCoach(coachId) {
   const coachSnap = await getDoc(doc(db, "coaches", coachId));
   if (!coachSnap.exists()) {
