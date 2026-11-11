@@ -7,30 +7,29 @@
     <link rel="stylesheet" href="khotwa.css">
   </head>
   <body class="booking-page">
-    <form id="requestForm">
+    <form id="requestForm" class="booking-form">
       <h3>طلب حجز مع المدرب</h3>
       <p id="coachName">جاري تحميل اسم المدرب...</p>
-      <label>اسمك:</label>
-      <input id="traineeName" type="text" placeholder="اكتب اسمك" required>
-      <label>البريد الإلكتروني:</label>
-      <input id="traineeEmail" type="email" placeholder="اكتب إيميلك" required>
-      <label>رقم التواصل:</label>
-      <input id="num" type="tel" placeholder="اكتب الرقم" required>
-      <label>هدفك من التدريب:</label>
-      <textarea id="goal" placeholder="اكتب هدفك من التدريب" required></textarea>
-      <label>مستوى خبرتك:</label>
-      <select id="experience" required>
+      <label class="booking-label">اسمك:</label>
+      <input id="traineeName" class="booking-input" type="text" placeholder="اكتب اسمك" required>
+      <label class="booking-label">البريد الإلكتروني:</label>
+      <input id="traineeEmail" class="booking-input" type="email" placeholder="اكتب إيميلك" required>
+      <label class="booking-label">رقم التواصل:</label>
+      <input id="num" class="booking-input" type="tel" placeholder="اكتب الرقم" required>
+      <label class="booking-label">هدفك من التدريب:</label>
+      <textarea id="goal" class="booking-input" placeholder="اكتب هدفك من التدريب" required></textarea>
+      <label class="booking-label">مستوى خبرتك:</label>
+      <select id="experience" class="booking-input" required>
         <option value="">اختار مستواك</option>
         <option value="Beginner">مبتدئ</option>
         <option value="Intermediate">متوسط</option>
         <option value="Advanced">متقدم</option>
       </select>
-      <label>منطقة السكن:</label>
-    <input id="gov" type="text" placeholder="اكتب المنطقة" required>
-      <label>الوقت المناسب ليك:</label>
-      <input id="preferredTime" type="text"
-        placeholder="مثلاً السبت والثلاثاء مساءً" required>
-      <label>ملاحظات إضافية:</label>
+      <label class="booking-label">منطقة السكن:</label>
+    <input id="gov" class="booking-input" type="text" placeholder="اكتب المنطقة" required>
+      <label class="booking-label">الوقت المناسب ليك:</label>
+      <input id="preferredTime" class="booking-input" type="text" placeholder="مثلاً السبت والثلاثاء مساءً" required>
+      <label class="booking-label">ملاحظات إضافية:</label>
       <textarea id="notes" placeholder="اختياري"></textarea>
       <button type="submit">إرسال الطلب</button>
     </form>
