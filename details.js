@@ -110,9 +110,8 @@ const data = {
     trainingPlaces: ["https://licdn.com"]
   }
 };
-import { auth, db, authReady } from "./firebase.js";
+import { db } from "./firebase.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-await authReady;
 const params = new URLSearchParams(window.location.search);
 const coachId = params.get("id");
 const demoCoach = data[coachId] || Object.values(data).find(coach => coach.name === coachId) || null;
