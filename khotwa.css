@@ -1,8 +1,9 @@
-body { 
-    font-family: 'Arial', sans-serif;  
-    background-color: #FFFFFF; 
-    margin: 0; 
+body {
+    font-family: Arial, sans-serif;
+    background-color: #FFFFFF;
+    margin: 30px;
     padding: 0;
+    color: #222;
 }
 .about-section {  
     text-align: center;
@@ -175,17 +176,12 @@ footer {
 .category {
     display: none;
 }
-      body {
-        font-family: Arial, sans-serif;
-        margin: 30px;
-        background: #fff;
-        color: #222;
-      }
+//booking   
       form {
         max-width: 450px;
         margin: auto;
       }
-      input, select, textarea {
+       input, select, textarea {
         display: block;
         width: 100%;
         box-sizing: border-box;
@@ -194,18 +190,6 @@ footer {
         border: 1px solid #ccc;
         border-radius: 6px;
         font-size: 15px;
-      }
-      label {
+       label {
         font-weight: bold;
-      }
-      button {
-        background: #C62828;
-        color: white;
-        border: none;
-        padding: 11px 20px;
-        border-radius: 6px;
-        cursor: pointer;
-      }
-      button:hover {
-        background: #A00000;
       }
