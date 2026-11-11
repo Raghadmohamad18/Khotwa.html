@@ -111,7 +111,7 @@ function DetailsFirebase(id) {
   <h3>${coach.specialization}</h3>
   <p>${coach.about}</p>
   <p>${coach.governorate}</p>
-  <p>${coach.place}</p>
+  <p>${coach.area}</p>
   ${coach.priceType === "monthly"? 
   `<p class="price">${coach.price} EGP / Month</p>`: 
   `<p class="price">${coach.price} EGP / Session</p>`}
