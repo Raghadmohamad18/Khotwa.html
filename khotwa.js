@@ -53,6 +53,12 @@ function showCategory(categoryId) {
     if (!id) return;
     window.location.href = "booking.html?id=" + encodeURIComponent(id);
   }
+function DetailsFirebase(id) {
+    if (!id) return;
+
+    window.location.href =
+        "details.html?id=" + encodeURIComponent(id);
+}
   window.order = order;
   window.showCategory = showCategory;
   window.Details = Details;
