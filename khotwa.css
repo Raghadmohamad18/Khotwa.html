@@ -304,4 +304,312 @@ footer {
         background: #a00000;
       }
     </style>
+     //log
+           body {
+    font-family: Arial, sans-serif;
+    background-color: #FFFFFF;
+    margin: 30px;
+    padding: 0;
+    color: #222;
+}
+.about-section {  
+    text-align: center;
+    direction: rtl; 
+    max-width: 800px;
+    margin: 40px auto; 
+    padding: 0 21px; 
+}
+.about-section p {
+    line-height: 1.8;
+    font-size: 16px;
+    color: #333333;
+}
+header { 
+    text-align: center;
+    padding: 80px 20px;
+    background: #000000;
+    border-bottom: 5px solid #C62828;
+    color: white;
+}
+header h1 {
+    font-size: 70px;
+    margin-bottom: 0;
+    font-weight: bold;
+}
+header p {
+    font-size: 18px;
+    margin-top: 10px;
+}
+.section-title {
+    font-size: 28px;
+    color: #000000;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #C62828;
+    display: table;
+    margin: 0 auto 30px;
+}
+#search {
+    width: 100%;
+    max-width: 500px;
+    height: 45px;
+    padding: 10px 20px;
+    border: 2px solid #ccc;
+    border-radius: 25px;
+    font-size: 16px;
+    outline: none;
+    transition: 0.3s;
+    box-sizing: border-box;
+}
+#search:focus {
+    border-color: #C62828;
+    box-shadow: 0 0 8px rgba(198, 40, 40, 0.2);
+}
+.trainers {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+}
+.coach-card {
+    background: #000000;
+    color: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+    text-align: center;
+    min-height: 550px;
+    height: auto;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.coach-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+}
+.coach-card button + button {
+    margin-top: 10px;
+}
+.coach-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+.coach-card h3 {
+    margin: 15px 0 10px;
+    font-size: 20px;
+}
+.coach-card p {
+    color: #FFFFFF;
+    line-height: 1.6;
+}
+.price {
+    font-size: 24px;
+    margin: 10px 0;
+    color: #FFF;
+}
+button {
+    background: #C62828;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    width: 100%;
+}
+button:hover {
+    background: #A00000;
+}
+section {
+    margin: 40px 0 20px;
+    text-align: center;
+}
+.contact-section {
+    background: #000000;
+    color: white;
+    padding: 30px;
+    border-radius: 15px;
+    margin: 30px auto;
+    max-width: 600px;
+}
+.contact-section h2 {
+    border-bottom: 3px solid #C62828;
+    display: inline-block;
+    padding-bottom: 10px;
+}
+.contact-section a {
+    color: #D4AF37;
+    text-decoration: none;
+    font-weight: bold;
+}
+.contact-section a:hover {
+    text-decoration: underline;
+}
+footer {
+    margin-top: 40px;
+    text-align: center;
+    background: #000000;
+    color: white;
+    padding: 20px;
+    border-top: 3px solid #C62828;
+}
+.categories {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin: 30px 0;
+    text-align: center;
+}
+.categories button {
+    width: auto;
+    padding: 12px 25px;
+    border-radius: 30px;
+    background: #C62828;
+    color: white;
+    border: 2px solid #C62828;
+    transition: 0.3s;
+}
+.categories button:hover {
+    background: #A00000;
+    border-color: #A00000;
+}
+.category {
+    display: none;
+}
+//booking   
+      form {
+        max-width: 450px;
+        margin: auto;
+      }
+       input, select, textarea {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+        margin: 8px 0 18px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 15px;
+       label {
+        font-weight: bold;
+      }
+           //coach 
+      body{
+            margin:0;
+            background: #8B1C1B;
+            font-family: Arial,sans-serif;
+            display:flex;
+            flex-direction: column; 
+            justify-content:center;  
+            align-items:center; 
+            min-height:100vh;
+         }  
+         h1{
+            font-size: 40px; 
+         }
+         dev{ 
+            border: 2px solid;
+            background: #C5A059;
+            border-radius: 11px; 
+            height: 550px; 
+            width: 450px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 3px 4px grey;
+         }
+         button{
+            width:150px;
+            height:80px;
+            margin-top:15px;
+            border:none;
+            border-radius:8px;
+            background:#C62827;
+            color:white;
+            font-size:30px;
+            font-weight:bold;
+            cursor:pointer;
+            transition:.2.5s;
+            margin-top: 10px;
+         }
+         button:hover{
+            background:#388E3C;
+         }
+         .contact-section{
+            width:100%;
+            max-width:600px;
+            margin:40px auto;
+            background:#1F1F1F;
+            color:white;
+            padding:30px;
+            border-radius:15px;
+            text-align:center;
+         }
+         .contact-section h2{
+            color:#D4AF37;
+            margin-bottom:20px;
+         }
+         .contact-section p{
+            margin:12px 0;
+         }
+         .contact-section a{
+            color:#D4AF37;
+         }
+//details
+               <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #d6d6d6;
+        text-align: center;
+        padding: 30px;
+      }
+      .card {
+        background: white;
+        max-width: 700px;
+        margin: auto;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+      img {
+        width: 300px;
+        border-radius: 15px;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      #places {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      li {
+        background: #eee;
+        margin: 10px;
+        padding: 10px;
+        border-radius: 10px;
+      }
+      button {
+        background: #c62828;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #a00000;
+      }
+    </style>
            
+
