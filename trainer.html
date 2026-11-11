@@ -11,13 +11,13 @@
         <h2><mark>بيانات عن المدرب</mark></h2>
         <form id="coachForm">
           <label>الاسم كامل</label>
-          <input type="text" id="fullName" placeholder="ادخله هنا" required=>
+          <input type="text" id="fullName" placeholder="ادخله هنا" required />
           <label>البريد الالكتروني</label>
-          <input type="email" id="email" placeholder="ادخله هنا" autocomplete="new-email" required=>
+          <input type="email" id="email" placeholder="ادخله هنا" autocomplete="email" required />
           <label>كلمة المرور</label>
-          <input type="password" id="password" placeholder="ادخله هنا" autocomplete="new-password" required>
+          <input type="password" id="password" placeholder="ادخله هنا" autocomplete="new-password" required />
           <label>تأكيد كلمة المرور</label>
-          <input type="password" id="confirmPassword" autocomplete="new-password" required>
+          <input type="password" id="confirmPassword" autocomplete="new-password" required />
           <label>المجال</label>
           <select id="category" required>
             <option value="">اختار مجالك</option>
@@ -29,7 +29,7 @@
             <option value="Other">غيره</option>
           </select>
           <label>اكتب الرياضة او المهارة</label>
-          <input type="text" id="specialization" placeholder="مثال:كرة القدم,رسم,العزف" required>
+          <input type="text" id="specialization" placeholder="مثال:كرة القدم,رسم,العزف" required />
           <label>محافظة</label>
           <select id="governorate" required>
             <option value="">اختر المحافظة</option>
@@ -62,24 +62,24 @@
             <option>السويس</option>
           </select>
           <label id="areaLabel">منطقة التدريب</label>
-          <input type="text" id="area" placeholder="يمكن كتابة المنطقة او اونلاين" required>
+          <input type="text" id="area" placeholder="يمكن كتابة المنطقة او اونلاين" required />
           <label>رقم الهاتف</label>
-          <input type="tel" id="phone" placeholder="01XXXXXXXXX" required>
+          <input type="tel" id="phone" placeholder="01XXXXXXXXX" required />
           <label>طريقة الدفع</label>
           <select id="priceType" required>
             <option value="per_session">الدفع بالحصه</option>
             <option value="monthly">الدفع بالشهر</option>
           </select>
           <label id="priceLabel">ثمن التدريب(جنيه مصري)</label>
-          <input type="number" id="price" placeholder="اكتب السعر بالجنيه المصري" min="1" step="1" required>
+          <input type="number" id="price" placeholder="اكتب السعر بالجنيه المصري" min="1" step="1" required />
           <label>تفاصيل عنك</label>
           <textarea id="about" placeholder="اخبرنا اكثر عن خبرتك و مجالك"></textarea>
           <label>صورة للمدرب</label>
-          <input type="file" id="photo" accept="image/*">
+          <input type="file" id="photo" accept="image/*" />
           <label>صور لشهادات المدرب</label>
-          <input id="certificates" type="file" multiple="" accept="image/*">
+          <input id="certificates" type="file" multiple accept="image/*" />
           <label>صور لمكان التدريب</label>
-          <input id="trainingPlaces" type="file" multiple="" accept="image/*">
+          <input id="trainingPlaces" type="file" multiple accept="image/*" />
           <button type="submit">سجل</button>
         </form>
       </div>
