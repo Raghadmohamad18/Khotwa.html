@@ -1,3 +1,17 @@
+import { auth, authReady } from "./firebase.js";
+
+await authReady;
+
+window.openMyProfile = function () {
+  if (auth.currentUser) {
+    window.location.href = "trainee_personal.html";
+  } else {
+    alert("ليس لديك حساب حتى الآن، احجز مع مدرب للبدء!");
+    document.getElementById("sports")?.scrollIntoView({
+      behavior: "smooth"
+    });
+  }
+};
 const CoachesNames = {
   "Ahmed Hassan": "أحمد حسن محمد",
   "Sara Mohamed": "سارة محمد",
