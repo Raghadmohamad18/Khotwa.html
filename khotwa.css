@@ -119,26 +119,6 @@ section {
 .category {
   display: none;
 }
-/* .contact-section {
-  width: 100%;
-  max-width: 600px;
-  margin: 40px auto;
-  background: #1F1F1F;
-  color: white;
-  padding: 30px;
-  border-radius: 15px;
-  text-align: center;
-}
-.contact-section h2 {
-  color: #D4AF37;
-  margin-bottom: 20px;
-}
-.contact-section p {
-  margin: 12px 0;
-}
-.contact-section a {
-  color: #D4AF37;
-} */
 /*booking style*/
 .booking-form {
   max-width: 450px;
@@ -177,4 +157,73 @@ section {
 }
 .coach-h1 {
   font-size: 40px;
+}
+/* details */
+.details-page {
+  font-family: Arial, sans-serif;
+  background-color: #FFFFFF;
+  color: #222222;
+  margin: 0;
+  padding: 20px;
+}
+.details-container {
+  max-width: 700px;
+  margin: 40px auto;
+  background: #000000;
+  color: #FFFFFF;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+  text-align: right;
+  direction: rtl;
+}
+.details-container img#img {
+  width: 100%;
+  max-height: 350px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+.details-container h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+  color: #FFFFFF;
+  border-bottom: 3px solid #C62828;
+  padding-bottom: 10px;
+  display: inline-block;
+}
+.details-container h3 {
+  color: #D4AF37;
+  font-size: 22px;
+  margin: 15px 0;
+}
+.details-container p {
+  line-height: 1.8;
+  font-size: 16px;
+  margin: 10px 0;
+}
+.details-price {
+  font-size: 22px;
+  font-weight: bold;
+  color: #C62828;
+  margin: 15px 0;
+}
+.details-container ul {
+  list-style: none;
+  padding: 0;
+}
+.details-container ul li {
+  margin: 10px 0;
+}
+.details-container ul li img,
+.details-container #places img {
+  width: 150px;
+  border-radius: 8px;
+  border: 1px solid #C62828;
+  display: block;
+  margin-top: 5px;
+}
+.details-container a {
+  color: #D4AF37;
+  text-decoration: underline;
 }
