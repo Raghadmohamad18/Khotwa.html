@@ -3,10 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>your Dashboard </title>
-<link rel="stylesheet" href="khotwa.css">
+    <title>your Dashboard</title>
+    <link rel="stylesheet" href="khotwa.css">
   </head>
-
   <body class="personal-page">
     <div class="container">
       <div class="card">
@@ -15,7 +14,7 @@
         <p id="coachSpecialization"></p>
         <p id="coachPrice"></p>
         <button id="logout">تسجيل الخروج</button>
-        </div>
+      </div>
       <div class="card">
         <h2>طلبات المتدربين</h2>
         <div id="requests"></div>
@@ -58,84 +57,69 @@
           window.location.href = "log.html";
           return;
         }
-
         const coachData = await getDoc(doc(db, "coaches", user.uid));
-
         if (!coachData.exists()) {
           alert("بيانات المدرب غير موجودة");
           return;
         }
-
         const coach = coachData.data();
-
         document.getElementById("coachName").textContent = "أهلاً " + (coach.fullName || "");
-
         document.getElementById("coachEmail").textContent = user.email || "";
-
         document.getElementById("coachSpecialization").textContent = coach.specialization || "";
-
         document.getElementById("coachPrice").textContent =
           (coach.price || "") + " جنيه / " + (coach.priceType === "monthly" ? "شهر" : "حصة");
         const requestsQuery = query(collection(db, "requests"), where("coachId", "==", user.uid));
-
         stopRequests = onSnapshot(
           requestsQuery,
           (snapshot) => {
             const list = document.getElementById("requests");
-            const trainees = document.getElementById("myTrainees"); list.innerHTML = ""; trainees.innerHTML = "";
+            const trainees = document.getElementById("myTrainees");
+            list.innerHTML = "";
+            trainees.innerHTML = "";
             const requests = snapshot.docs.sort((a, b) => {
-            const dateA = a.data().createdAt?.toMillis?.() || 0;
-            const dateB = b.data().createdAt?.toMillis?.() || 0;
-            return dateB - dateA;}); requests.forEach((requestDoc) => {
+              const dateA = a.data().createdAt?.toMillis?.() || 0;
+              const dateB = b.data().createdAt?.toMillis?.() || 0;
+              return dateB - dateA;
+            });
+            requests.forEach((requestDoc) => {
               const data = requestDoc.data();
-
               const card = document.createElement("div");
               card.className = "request";
-
               const title = document.createElement("h3");
               title.textContent = data.traineeName || "متدرب";
-
               const email = document.createElement("p");
               email.textContent = "البريد: " + (data.traineeEmail || "");
-
               const goal = document.createElement("p");
               goal.textContent = "الهدف: " + (data.formData?.goal || "");
-
               const experience = document.createElement("p");
               experience.textContent = "الخبرة: " + (data.formData?.experience || "");
-
               const time = document.createElement("p");
               time.textContent = "الوقت المناسب: " + (data.formData?.preferredTime || "");
-
               const notes = document.createElement("p");
               notes.textContent = "ملاحظات: " + (data.formData?.notes || "");
-
               const status = document.createElement("p");
               status.textContent = "الحالة: " + statusText(data.status);
-
               card.append(title, email, goal, experience, time, notes, status);
-
               if (data.status === "pending") {
-                const accept = document.createElement("button");accept.textContent = "قبول";
+                const accept = document.createElement("button");
+                accept.textContent = "قبول";
                 accept.onclick = () => changeStatus(requestDoc.id, data, user.uid, "accepted");
-                const decline = document.createElement("button");decline.textContent = "رفض";
+                const decline = document.createElement("button");
+                decline.textContent = "رفض";
                 decline.onclick = () => changeStatus(requestDoc.id, data, user.uid, "declined");
                 card.append(accept, decline);
               }
-
               if (data.status === "accepted") {
                 const traineeCard = document.createElement("div");
                 traineeCard.className = "request";
                 traineeCard.textContent = (data.traineeName || "متدرب") + " - " + (data.traineeEmail || "");
                 trainees.appendChild(traineeCard);
               }
-
               list.appendChild(card);
             });
             if (requests.length === 0) {
               list.textContent = "لا توجد طلبات حتى الآن";
             }
-
             if (trainees.children.length === 0) {
               trainees.textContent = "لا يوجد متدربون مقبولون حتى الآن";
             }
@@ -146,113 +130,87 @@
           },
         );
         const notificationsQuery = query(collection(db, "notifications"), where("userId", "==", user.uid));
-
         stopNotifications = onSnapshot(notificationsQuery, (snapshot) => {
           const list = document.getElementById("notifications");
           list.innerHTML = "";
-
           const notifications = snapshot.docs.sort((a, b) => {
             const dateA = a.data().createdAt?.toMillis?.() || 0;
             const dateB = b.data().createdAt?.toMillis?.() || 0;
             return dateB - dateA;
           });
-
           if (notifications.length === 0) {
             list.textContent = "لا توجد إشعارات";
             return;
           }
-
           notifications.forEach((item) => {
             const data = item.data();
-
             const card = document.createElement("div");
             card.className = "request";
-
             const title = document.createElement("h3");
             title.textContent = data.title || "إشعار";
-
             const message = document.createElement("p");
             message.textContent = data.message || "";
-
             card.append(title, message);
-
             if (!data.isRead) {
               const button = document.createElement("button");
               button.textContent = "تحديد كمقروء";
-
               button.onclick = async () => {
                 await updateDoc(doc(db, "notifications", item.id), { isRead: true });
               };
-
               card.appendChild(button);
             }
-
             list.appendChild(card);
           });
         });
       }
-
       function statusText(status) {
         if (status === "pending") return "قيد الانتظار";
         if (status === "accepted") return "مقبول";
         if (status === "declined") return "مرفوض";
         return status || "";
       }
-
       async function changeStatus(requestId, requestData, coachId, status) {
-  try {
-    const batch = writeBatch(db);
-    const requestRef = doc(db, "requests", requestId);
-    const notificationRef = doc(collection(db, "notifications"));
-
-    const requestUpdate = {
-      status,
-      updatedAt: serverTimestamp(),
-    };
-
-    if (status === "accepted") {
-      const privateSnap = await getDoc(doc(db, "coachPrivate", coachId));
-
-      if (!privateSnap.exists()) {
-        alert("بيانات التواصل الخاصة بالمدرب غير موجودة");
-        return;
+        try {
+          const batch = writeBatch(db);
+          const requestRef = doc(db, "requests", requestId);
+          const notificationRef = doc(collection(db, "notifications"));
+          const requestUpdate = {
+            status,
+            updatedAt: serverTimestamp(),
+          };
+          if (status === "accepted") {
+            const privateSnap = await getDoc(doc(db, "coachPrivate", coachId));
+            if (!privateSnap.exists()) {
+              alert("بيانات التواصل الخاصة بالمدرب غير موجودة");
+              return;
+            }
+            requestUpdate.coachPhone = privateSnap.data().phone || "";
+          }
+          batch.update(requestRef, requestUpdate);
+          batch.set(notificationRef, {
+            userId: requestData.traineeId,
+            requestId,
+            type: "request_response",
+            title: status === "accepted" ? "تم قبول طلبك" : "تم رفض طلبك",
+            message: status === "accepted"
+              ? "وافق المدرب على طلب التدريب."
+              : "المدرب اعتذر عن قبول طلب التدريب.",
+            isRead: false,
+            createdAt: serverTimestamp(),
+          });
+          await batch.commit();
+          alert(status === "accepted" ? "تم قبول الطلب" : "تم رفض الطلب");
+        } catch (error) {
+          console.error(error);
+          alert("حدث خطأ: " + error.message);
+        }
       }
-
-      requestUpdate.coachPhone = privateSnap.data().phone || "";
-    }
-
-    batch.update(requestRef, requestUpdate);
-
-    batch.set(notificationRef, {
-      userId: requestData.traineeId,
-      requestId,
-      type: "request_response",
-      title: status === "accepted" ? "تم قبول طلبك" : "تم رفض طلبك",
-      message: status === "accepted"
-        ? "وافق المدرب على طلب التدريب."
-        : "المدرب اعتذر عن قبول طلب التدريب.",
-      isRead: false,
-      createdAt: serverTimestamp(),
-    });
-
-    await batch.commit();
-
-    alert(status === "accepted" ? "تم قبول الطلب" : "تم رفض الطلب");
-
-  } catch (error) {
-    console.error(error);
-    alert("حدث خطأ: " + error.message);
-  }
-}
-
       document.getElementById("logout").addEventListener("click", async () => {
         if (stopRequests) stopRequests();
         if (stopNotifications) stopNotifications();
-
         await signOut(auth);
         window.location.href = "signCoach.html";
       });
-
       startDashboard().catch((error) => {
         console.error(error);
         alert("تعذر فتح لوحة المدرب: " + error.message);
