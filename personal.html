@@ -100,6 +100,21 @@
               const status = document.createElement("p");
               status.textContent = "الحالة: " + statusText(data.status);
               card.append(title, email, goal, experience, time, notes, status);
+              const phone = (data.formData?.phone || "").replace(/\D/g, "");
+                if (phone) {
+                  const whatsappPhone = phone.startsWith("0")
+                    ? "20" + phone.slice(1)
+                    : phone;
+                
+                  const whatsapp = document.createElement("a");
+                  whatsapp.href = `https://wa.me/${whatsappPhone}`;
+                  whatsapp.target = "_blank";
+                  whatsapp.rel = "noopener noreferrer";
+                  whatsapp.textContent = "التواصل مع المتدرب عبر واتساب";
+                  whatsapp.className = "whatsapp-link";
+                
+                  card.appendChild(whatsapp);
+                }
               if (data.status === "pending") {
                 const accept = document.createElement("button");
                 accept.textContent = "قبول";
@@ -111,9 +126,32 @@
               }
               if (data.status === "accepted") {
                 const traineeCard = document.createElement("div");
-                traineeCard.className = "request";
-                traineeCard.textContent = (data.traineeName || "متدرب") + " - " + (data.traineeEmail || "");
-                trainees.appendChild(traineeCard);
+traineeCard.className = "request";
+
+const traineeInfo = document.createElement("p");
+traineeInfo.textContent =
+  (data.traineeName || "متدرب") + " - " + (data.traineeEmail || "");
+
+traineeCard.appendChild(traineeInfo);
+
+const phone = (data.formData?.phone || "").replace(/\D/g, "");
+
+if (phone) {
+  const whatsappPhone = phone.startsWith("0")
+    ? "20" + phone.slice(1)
+    : phone;
+
+  const whatsapp = document.createElement("a");
+  whatsapp.href = `https://wa.me/${whatsappPhone}`;
+  whatsapp.target = "_blank";
+  whatsapp.rel = "noopener noreferrer";
+  whatsapp.textContent = "التواصل عبر واتساب";
+  whatsapp.className = "whatsapp-link";
+
+  traineeCard.appendChild(whatsapp);
+}
+
+trainees.appendChild(traineeCard);
               }
               list.appendChild(card);
             });
