@@ -1,54 +1,44 @@
-function order(phone, name) {
- const CoachesNames = {
-   "Ahmed Hassan": "أحمد حسن محمد",
-   "Sara Mohamed": "سارة محمد",
-   "Omar Ali": "عمر علي",
-   "Youssef Adel": "يوسف عادل",
-   "Mariam Adel": "مريم عادل",
-   "Fatma Ali": "فاطمة علي",
-   "Nada Ahmed": "ندى أحمد",
-   "Omar Mostafa": "عمر مصطفى",
-   "Mohamed Khaled": "محمد خالد",
-   "Ahmed Samir": "أحمد سمير"
- };
- const coachName = CoachesNames[name];
- if (!coachName) {
-   alert("لم يتم العثور على المدرب");
-   return;
- }
- window.location.href =
-   "booking.html?id=" + encodeURIComponent(coachName);
+const CoachesNames = {
+  "Ahmed Hassan": "أحمد حسن محمد",
+  "Sara Mohamed": "سارة محمد",
+  "Omar Ali": "عمر علي",
+  "Youssef Adel": "يوسف عادل",
+  "Mariam Adel": "مريم عادل",
+  "Fatma Ali": "فاطمة علي",
+  "Nada Ahmed": "ندى أحمد",
+  "Omar Mostafa": "عمر مصطفى",
+  "Mohamed Khaled": "محمد خالد",
+  "Ahmed Samir": "أحمد سمير"
+};
+
+function order(name) {
+  const coachName = CoachesNames[name];
+  if (!coachName) {
+    alert("لم يتم العثور على المدرب");
+    return;
+  }
+  window.location.href = "booking.html?id=" + encodeURIComponent(coachName);
+}
+
+function Details(name) {
+  const coachName = CoachesNames[name];
+  if (!coachName) {
+    alert("لم يتم العثور على المدرب");
+    return;
+  }
+  window.location.href = "details.html?id=" + encodeURIComponent(coachName);
 }
 function showCategory(categoryId) {
- document.querySelectorAll(".category").forEach(section => {
-   section.style.display = "none";
- });
- const selected = document.getElementById(categoryId);
- if (selected) {
-      selected.style.display = "block";
-    }
+  document.querySelectorAll(".category").forEach(section => {
+    section.style.display = "none";
+  });
+
+  const selected = document.getElementById(categoryId);
+
+  if (selected) {
+    selected.style.display = "block";
   }
-  function Details(name) {
-    const CoachesNames = {
-      "Ahmed Hassan": "أحمد حسن محمد",
-      "Sara Mohamed": "سارة محمد",
-      "Omar Ali": "عمر علي",
-      "Youssef Adel": "يوسف عادل",
-      "Mariam Adel": "مريم عادل",
-      "Fatma Ali": "فاطمة علي",
-      "Nada Ahmed": "ندى أحمد",
-      "Omar Mostafa": "عمر مصطفى",
-      "Mohamed Khaled": "محمد خالد",
-      "Ahmed Samir": "أحمد سمير"
-    };
-    const coachName = CoachesNames[name];
-    if (!coachName) {
-      alert("لم يتم العثور على المدرب");
-      return;
-    }
-    window.location.href =
-      "details.html?id=" + encodeURIComponent(coachName);
-  }
+}
   function BookingFirebase(id) {
     if (!id) return;
     window.location.href = "booking.html?id=" + encodeURIComponent(id);
