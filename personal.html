@@ -62,7 +62,7 @@ return names[key]||key.replace(/([A-Z])/g," $1");
 function addProfileField(container,label,value){
 if(value===nullvalue===undefinedvalue==="")return;
 if(typeof value==="object"&&!Array.isArray(value))return;
- .: const item=document.createElement("div");
+const item=document.createElement("div");
 item.className="profile-item";
 const title=document.createElement("strong");
 title.textContent=label;
@@ -158,7 +158,7 @@ if(data.status==="accepted"){
 const traineeCard=document.createElement("div");
 traineeCard.className="request";
 const traineeInfo=document.createElement("h3");
- .: traineeInfo.textContent=data.traineeName||"متدرب";
+ traineeInfo.textContent=data.traineeName||"متدرب";
 const traineeEmail=document.createElement("p");
 traineeEmail.textContent="البريد الإلكتروني: "+(data.traineeEmail||"غير متاح");
 const phone=data.formData?.phone||"";
