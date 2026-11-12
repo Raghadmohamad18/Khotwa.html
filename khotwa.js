@@ -12,16 +12,6 @@ const CoachesNames = {
   "Mohamed Khaled": "محمد خالد",
   "Ahmed Samir": "أحمد سمير"
 };
-window.openMyProfile = function () {
-  if (auth && auth.currentUser) {
-    window.location.href = "trainee_personal.html";
-  } else {
-    alert("ليس لديك حساب حتى الآن، احجز مع مدرب للبدء!");
-    document.getElementById("sports")?.scrollIntoView({
-      behavior: "smooth"
-    });
-  }
-};
 function order(name) {
   const coachName = CoachesNames[name];
   if (!coachName) {
