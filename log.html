@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ar">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Log in</title>
+     <link rel="stylesheet" href="khotwa.css">
+   </head>
+   <body class="log-page">
+      <div class="form">
+         <h1>تسجيل الدخول</h1>
+         <h3><em>!اهلا بك مجددًا</em></h3>
+         <form id="loginForm">
+            <label>البريد الالكتروني</label>
+            <input type="email" id="email" placeholder="ادخله هنا" required>
+            <label>كلمة المرور</label>
+            <input type="password" id="password" placeholder="ادخلها هنا" required>
+            <button type="submit">تسجيل الدخول</button>
+         </form>
+      <script type="module">
+      import { auth, db, authReady } from "./firebase.js";
+      import {
+  signInWithEmailAndPassword,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+      import {
+        doc,
+        getDoc
+      } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+      await authReady;
+      document.getElementById("loginForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+        try {
+          const result = await signInWithEmailAndPassword(auth, email, password);
+          const userSnap = await getDoc(doc(db, "users", result.user.uid));
+          if (!userSnap.exists()) {
+            alert("بيانات الحساب غير موجودة");
+            return;
+          }
+          const role = userSnap.data().role;
+          if (role === "coach") {
+            window.location.href = "personal.html";
+          } else {
+            await signOut(auth);
+            alert("تسجيل الدخول متاح للمدربين فقط");
+          }
+      });
+      </script>
+   </body>
+</html>
