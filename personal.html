@@ -273,36 +273,43 @@ if (phone) {
                 card.append(accept, decline);
               }
               if (data.status === "accepted") {
-                const traineeCard = document.createElement("div");
-traineeCard.className = "request";
+  const traineeCard = document.createElement("div");
+  traineeCard.className = "request";
 
-const traineeInfo = document.createElement("p");
-traineeInfo.textContent =
-  (data.traineeName || "متدرب") + " - " + (data.traineeEmail || "");
+  const traineeInfo = document.createElement("p");
+  traineeInfo.textContent =
+    (data.traineeName || "متدرب") + " - " + (data.traineeEmail || "");
 
-traineeCard.appendChild(traineeInfo);
+  const phone = (data.formData?.phone || "").replace(/\D/g, "");
 
-const phone = (data.formData?.phone || "").replace(/\D/g, "");
+  const phoneInfo = document.createElement("p");
+  phoneInfo.textContent = phone
+    ? "رقم التواصل: " + (data.formData.phone)
+    : "رقم التواصل: غير مسجل";
 
-if (phone) {
-  const whatsappPhone = phone.startsWith("0")
-    ? "20" + phone.slice(1)
-    : phone;
+  traineeCard.append(traineeInfo, phoneInfo);
 
-  const whatsapp = document.createElement("a");
-  whatsapp.href = `https://wa.me/${whatsappPhone}`;
-  whatsapp.target = "_blank";
-  whatsapp.rel = "noopener noreferrer";
-  whatsapp.textContent = "التواصل عبر واتساب";
-  whatsapp.className = "whatsapp-link";
+  if (phone) {
+    let whatsappPhone = phone;
 
-  traineeCard.appendChild(whatsapp);
+    if (whatsappPhone.startsWith("0") && whatsappPhone.length === 11) {
+      whatsappPhone = "20" + whatsappPhone.slice(1);
+    } else if (whatsappPhone.startsWith("1") && whatsappPhone.length === 10) {
+      whatsappPhone = "20" + whatsappPhone;
+    }
+
+    const whatsapp = document.createElement("a");
+    whatsapp.href = `https://wa.me/${whatsappPhone}`;
+    whatsapp.target = "_blank";
+    whatsapp.rel = "noopener noreferrer";
+    whatsapp.textContent = "التواصل مع المتدرب عبر واتساب";
+    whatsapp.className = "whatsapp-link";
+
+    traineeCard.appendChild(whatsapp);
+  }
+
+  trainees.appendChild(traineeCard);
 }
-
-trainees.appendChild(traineeCard);
-              }
-              list.appendChild(card);
-            });
             if (requests.length === 0) {
               list.textContent = "لا توجد طلبات حتى الآن";
             }
