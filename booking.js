@@ -11,15 +11,6 @@ const coachNameElement = document.getElementById("coachName");
 let currentCoach = null;
 const passwordInput = document.getElementById("password");
 const confirmPasswordInput = document.getElementById("confirmPassword");
-if (!auth.currentUser) {
-  if (passwordInput) passwordInput.required = true;
-  if (confirmPasswordInput) confirmPasswordInput.required = true;
-} else {
-  passwordInput?.closest("label")?.remove();
-  passwordInput?.remove();
-  confirmPasswordInput?.closest("label")?.remove();
-  confirmPasswordInput?.remove();
-}
 async function loadCoach() {
   if (!coachId) {
     throw new Error("لم يتم تحديد المدرب");
