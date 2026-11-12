@@ -5,7 +5,7 @@ const CoachesNames = {
   "Sara Mohamed": "ساره محمد حسن",
   "Omar Ali": "عمر حسام محمد",
   "Youssef Adel": "يوسف عادل محي",
-  "Mariam Adel": "مريم عادل", 
+  "Mariam Adel": "مريم عادل",
   "Fatma Ali": "فاطمة علي",
   "Nada Ahmed": "ندى أحمد",
   "Omar Mostafa": "عمر مصطفى",
