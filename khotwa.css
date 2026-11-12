@@ -28,6 +28,9 @@ header p {
   display: table;
   margin: 0 auto 30px;
 }
+.personal-trainee{
+  width:100px;
+}
 .categories {
   display: flex;
   justify-content: center;
