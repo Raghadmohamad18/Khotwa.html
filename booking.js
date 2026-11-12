@@ -40,6 +40,7 @@ async function loadCoach() {
 await loadCoach();
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+  try {
   const name = document.getElementById("traineeName").value.trim();
   const email = document.getElementById("traineeEmail").value.trim();
   const phone = document.getElementById("num").value.trim();
@@ -56,9 +57,14 @@ form.addEventListener("submit", async (e) => {
     password = passwordInput.value;
     const confirmPassword = confirmPasswordInput.value;
     if (password.length < 6) {
-      return;}
-    if (password !== confirmPassword) {
-      return;}}
+  alert("كلمة المرور يجب ألا تقل عن 6 أحرف");
+  return;
+}
+
+if (password !== confirmPassword) {
+  alert("كلمتا المرور غير متطابقتين");
+  return;
+}
     let user = auth.currentUser;
     if (!user) {
       const result = await createUserWithEmailAndPassword(auth,email,password);user = result.user;}
@@ -105,8 +111,13 @@ form.addEventListener("submit", async (e) => {
         createdAt: serverTimestamp()
       });
     }
-    await batch.commit();
+       await batch.commit();
+
     alert("تم إنشاء حسابك وإرسال طلب الحجز بنجاح!");
     window.location.href = "trainee_personal.html";
- }
+
+  } catch (error) {
+    console.error("Booking error:", error);
+    alert("لم يكتمل الحجز: " + error.message);
+  }
 });
