@@ -64,7 +64,7 @@ form.addEventListener("submit", async (e) => {
 if (password !== confirmPassword) {
   alert("كلمتا المرور غير متطابقتين");
   return;
-}
+}}
     let user = auth.currentUser;
     if (!user) {
       const result = await createUserWithEmailAndPassword(auth,email,password);user = result.user;}
