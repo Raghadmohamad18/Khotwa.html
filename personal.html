@@ -170,7 +170,7 @@ traineeCard.appendChild(phoneText);
 const whatsappPhone=normalizePhone(phone);
 if(whatsappPhone){
 const whatsapp=document.createElement("a");
-whatsapp.href=https://wa.me/${whatsappPhone};
+whatsapp.href = `https://wa.me/${whatsappPhone}`;
 whatsapp.target="_blank";
 whatsapp.rel="noopener noreferrer";
 whatsapp.textContent="تواصل مع المتدرب عبر WhatsApp";
