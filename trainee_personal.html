@@ -34,7 +34,6 @@
         query,
         where,
         onSnapshot,
-        updateDoc,
       } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
       await authReady;
       let stopRequests = null;
@@ -46,18 +45,6 @@
         window.location.href = "Khotwa.html";
         return;
       }
-        const userSnap = await getDoc(doc(db, "users", user.uid));
-        if (!userSnap.exists() || userSnap.data().role !== "trainee") {
-          alert("هذا الحساب ليس حساب متدرب");
-          window.location.href = "log.html";
-          return;
-        }
-        const traineeSnap = await getDoc(doc(db, "trainees", user.uid));
-        if (!traineeSnap.exists()) {
-          alert("بيانات المتدرب غير موجودة");
-          return;
-        }
-        const trainee = traineeSnap.data();
         document.getElementById("name").textContent = "أهلاً " + (trainee.name || "");
         document.getElementById("email").textContent = trainee.email || user.email || "";
         const requestsQuery = query(collection(db, "requests"), where("traineeId", "==", user.uid));
@@ -66,21 +53,15 @@
           (snapshot) => {
             const list = document.getElementById("requests");
             list.innerHTML = "";
-            const requests = snapshot.docs.sort((a, b) => {
-              const dateA = a.data().createdAt?.toMillis?.() || 0;
-              const dateB = b.data().createdAt?.toMillis?.() || 0;
-              return dateB - dateA;
-            });
+            const requests = snapshot.docs;
             if (requests.length === 0) {
-              list.textContent = "لم ترسل أي طلبات حتى الآن";
+              list.textContent = "لم ترسل طلبات حتى الآن";
               return;
             }
             requests.forEach((item) => {
               const data = item.data();
-              const card = document.createElement("div");
-              card.className = "card";
-              const title = document.createElement("h3");
-              title.textContent = "المدرب: " + (data.coachName || "");
+              const card = document.createElement("div");card.className = "card";
+              const title = document.createElement("h3");title.textContent = "المدرب: " + (data.coachName || "");
               const status = document.createElement("p");
               if (data.status === "pending") {
                 status.textContent = "حالة الطلب: قيد الانتظار";
@@ -89,7 +70,7 @@
               } else if (data.status === "declined") {
                 status.textContent = "حالة الطلب: تم الرفض";
               }
-              card.append(title, goal, experience, time, status);
+              card.append(title, status);
               if (data.status === "accepted") {
                 const phone = document.createElement("p");
                 phone.textContent = "رقم المدرب: " + (data.coachPhone || "غير متاح");
@@ -107,11 +88,7 @@
         stopNotifications = onSnapshot(notificationsQuery, (snapshot) => {
           const list = document.getElementById("notifications");
           list.innerHTML = "";
-          const notifications = snapshot.docs.sort((a, b) => {
-            const dateA = a.data().createdAt?.toMillis?.() || 0;
-            const dateB = b.data().createdAt?.toMillis?.() || 0;
-            return dateB - dateA;
-          });
+          const notifications = snapshot.docs;
           if (notifications.length === 0) {
             list.textContent = "لا توجد إشعارات";
             return;
@@ -125,14 +102,6 @@
             const message = document.createElement("p");
             message.textContent = data.message || "";
             card.append(title, message);
-            if (!data.isRead) {
-              const button = document.createElement("button");
-              button.textContent = "تحديد كمقروء";
-              button.onclick = async () => {
-                await updateDoc(doc(db, "notifications", item.id), { isRead: true });
-              };
-              card.appendChild(button);
-            }
             list.appendChild(card);
           });
         });
