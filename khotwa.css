@@ -339,6 +339,7 @@ form input:focus {
   max-width: 900px;
   margin: 40px auto;
   padding: 20px;
+  background-color: #000000;
 }
 .request {
   background: #111111;
