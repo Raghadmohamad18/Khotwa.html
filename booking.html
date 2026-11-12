@@ -1,172 +1,38 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خُطوة</title>
+    <title>حجز تدريب</title>
     <link rel="stylesheet" href="khotwa.css">
-</head>
-<body class="home-page">
-    <header>
-        <h1>خُطوة</h1>
-        <p>اكتشف شغفك.. ابنِ مهارتك</p>
-    </header>
-    <div class="search-container">
-        <input id="search" type="search" placeholder="ابحث عن رياضة أو حرفة">
-        <input id="governorateSearch" type="search" placeholder="ابحث عن المحافظة">
-        <input id="areaSearch" type="search" placeholder="ابحث عن منطقة التدريب">
+  </head>
+  <body class="booking-page">
+    <div class="form-box">
+      <form id="requestForm">
+        <h2>طلب حجز مع المدرب</h2>
+        <p id="coachName">جاري تحميل اسم المدرب...</p>
+        <label>اسمك</label>
+        <input id="traineeName" type="text" placeholder="اكتب اسمك" required>
+        <label>رقم التواصل</label>
+        <input id="num" type="tel" placeholder="اكتب الرقم"pattern="01[0125][0-9]{8}" required>
+        <label>هدفك من التدريب</label>
+        <textarea id="goal" placeholder="اكتب هدفك من التدريب" required></textarea>
+        <label>مستوى خبرتك</label>
+        <select id="experience" required>
+          <option value="">اختار مستواك</option>
+          <option >مبتدئ</option>
+          <option >متوسط</option>
+          <option >متقدم</option>
+        </select>
+        <label>منطقة السكن</label>
+        <input id="gov" type="text" placeholder="اكتب المنطقة" required>
+        <label>الوقت المناسب ليك</label>
+        <input id="preferredTime" type="text" placeholder="مثلاً السبت والثلاثاء مساءً" required>
+        <label>ملاحظات إضافية</label>
+        <textarea id="notes" placeholder="اختياري"></textarea>
+        <button type="submit">إرسال الطلب</button>
+      </form>
     </div>
-    <div class="categories">
-        <button onclick="showCategory('sports')">رياضة</button>
-        <button onclick="showCategory('handmade')">حرف يدوية</button>
-        <button onclick="showCategory('music')">موسيقى</button>
-        <button onclick="showCategory('programming')">برمجة</button>
-        <button onclick="showCategory('quran')">القرآن الكريم والعلوم الدينية</button>
-        <button onclick="showCategory('other')">غيرهم</button>
-    </div>
-    <section id="sports" class="category" style="display:block;">
-        <h2 class="section-title">رياضة</h2>
-        <div class="trainers" id="sportsFirebase">
-            <div class="trainer coach-card" data-governorate="الإسكندرية" data-area="سموحة">
-                <img src="https://t4.ftcdn.net/jpg/02/11/51/53/360_F_211515361_bnIbyKadClzn3hJT0zCPPuPApcG7k3lC.jpg" alt="Football player">
-                <h3>احمد حسن محمد</h3>
-                <h3>كرة القدم</h3>
-                <p>لاعب كرة قدم سابق يتمتع بخبرة تزيد عن 5 سنوات في التدريب. متخصص في تحسين اللياقة البدنية، والتحكم بالكرة، ودقة التمرير، وتكتيكات المباريات للاعبين في المستويين المبتدئ والمتوسط.</p>
-                <p class="price">١٠٠ جنيه مصري / جلسة</p>
-                <p>المحافظة: الإسكندرية</p>
-                <p>المنطقة: سموحة</p>
-                <button onclick="order('Ahmed Hassan')">الحجز مع المدرب</button>
-                <button onclick="Details('Ahmed Hassan')">عرض المزيد</button>
-            </div>
-            <div class="trainer coach-card" data-governorate="الإسكندرية" data-area="ميامي">
-                <img src="https://static.vecteezy.com/system/resources/previews/065/434/247/non_2x/swimming-sport-logo-icon-flat-illustration-vector.jpg" alt="swimmer">
-                <h3>ساره محمد حسن</h3>
-                <h3>سباحة</h3>
-                <p>مدرب لياقة بدنية معتمد يتمتع بخبرة تزيد عن 10 سنوات. يساعد العملاء على تحقيق أهدافهم من خلال خطط تمارين مخصصة، وتوجيهات غذائية، وتحفيز مستمر.</p>
-                <p class="price">٥٠ جنيه مصري / جلسة</p>
-                <p>المحافظة: الإسكندرية</p>
-                <p>المنطقة: ميامي</p>
-                <button onclick="order('Sara Mohamed')">الحجز مع المدرب</button>
-                <button onclick="Details('Sara Mohamed')">عرض المزيد</button>
-            </div>
-            <div class="trainer coach-card" data-governorate="القاهرة" data-area="مدينة نصر">
-                <img src="https://www.shutterstock.com/image-vector/basketball-player-silhouette-logo-vector-260nw-2717047395.jpg" alt="basketball player">
-                <h3>عمر حسام محمد</h3>
-                <h3>كرة سلة</h3>
-                <p>مدرب كرة سلة محترف يتمتع بخبرة تزيد عن 7 سنوات. يركز على تقنيات التسديد، ومهارات العمل الجماعي، والتحكم بالكرة، والأداء الرياضي.</p>
-                <p class="price">٨٠ جنيه مصري / جلسة</p>
-                <p>المحافظة: القاهرة</p>
-                <p>المنطقة: مدينة نصر</p>
-                <button onclick="order('Omar Ali')">الحجز مع المدرب</button>
-                <button onclick="Details('Omar Ali')">عرض المزيد</button>
-            </div>
-            <div class="trainer coach-card" data-governorate="الإسكندرية" data-area="العصافرة">
-                <img src="https://media.istockphoto.com/id/1397734203/vector/couple-fitness-logo-vector.jpg?s=612x612&w=0&k=20&c=o-MflGLdwx7Z5R2ZUyOwggGNCsMabFxCkODsRg4iMY0=" alt="Karate">
-                <h3>يوسف عادل محي</h3>
-                <h3>كاراتيه</h3>
-                <p>مدرب كاراتيه يتمتع بخبرة تزيد عن 15 عاماً. متخصص في تدريب جميع الفئات العمرية، وتطوير المهارات الفنية، وتعزيز القدرة على التحمل، والتحضير للمنافسات.</p>
-                <p class="price">٩٠ جنيه مصري / جلسة</p>
-                <p>المحافظة: الإسكندرية</p>
-                <p>المنطقة: العصافرة</p>
-                <button onclick="order('Youssef Adel')">الحجز مع المدرب</button>
-                <button onclick="Details('Youssef Adel')">عرض المزيد</button>
-            </div>
-        </div>
-    </section>
-    <section id="handmade" class="category" style="display:none;">
-        <h2 class="section-title">حرف يدوية</h2>
-        <div class="trainers" id="handmadeFirebase">
-            <div class="trainer coach-card" data-governorate="الإسكندرية" data-area="محطة الرمل">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPYAbSu1Lk2gaa1_VZMByeW9G6tsT0EvE8vg&s" alt="Handmade">
-                <h3>مريم عادل حسين</h3>
-                <h3>فن الكروشيه والريزن</h3>
-                <p>مدربة في مجال الحرف اليدوية بخبرة 8 سنوات. أدرس الكروشيه، والتطريز، وفن الراتنج (الريزن)، والمشاريع اليدوية الإبداعية للمبتدئين.</p>
-                <p class="price">٩٠ جنيه مصري / جلسة</p>
-                <p>المحافظة: الإسكندرية</p>
-                <p>المنطقة: محطة الرمل</p>
-                <button onclick="order('Mariam Adel')">الحجز مع المدرب</button>
-                <button onclick="Details('Mariam Adel')">عرض المزيد</button>
-            </div>
-            <div class="trainer coach-card" data-governorate="القاهرة" data-area="المعادي">
-                <img src="https://logomakerr.ai/blog/wp-content/uploads/2023/11/illumine-candles-logo-design.jpg" alt="Handmade">
-                <h3>فاطمة علي السيد</h3>
-                <h3>منتجات الشموع والديكور</h3>
-                <p>فنانة في مجال الأعمال اليدوية، تتمتع بخبرة 5 سنوات في صناعة الشموع والمنتجات الزخرفية.</p>
-                <p class="price">٨٠ جنيه مصري / جلسة</p>
-                <p>المحافظة: القاهرة</p>
-                <p>المنطقة: المعادي</p>
-                <button onclick="order('Fatma Ali')">الحجز مع المدرب</button>
-                <button onclick="Details('Fatma Ali')">عرض المزيد</button>
-            </div>
-        </div>
-    </section>
-    <section id="music" class="category" style="display:none;">
-        <h2 class="section-title">موسيقى</h2>
-        <div class="trainers" id="musicFirebase">
-            <div class="trainer coach-card" data-governorate="الإسكندرية" data-area="ستانلي">
-                <img src="https://thumbs.dreamstime.com/b/piano-lessons-poster-musical-note-36625482.jpg" alt="Music">
-                <h3>ندى احمد نبيل</h3>
-                <h3>تعليم البيانو</h3>
-                <p>مُدرِّسة موسيقى تتمتع بخبرة 9 سنوات. تُقدِّم دروساً في العزف على البيانو والتدريب على النظريات الموسيقية للمبتدئين والمستوى المتوسط.</p>
-                <p class="price">٥٠ جنيه مصري / جلسة</p>
-                <p>المحافظة: الإسكندرية</p>
-                <p>المنطقة: ستانلي</p>
-                <button onclick="order('Nada Ahmed')">الحجز مع المدرب</button>
-                <button onclick="Details('Nada Ahmed')">عرض المزيد</button>
-            </div>
-            <div class="trainer coach-card" data-governorate="القاهرة" data-area="مصر الجديدة">
-                <img src="https://i.etsystatic.com/18154652/r/il/f22387/1629260272/il_fullxfull.1629260272_d6io.jpg" alt="Music">
-                <h3>عمر عمرو مصطفى</h3>
-                <h3>تعليم العزف على الجيتار</h3>
-                <p>مُدرِّب جيتار يتمتع بخبرة 7 سنوات في تدريس الجيتار الصوتي (الأكوستيك) والكهربائي.</p>
-                <p class="price">٨٠ جنيه مصري / جلسة</p>
-                <p>المحافظة: القاهرة</p>
-                <p>المنطقة: مصر الجديدة</p>
-                <button onclick="order('Omar Mostafa')">الحجز مع المدرب</button>
-                <button onclick="Details('Omar Mostafa')">عرض المزيد</button>
-            </div>
-        </div>
-    </section>
-    <section id="programming" class="category" style="display:none;">
-        <h2 class="section-title">البرمجة</h2>
-        <div class="trainers" id="programmingFirebase">
-            <div class="trainer coach-card" data-governorate="الإسكندرية" data-area="سموحة">
-                <img src="https://img.freepik.com/free-vector/creative-gradient-code-logo_23-2148820572.jpg?semt=ais_hybrid&w=740&q=80" alt="Programming">
-                <h3>محمد خالد جمعة</h3>
-                <h3>تطوير الويب</h3>
-                <p>مهندس برمجيات يتمتع بخبرة 6 سنوات في تطوير الويب. يُدرّس لغات HTML وCSS وJavaScript، ويقدم مشاريع مناسبة للمبتدئين تعتمد على التعلم العملي والتطبيقي.</p>
-                <p class="price">٨٠ جنيه مصري / جلسة</p>
-                <p>المحافظة: الإسكندرية</p>
-                <p>المنطقة: سموحة</p>
-                <button onclick="order('Mohamed Khaled')">الحجز مع المدرب</button>
-                <button onclick="Details('Mohamed Khaled')">عرض المزيد</button>
-            </div>
-            <div class="trainer coach-card" data-governorate="القاهرة" data-area="الدقي">
-                <img src="https://previews.123rf.com/images/captainvector/captainvector2208/captainvector220829703/189851058-problem-solving-icon.jpg" alt="Programming">
-                <h3>أحمد سمير عصام</h3>
-                <h3>حل المشكلات والأتمتة</h3>
-                <p>مطور بلغة بايثون يُدرِّس أساسيات البرمجة، وحل المشكلات، والأتمتة.</p>
-                <p class="price">٩٠ جنيه مصري / جلسة</p>
-                <p>المحافظة: القاهرة</p>
-                <p>المنطقة: الدقي</p>
-                <button onclick="order('Ahmed Samir')">الحجز مع المدرب</button>
-                <button onclick="Details('Ahmed Samir')">عرض المزيد</button>
-            </div>
-        </div>
-    </section>
-    <section id="quran" class="category" style="display:none;">
-        <h2 class="section-title">القرآن الكريم والعلوم الدينية</h2>
-        <div class="trainers" id="quranFirebase"></div>
-    </section>
-    <section id="other" class="category" style="display:none;">
-        <h2 class="section-title">غيرهم</h2>
-        <div id="otherFirebase" class="trainers"></div>
-    </section>
-    <section class="about-section">
-        <h2 class="section-title">معلومات عنا</h2>
-        <p>نؤمن في "خُطوة" بأن الموهبة تنمو من خلال التفاني والتدريب السليم. تعمل منصتنا على الربط بين أصحاب المواهب ومدربين ذوي خبرة، لمساعدتهم على تطوير مهاراتهم، وتحسين أدائهم، وتحقيق أهدافهم.</p>
-    </section>
-    <script type="module" src="khotwa.js?v=4"></script>
-</body>
+    <script type="module" src="booking.js"></script>
+  </body>
 </html>
