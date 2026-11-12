@@ -20,6 +20,15 @@ header h1 {
 header p {
   font-size: 18px;
 }
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 30px auto;
+    padding: 0 15px;
+}
 .section-title {
   font-size: 28px;
   color: #000000;
