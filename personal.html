@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+[11/12/2026 11:22 PM] .: <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -11,9 +11,10 @@ body{background:#f5f5f5;color:#202020;min-height:100vh;padding:40px 5%}
 .card{background:#fff;padding:28px;border-radius:18px;box-shadow:0 5px 20px rgba(0,0,0,.07);border:1px solid #e9e9e9;border-top:5px solid #ce2029;display:flex;flex-direction:column;gap:15px;min-width:0;transition:transform .2s,box-shadow .2s}
 .card:hover{transform:translateY(-4px);box-shadow:0 9px 25px rgba(0,0,0,.11)}
 .card h2{color:#ce2029;font-size:22px;padding-bottom:14px;border-bottom:2px solid #eee}
-#coachName{font-size:25px;color:#202020}
-#coachEmail,#coachSpecialization,#coachPrice{color:#656565;font-size:15px;line-height:1.7;overflow-wrap:anywhere}
-#coachPrice{color:#a77b16;font-weight:700;font-size:18px}
+.profile-info{display:flex;flex-direction:column;gap:12px}
+.profile-item{background:#fafafa;padding:12px 15px;border-radius:9px;border-right:3px solid #ce2029;overflow-wrap:anywhere}
+.profile-item strong{display:block;color:#ce2029;font-size:13px;margin-bottom:5px}
+.profile-item span{color:#333;font-size:15px;line-height:1.7}
 .request{background:#fafafa;border:1px solid #e8e8e8;border-right:4px solid #ce2029;border-radius:12px;padding:18px;margin-bottom:15px;display:flex;flex-direction:column;gap:10px;overflow-wrap:anywhere}
 .request h3{color:#202020;font-size:18px}
 .request p{color:#595959;font-size:14px;line-height:1.7}
@@ -21,11 +22,8 @@ button{border:none;border-radius:9px;padding:11px 18px;background:#202020;color:
 button:hover{background:#ce2029;transform:translateY(-2px)}
 #logout{background:#ce2029;margin-top:10px;padding:13px}
 #logout:hover{background:#a71921}
-.whatsapp-link,.call-link{display:inline-block;width:fit-content;text-decoration:none;padding:10px 14px;border-radius:8px;font-size:14px;font-weight:600;transition:.2s}
-.whatsapp-link{background:#e5f6ec;color:#16834a}
+.whatsapp-link{display:inline-block;width:fit-content;text-decoration:none;padding:11px 16px;border-radius:8px;font-size:14px;font-weight:600;background:#e5f6ec;color:#16834a;transition:.2s}
 .whatsapp-link:hover{background:#c9efd8}
-.call-link{background:#fff1f1;color:#b51f28;border:1px solid #f0d1d1}
-.call-link:hover{background:#fce0e0}
 #requests,#myTrainees,#notifications{color:#82918b;line-height:1.8;font-size:15px}
 @media(max-width:750px){body{padding:25px 15px}.container{grid-template-columns:1fr;gap:18px}.card{padding:22px}.card h2{font-size:20px}}
 </style>
@@ -33,10 +31,8 @@ button:hover{background:#ce2029;transform:translateY(-2px)}
 <body class="personal-page">
 <div class="container">
 <div class="card">
-<h2 id="coachName"></h2>
-<p id="coachEmail"></p>
-<p id="coachSpecialization"></p>
-<p id="coachPrice"></p>
+<h2>بيانات المدرب</h2>
+<div id="coachDetails" class="profile-info">جاري تحميل البيانات...</div>
 <button id="logout">تسجيل الخروج</button>
 </div>
 <div class="card">
@@ -44,7 +40,7 @@ button:hover{background:#ce2029;transform:translateY(-2px)}
 <div id="requests"></div>
 </div>
 <div class="card">
-<h2>المقبولون</h2>
+<h2>المتدربون المقبولون</h2>
 <div id="myTrainees"></div>
 </div>
 <div class="card">
@@ -59,6 +55,42 @@ import {doc,getDoc,collection,query,where,onSnapshot,updateDoc,writeBatch,server
 await authReady;
 let stopRequests=null;
 let stopNotifications=null;
+function fieldName(key){
+const names={fullName:"الاسم بالكامل",name:"الاسم",email:"البريد الإلكتروني",phone:"رقم التليفون",specialization:"التخصص",price:"السعر",priceType:"نوع الاشتراك",experience:"الخبرة",governorate:"المحافظة",city:"المدينة",address:"العنوان",gender:"النوع",age:"العمر",bio:"نبذة عن المدرب",description:"الوصف",certificate:"الشهادة",certificates:"الشهادات",workplace:"مكان العمل",availability:"المواعيد المتاحة",online:"التدريب أونلاين"};
+return names[key]||key.replace(/([A-Z])/g," $1");
+}
+function addProfileField(container,label,value){
+if(value===nullvalue===undefinedvalue==="")return;
+if(typeof value==="object"&&!Array.isArray(value))return;
+[11/12/2026 11:22 PM] .: const item=document.createElement("div");
+item.className="profile-item";
+const title=document.createElement("strong");
+title.textContent=label;
+const content=document.createElement("span");
+content.textContent=Array.isArray(value)?value.join("، "):String(value);
+item.append(title,content);
+container.appendChild(item);
+}
+function showCoachDetails(coach,user,privateData){
+const container=document.getElementById("coachDetails");
+container.innerHTML="";
+const excluded=["password","confirmPassword","confirm_password","uid","userId","role","createdAt","updatedAt"];
+Object.entries(coach).forEach(([key,value])=>{
+if(excluded.includes(key)||key.toLowerCase().includes("password"))return;
+addProfileField(container,fieldName(key),value);
+});
+addProfileField(container,"البريد الإلكتروني",user.email);
+if(privateData.phone&&!coach.phone)addProfileField(container,"رقم التليفون",privateData.phone);
+if(container.children.length===0){
+container.textContent="لا توجد بيانات إضافية مسجلة";
+}
+}
+function normalizePhone(phone){
+let number=String(phone||"").replace(/\D/g,"");
+if(number.startsWith("00"))number=number.slice(2);
+if(number.startsWith("0"))number="20"+number.slice(1);
+return number;
+}
 async function startDashboard(){
 const user=auth.currentUser;
 if(!user){
@@ -77,10 +109,9 @@ alert("بيانات المدرب غير موجودة");
 return;
 }
 const coach=coachData.data();
-document.getElementById("coachName").textContent="أهلاً "+(coach.fullName||"");
-document.getElementById("coachEmail").textContent=user.email||"";
-document.getElementById("coachSpecialization").textContent=coach.specialization||"";
-document.getElementById("coachPrice").textContent=(coach.price||"")+" جنيه / "+(coach.priceType==="monthly"?"شهر":"حصة");
+const privateSnap=await getDoc(doc(db,"coachPrivate",user.uid));
+const privateData=privateSnap.exists()?privateSnap.data():{};
+showCoachDetails(coach,user,privateData);
 const requestsQuery=query(collection(db,"requests"),where("coachId","==",user.uid));
 stopRequests=onSnapshot(requestsQuery,(snapshot)=>{
 const list=document.getElementById("requests");
@@ -99,29 +130,18 @@ card.className="request";
 const title=document.createElement("h3");
 title.textContent=data.traineeName||"متدرب";
 const email=document.createElement("p");
-email.textContent="البريد: "+(data.traineeEmail||"");
+email.textContent="البريد: "+(data.traineeEmail||"غير متاح");
 const goal=document.createElement("p");
-goal.textContent="الهدف: "+(data.formData?.goal||"");
+goal.textContent="الهدف: "+(data.formData?.goal||"غير محدد");
 const experience=document.createElement("p");
-experience.textContent="الخبرة: "+(data.formData?.experience||"");
+experience.textContent="الخبرة: "+(data.formData?.experience||"غير محددة");
 const time=document.createElement("p");
-time.textContent="الوقت المناسب: "+(data.formData?.preferredTime||"");
+time.textContent="الوقت المناسب: "+(data.formData?.preferredTime||"غير محدد");
 const notes=document.createElement("p");
-notes.textContent="ملاحظات: "+(data.formData?.notes||"");
+notes.textContent="ملاحظات: "+(data.formData?.notes||"لا توجد");
 const status=document.createElement("p");
 status.textContent="الحالة: "+statusText(data.status);
 card.append(title,email,goal,experience,time,notes,status);
-const phone=(data.formData?.phone||"").replace(/\D/g,"");
-if(phone){
-const whatsappPhone=phone.startsWith("0")?"20"+phone.slice(1):phone;
-const whatsapp=document.createElement("a");
-whatsapp.href=`https://wa.me/${whatsappPhone}`;
-whatsapp.target="_blank";
-whatsapp.rel="noopener noreferrer";
-whatsapp.textContent="التواصل مع المتدرب عبر واتساب";
-whatsapp.className="whatsapp-link";
-card.appendChild(whatsapp);
-}
 if(data.status==="pending"){
 const accept=document.createElement("button");
 accept.textContent="قبول";
@@ -137,38 +157,34 @@ traineeCard.className="request";
 const traineeInfo=document.createElement("h3");
 traineeInfo.textContent=data.traineeName||"متدرب";
 const traineeEmail=document.createElement("p");
-traineeEmail.textContent="البريد الإلكتروني: "+(data.traineeEmail||"غير متاح");
+[11/12/2026 11:22 PM] .: traineeEmail.textContent="البريد الإلكتروني: "+(data.traineeEmail||"غير متاح");
+const phone=data.formData?.phone||"";
 traineeCard.append(traineeInfo,traineeEmail);
 if(phone){
 const phoneText=document.createElement("p");
 phoneText.textContent="رقم التليفون: "+phone;
-const call=document.createElement("a");
-call.href=`tel:${phone}`;
-call.textContent="اتصال بالمتدرب";
-call.className="call-link";
-const whatsappPhone=phone.startsWith("0")?"20"+phone.slice(1):phone;
+traineeCard.appendChild(phoneText);
+const whatsappPhone=normalizePhone(phone);
+if(whatsappPhone){
 const whatsapp=document.createElement("a");
-whatsapp.href=`https://wa.me/${whatsappPhone}`;
+whatsapp.href=https://wa.me/${whatsappPhone};
 whatsapp.target="_blank";
 whatsapp.rel="noopener noreferrer";
-whatsapp.textContent="التواصل عبر WhatsApp";
+whatsapp.textContent="تواصل مع المتدرب عبر WhatsApp";
 whatsapp.className="whatsapp-link";
-traineeCard.append(phoneText,call,whatsapp);
+traineeCard.appendChild(whatsapp);
+}
 }else{
 const noPhone=document.createElement("p");
-noPhone.textContent="رقم التليفون غير متاح";
+noPhone.textContent="رقم تليفون المتدرب غير متاح";
 traineeCard.appendChild(noPhone);
 }
 trainees.appendChild(traineeCard);
 }
 list.appendChild(card);
 });
-if(requests.length===0){
-list.textContent="لا توجد طلبات حتى الآن";
-}
-if(trainees.children.length===0){
-trainees.textContent="لا يوجد متدربون مقبولون حتى الآن";
-}
+if(requests.length===0)list.textContent="لا توجد طلبات حتى الآن";
+if(trainees.children.length===0)trainees.textContent="لا يوجد متدربون مقبولون حتى الآن";
 },(error)=>{
 console.error(error);
 document.getElementById("requests").textContent="تعذر تحميل الطلبات: "+error.message;
