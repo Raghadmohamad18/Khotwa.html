@@ -134,6 +134,9 @@ section {
   max-width: 450px;
   margin: auto;
 }
+#goal{
+  width: 250px;
+}
 .booking-inputs {
   display: block;
   width: 100%;
