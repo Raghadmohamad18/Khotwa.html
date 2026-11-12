@@ -22,7 +22,7 @@ async function loadCoach() {
     if (!coachSnap.exists()) {
       throw new Error("لم يتم العثور على المدرب");
     }
-    currentCoach = {...coachSnap.data(),
+    currentCoach = {...coachSnap.data(), 
       isDemo: false};}
   coachNameElement.textContent = "المدرب: " + currentCoach.fullName;}
 await loadCoach();
