@@ -32,13 +32,13 @@
         e.preventDefault();
         const email = document.getElementById("email").value.trim();
         const password = document.getElementById("password").value;
-        try {
+                try {
           const result = await signInWithEmailAndPassword(auth, email, password);
           const userSnap = await getDoc(doc(db, "users", result.user.uid));
           if (!userSnap.exists()) {
+            await signOut(auth);
             alert("بيانات الحساب غير موجودة");
-            return;
-          }
+            return; }
           const role = userSnap.data().role;
           if (role === "coach") {
             window.location.href = "personal.html";
@@ -46,6 +46,10 @@
             await signOut(auth);
             alert("تسجيل الدخول متاح للمدربين فقط");
           }
+        } catch (error) {
+          console.error(error);
+          alert("تأكد من البريد الإلكتروني وكلمة المرور");
+        }
       });
       </script>
    </body>
