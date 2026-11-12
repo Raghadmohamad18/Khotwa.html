@@ -137,6 +137,10 @@ section {
 #goal{
   width: 250px;
 }
+#"experience{
+  width: 200px;
+  height: 100px;
+}
 .booking-inputs {
   display: block;
   width: 100%;
