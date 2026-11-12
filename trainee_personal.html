@@ -41,10 +41,26 @@
       async function startDashboard() {
         const user = auth.currentUser;
         if (!user) {
-        alert("سجلي الدخول أولًا لعرض ملفك الشخصي");
+        alert("سجل الدخول أولًا لعرض ملفك الشخصي");
         window.location.href = "Khotwa.html";
         return;
       }
+        const userSnap = await getDoc(doc(db, "users", user.uid));
+
+if (!userSnap.exists() || userSnap.data().role !== "trainee") {
+  alert("هذا الحساب ليس حساب متدرب");
+  window.location.href = "log.html";
+  return;
+}
+
+const traineeSnap = await getDoc(doc(db, "trainees", user.uid));
+
+if (!traineeSnap.exists()) {
+  alert("بيانات المتدرب غير موجودة");
+  return;
+}
+
+const trainee = traineeSnap.data();
         document.getElementById("name").textContent = "أهلاً " + (trainee.name || "");
         document.getElementById("email").textContent = trainee.email || user.email || "";
         const requestsQuery = query(collection(db, "requests"), where("traineeId", "==", user.uid));
