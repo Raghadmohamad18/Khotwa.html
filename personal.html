@@ -244,20 +244,25 @@
               status.textContent = "الحالة: " + statusText(data.status);
               card.append(title, email, goal, experience, time, notes, status);
               const phone = (data.formData?.phone || "").replace(/\D/g, "");
-                if (phone) {
-                  const whatsappPhone = phone.startsWith("0")
-                    ? "20" + phone.slice(1)
-                    : phone;
-                
-                  const whatsapp = document.createElement("a");
-                  whatsapp.href = `https://wa.me/${whatsappPhone}`;
-                  whatsapp.target = "_blank";
-                  whatsapp.rel = "noopener noreferrer";
-                  whatsapp.textContent = "التواصل مع المتدرب عبر واتساب";
-                  whatsapp.className = "whatsapp-link";
-                
-                  card.appendChild(whatsapp);
-                }
+
+if (phone) {
+  let whatsappPhone = phone;
+
+  if (whatsappPhone.startsWith("0")) {
+    whatsappPhone = "20" + whatsappPhone.slice(1);
+  } else if (whatsappPhone.startsWith("1") && whatsappPhone.length === 10) {
+    whatsappPhone = "20" + whatsappPhone;
+  }
+
+  const whatsapp = document.createElement("a");
+  whatsapp.href = `https://wa.me/${whatsappPhone}`;
+  whatsapp.target = "_blank";
+  whatsapp.rel = "noopener noreferrer";
+  whatsapp.textContent = "التواصل مع المتدرب عبر واتساب";
+  whatsapp.className = "whatsapp-link";
+
+  card.appendChild(whatsapp);
+}
               if (data.status === "pending") {
                 const accept = document.createElement("button");
                 accept.textContent = "قبول";
