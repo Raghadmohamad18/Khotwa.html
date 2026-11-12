@@ -1,5 +1,5 @@
 import { auth, authReady, db } from "./firebase.js";
-import { collection, getDocs } from "https://gstatic.com";
+import {collection,getDocs} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 const CoachesNames = {
   "Ahmed Hassan": "احمد حسن محمد",
   "Sara Mohamed": "ساره محمد حسن",
