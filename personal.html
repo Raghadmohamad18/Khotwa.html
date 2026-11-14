@@ -158,23 +158,23 @@
         </style>
     </head>
     <body class="personal-page">
-    <div class="container">
-      <div class="card">
-        <h2>بيانات المدرب</h2>
-        <div id="coachDetails" class="profile-info">
-          جاري تحميل البيانات...
+        <div class="container">
+          <div class="card">
+            <h2>بيانات المدرب</h2>
+            <div id="coachDetails" class="profile-info">
+              جاري تحميل البيانات...
+            </div>
+            <button id="logout">تسجيل الخروج</button>
+          </div>
+          <div class="card">
+            <h2>طلبات المتدربين</h2>
+            <div id="requests">جاري تحميل الطلبات...</div>
+          </div>
+          <div class="card">
+            <h2>المتدربون المقبولون</h2>
+            <div id="myTrainees">جاري تحميل البيانات...</div>
+          </div>
         </div>
-        <button id="logout">تسجيل الخروج</button>
-      </div>
-      <div class="card">
-        <h2>طلبات المتدربين</h2>
-        <div id="requests">جاري تحميل الطلبات...</div>
-      </div>
-      <div class="card">
-        <h2>المتدربون المقبولون</h2>
-        <div id="myTrainees">جاري تحميل البيانات...</div>
-      </div>
-    </div>
     <script type="module">
     import { auth, db, authReady } from "./firebase.js";
     import { signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
