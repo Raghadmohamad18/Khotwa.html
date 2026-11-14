@@ -17,39 +17,53 @@ async function loadCoach() {
       fullName: coachId,
       isDemo: true
     };
-  }else {
+  } else {
     const coachSnap = await getDoc(doc(db, "coaches", coachId));
     if (!coachSnap.exists()) {
       throw new Error("لم يتم العثور على المدرب");
     }
-    currentCoach = {...coachSnap.data(), 
-      isDemo: false};}
-  coachNameElement.textContent = "المدرب: " + currentCoach.fullName;}
-await loadCoach();
+    currentCoach = {
+      ...coachSnap.data(),
+      isDemo: false
+    };
+  }
+  coachNameElement.textContent = "المدرب: " + currentCoach.fullName;
+}
+try {
+  await loadCoach();
+} catch (error) {
+  console.error("Coach loading error:", error);
+  alert("حدث خطأ أثناء تحميل بيانات المدرب: " + error.message);
+}
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   try {
-  const name = document.getElementById("traineeName").value.trim();
-  const phone = document.getElementById("num").value.trim();
-  const formData = {
-    goal: document.getElementById("goal").value.trim(),
-    experience: document.getElementById("experience").value,
-    governorate: document.getElementById("gov").value.trim(),
-    phone,
-    preferredTime: document.getElementById("preferredTime").value.trim(),
-    notes: document.getElementById("notes").value.trim()
-  };
-  await addDoc(collection(db, "requests"), {
-  coachId: currentCoach.isDemo ? null : coachId,
-  coachName: currentCoach.fullName,
-  isDemo: currentCoach.isDemo,
-  traineeName: name,
-  formData,
-  status: "pending",
-  createdAt: serverTimestamp()
-});
-
-alert("تم إرسال طلب الحجز بنجاح! سيتواصل معك المدرب.");
-form.reset();
+    if (!currentCoach) {
+      throw new Error("بيانات المدرب لم يتم تحميلها");
+    }
+    const name = document.getElementById("traineeName").value.trim();
+    const phone = document.getElementById("num").value.trim();
+    const formData = {
+      goal: document.getElementById("goal").value.trim(),
+      experience: document.getElementById("experience").value,
+      governorate: document.getElementById("gov").value.trim(),
+      phone,
+      preferredTime: document.getElementById("preferredTime").value.trim(),
+      notes: document.getElementById("notes").value.trim()
+    };
+    await addDoc(collection(db, "requests"), {
+      coachId: currentCoach.isDemo ? null : coachId,
+      coachName: currentCoach.fullName,
+      isDemo: currentCoach.isDemo,
+      traineeName: name,
+      formData,
+      status: "pending",
+      createdAt: serverTimestamp()
+    });
+    alert("تم إرسال طلب الحجز بنجاح! سيتواصل معك المدرب.");
+    form.reset();
+  } catch (error) {
+    console.error("Booking submission error:", error);
+    alert("فشل إرسال الطلب: " + error.message);
   }
 });
