@@ -234,34 +234,51 @@
       container.appendChild(item);
     }
     function showCoachDetails(coach, user, privateData) {
-      const container = document.getElementById("coachDetails");
-      container.innerHTML = "";
-      const excluded = [
-        "password",
-        "confirmPassword",
-        "confirm_password",
-        "uid",
-        "userId",
-        "role",
-        "createdAt",
-        "updatedAt"
-      ];
-      Object.entries(coach).forEach(([key, value]) => {
-        if (excluded.includes(key) || key.toLowerCase().includes("password")) {
-          return;
-        }
-        addProfileField(container, fieldName(key), value);
-      });
-      if (user.email && !coach.email) {
-        addProfileField(container, "البريد الإلكتروني", user.email);
-      }
-      if (privateData.phone && !coach.phone) {
-        addProfileField(container, "رقم التليفون", privateData.phone);
-      }
-      if (container.children.length === 0) {
-        container.textContent = "لا توجد بيانات إضافية مسجلة";
-      }
+  const container = document.getElementById("coachDetails");
+  container.innerHTML = "";
+  addProfileField(container, "اسم المدرب", coach.fullName);
+  addProfileField(container, "الرياضة", coach.specialization || coach.category);
+  addProfileField(
+    container,
+    "السعر",
+    coach.price
+      ? coach.price + (coach.priceType ? " - " + coach.priceType : "")
+      : ""
+  );
+  const excluded = [
+    "fullName",
+    "specialization",
+    "category",
+    "price",
+    "priceType",
+    "password",
+    "confirmPassword",
+    "confirm_password",
+    "uid",
+    "userId",
+    "role",
+    "createdAt",
+    "updatedAt"
+  ];
+  Object.entries(coach).forEach(([key, value]) => {
+    if (
+      excluded.includes(key) ||
+      key.toLowerCase().includes("password")
+    ) {
+      return;
     }
+    addProfileField(container, fieldName(key), value);
+  });
+  if (user.email && !coach.email) {
+    addProfileField(container, "البريد الإلكتروني", user.email);
+  }
+  if (privateData.phone && !coach.phone) {
+    addProfileField(container, "رقم التليفون", privateData.phone);
+  }
+  if (container.children.length === 0) {
+    container.textContent = "لا توجد بيانات إضافية مسجلة";
+  }
+}
     function createText(tag, text) {
       const element = document.createElement(tag);
       element.textContent = text;
