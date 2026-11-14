@@ -1,327 +1,432 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head>
+    <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>لوحة تحكم المدرب | خُطوة</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Segoe UI", Tahoma, sans-serif;
-        }
-        body {
-            background: #f5f5f5;
-            color: #202020;
-            min-height: 100vh;
-            padding: 40px 5%;
-        }
-        .container {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(280px, 1fr));
-            gap: 25px;
-            max-width: 1250px;
-            margin: auto;
-            align-items: start;
-        }
-        .card {
-            background: #fff;
-            padding: 28px;
-            border-radius: 18px;
-            box-shadow: 0 5px 20px rgba(0,0,0,.07);
-            border: 1px solid #e9e9e9;
-            border-top: 5px solid #ce2029;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            min-width: 0;
-        }
-        .card h2 {
-            color: #ce2029;
-            font-size: 22px;
-            padding-bottom: 14px;
-            border-bottom: 2px solid #eee;
-        }
-        .profile-info {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .profile-item {
-            background: #fafafa;
-            padding: 12px 15px;
-            border-radius: 9px;
-            border-right: 3px solid #ce2029;
-            overflow-wrap: anywhere;
-        }
-        .profile-item strong {
-            display: block;
-            color: #ce2029;
-            font-size: 13px;
-            margin-bottom: 5px;
-        }
-        .profile-item span {
-            color: #333;
-            font-size: 15px;
-            line-height: 1.7;
-        }
-        .request {
-            background: #fafafa;
-            border: 1px solid #e8e8e8;
-            border-right: 4px solid #ce2029;
-            border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            overflow-wrap: anywhere;
-        }
-        .request h3 {
-            font-size: 18px;
-            color: #ce2029;
-        }
-        .request p {
-            font-size: 14px;
-            color: #555;
-            line-height: 1.8;
-        }
-        button, .contact-link {
-            border: none;
-            border-radius: 8px;
-            padding: 11px 16px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            text-align: center;
-            display: inline-block;
-            margin: 4px 0;
-        }
-        .accept {
-            background: #ce2029;
-            color: white;
-        }
-        .accept:hover {
-            background: #a71921;
-        }
-        .reject {
-            background: #333;
-            color: white;
-        }
-        .reject:hover {
-            background: #111;
-        }
-        .call {
-            background: #e8efff;
-            color: #2456a5;
-        }
-        .whatsapp {
-            background: #e5f6ec;
-            color: #16834a;
-        }
-        #logout {
-            background: #ce2029;
-            color: white;
-            width: 100%;
-            padding: 13px;
-        }
-        .empty {
-            color: #888;
-            font-size: 14px;
-            padding: 10px 0;
-        }
-        .actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .actions button {
-            flex: 1;
-        }
-        @media (max-width: 750px) {
-            body {
-                padding: 25px 15px;
-            }
-            .container {
-                grid-template-columns: 1fr;
-                gap: 18px;
-            }
-            .card {
-                padding: 22px;
-            }
-        }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+    }
+    body {
+      background: #f5f5f5;
+      color: #202020;
+      min-height: 100vh;
+      padding: 40px 5%;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(280px, 1fr));
+      gap: 25px;
+      max-width: 1250px;
+      margin: auto;
+      align-items: start;
+    }
+    .card {
+      background: #fff;
+      padding: 28px;
+      border-radius: 18px;
+      box-shadow: 0 5px 20px rgba(0,0,0,.07);
+      border: 1px solid #e9e9e9;
+      border-top: 5px solid #ce2029;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      min-width: 0;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 9px 25px rgba(0,0,0,.11);
+    }
+    .card h2 {
+      color: #ce2029;
+      font-size: 22px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #eee;
+    }
+    .profile-info {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .profile-item {
+      background: #fafafa;
+      padding: 12px 15px;
+      border-radius: 9px;
+      border-right: 3px solid #ce2029;
+      overflow-wrap: anywhere;
+    }
+    .profile-item strong {
+      display: block;
+      color: #ce2029;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+    .profile-item span {
+      color: #333;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+    .request {
+      background: #fafafa;
+      border: 1px solid #e8e8e8;
+      border-right: 4px solid #ce2029;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow-wrap: anywhere;
+    }
+    .request h3 {
+      color: #202020;
+      font-size: 18px;
+    }
+    .request p {
+      color: #595959;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    button {
+      border: none;
+      border-radius: 9px;
+      padding: 11px 18px;
+      background: #202020;
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: .2s;
+      margin-left: 6px;
+      margin-top: 5px;
+    }
+    button:hover {
+      background: #ce2029;
+      transform: translateY(-2px);
+    }
+    #logout {
+      background: #ce2029;
+      margin-top: 10px;
+      padding: 13px;
+      width: 100%;
+    }
+    #logout:hover {
+      background: #a71921;
+    }
+    .whatsapp-link {
+      display: inline-block;
+      width: fit-content;
+      text-decoration: none;
+      padding: 11px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      background: #e5f6ec;
+      color: #16834a;
+      transition: .2s;
+    }
+    .whatsapp-link:hover {
+      background: #c9efd8;
+    }
+    #requests,
+    #myTrainees,
+    #notifications {
+      color: #82918b;
+      line-height: 1.8;
+      font-size: 15px;
+    }
+    @media (max-width: 750px) {
+      body {
+        padding: 25px 15px;
+      }
+      .container {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+      .card {
+        padding: 22px;
+      }
+      .card h2 {
+        font-size: 20px;
+      }
+    }
     </style>
-</head>
-<body>
+    </head>
+    <body class="personal-page">
     <div class="container">
-        <div class="card">
-            <h2>بيانات المدرب</h2>
-            <div id="coachDetails" class="profile-info">
-                جاري تحميل البيانات...
-            </div>
-            <button id="logout">تسجيل الخروج</button>
+      <div class="card">
+        <h2>بيانات المدرب</h2>
+        <div id="coachDetails" class="profile-info">
+          جاري تحميل البيانات...
         </div>
-        <div class="card">
-            <h2>طلبات المتدربين</h2>
-            <div id="requests">جاري تحميل الطلبات...</div>
-        </div>
-        <div class="card">
-            <h2>المتدربون المقبولون</h2>
-            <div id="myTrainees">جاري تحميل البيانات...</div>
-        </div>
+        <button id="logout">تسجيل الخروج</button>
+      </div>
+      <div class="card">
+        <h2>طلبات المتدربين</h2>
+        <div id="requests">جاري تحميل الطلبات...</div>
+      </div>
+      <div class="card">
+        <h2>المتدربون المقبولون</h2>
+        <div id="myTrainees">جاري تحميل البيانات...</div>
+      </div>
     </div>
     <script type="module">
-        import { auth, db, authReady } from "./firebase.js";
-        import { signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-        import {
-            doc,
-            getDoc,
-            collection,
-            query,
-            where,
-            onSnapshot,
-            updateDoc,
-            deleteDoc,
-            serverTimestamp
-        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-        await authReady;
-        let stopRequests = null;
-        function createText(tag, text) {
-            const element = document.createElement(tag);
-            element.textContent = text;
-            return element;
+    import { auth, db, authReady } from "./firebase.js";
+    import { signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+    import {
+      doc,
+      getDoc,
+      collection,
+      query,
+      where,
+      onSnapshot,
+      updateDoc,
+      deleteDoc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+    let stopRequests = null;
+    function fieldName(key) {
+      const names = {
+        fullName: "الاسم بالكامل",
+        name: "الاسم",
+        email: "البريد الإلكتروني",
+        phone: "رقم التليفون",
+        category: "المجال",
+        specialization: "التخصص",
+        price: "السعر",
+        priceType: "نوع الاشتراك",
+        experience: "الخبرة",
+        governorate: "المحافظة",
+        city: "المدينة",
+        area: "منطقة التدريب",
+        address: "العنوان",
+        gender: "النوع",
+        age: "العمر",
+        bio: "نبذة عن المدرب",
+        about: "نبذة عن المدرب",
+        description: "الوصف",
+        certificate: "الشهادة",
+        certificates: "الشهادات",
+        certs: "الشهادات",
+        workplace: "مكان العمل",
+        availability: "المواعيد المتاحة",
+        online: "التدريب أونلاين",
+        trainingPlaces: "أماكن التدريب",
+        imageUrl: "صورة المدرب"
+      };
+      return names[key] || key.replace(/([A-Z])/g, " $1");
+    }
+    function addProfileField(container, label, value) {
+      if (value === null || value === undefined || value === "") return;
+      if (typeof value === "object" && !Array.isArray(value)) return;
+      const item = document.createElement("div");
+      item.className = "profile-item";
+      const title = document.createElement("strong");
+      title.textContent = label;
+      const content = document.createElement("span");
+      content.textContent = Array.isArray(value) ? value.join("، ") : String(value);
+      item.append(title, content);
+      container.appendChild(item);
+    }
+    function showCoachDetails(coach, user, privateData) {
+      const container = document.getElementById("coachDetails");
+      container.innerHTML = "";
+      const excluded = [
+        "password",
+        "confirmPassword",
+        "confirm_password",
+        "uid",
+        "userId",
+        "role",
+        "createdAt",
+        "updatedAt"
+      ];
+      Object.entries(coach).forEach(([key, value]) => {
+        if (excluded.includes(key) || key.toLowerCase().includes("password")) {
+          return;
         }
-        function addProfileField(container, label, value) {
-            if (value === null || value === undefined || value === "") return;
-            if (typeof value === "object" && !Array.isArray(value)) return;
-            const item = document.createElement("div");
-            item.className = "profile-item";
-            const title = createText("strong", label);
-            const content = createText("span", Array.isArray(value) ? value.join("، ") : String(value));
-            item.append(title, content);
-            container.appendChild(item);
+        addProfileField(container, fieldName(key), value);
+      });
+      if (user.email && !coach.email) {
+        addProfileField(container, "البريد الإلكتروني", user.email);
+      }
+      if (privateData.phone && !coach.phone) {
+        addProfileField(container, "رقم التليفون", privateData.phone);
+      }
+      if (container.children.length === 0) {
+        container.textContent = "لا توجد بيانات إضافية مسجلة";
+      }
+    }
+    function createText(tag, text) {
+      const element = document.createElement(tag);
+      element.textContent = text;
+      return element;
+    }
+    function normalizePhone(phone) {
+      let number = String(phone || "").replace(/\D/g, "");
+      if (number.startsWith("00")) {
+        number = number.slice(2);
+      }
+      if (number.startsWith("0")) {
+        number = "20" + number.slice(1);
+      }
+      return number;
+    }
+    function addRequestDetails(card, data) {
+      const formData = data.formData || {};
+      card.append(
+        createText("h3", data.traineeName || "متدرب"),
+        createText("p", "الهدف: " + (formData.goal || "غير محدد")),
+        createText("p", "الخبرة: " + (formData.experience || "غير محددة")),
+        createText("p", "المحافظة: " + (formData.governorate || "غير محددة")),
+        createText("p", "رقم التليفون: " + (formData.phone || "غير متاح")),
+        createText("p", "الوقت المناسب: " + (formData.preferredTime || "غير محدد")),
+        createText("p", "ملاحظات: " + (formData.notes || "لا توجد"))
+      );
+    }
+    function renderRequests(snapshot) {
+      const requestsList = document.getElementById("requests");
+      const traineesList = document.getElementById("myTrainees");
+      requestsList.innerHTML = "";
+      traineesList.innerHTML = "";
+      const requests = snapshot.docs.sort((a, b) => {
+        const dateA = a.data().createdAt?.toMillis?.() || 0;
+        const dateB = b.data().createdAt?.toMillis?.() || 0;
+        return dateB - dateA;
+      });
+      let pendingCount = 0;
+      let acceptedCount = 0;
+      requests.forEach((requestDoc) => {
+        const data = requestDoc.data();
+        if (data.status === "pending") {
+          pendingCount++;
+          const card = document.createElement("div");
+          card.className = "request";
+          addRequestDetails(card, data);
+          const accept = createText("button", "قبول");
+          accept.type = "button";
+          accept.onclick = () => changeStatus(requestDoc.id, "accepted");
+          const decline = createText("button", "رفض");
+          decline.type = "button";
+          decline.onclick = () => changeStatus(requestDoc.id, "declined");
+          card.append(accept, decline);
+          requestsList.appendChild(card);
         }
-        function fieldName(key) {
-            const names = {
-                fullName: "الاسم بالكامل",
-                name: "الاسم",
-                email: "البريد الإلكتروني",
-                phone: "رقم التليفون",
-                specialization: "التخصص",
-                category: "المجال",
-                price: "السعر",
-                experience: "الخبرة",
-                governorate: "المحافظة",
-                city: "المدينة",
-                address: "العنوان",
-                bio: "نبذة عن المدرب",
-                description: "الوصف",
-                certificate: "الشهادة",
-                certificates: "الشهادات",
-                workplace: "مكان العمل",
-                availability: "المواعيد المتاحة",
-                online: "التدريب أونلاين"
-            };
-            return names[key] || key;
-        }
-        function showCoachDetails(coach, user) {
-            const container = document.getElementById("coachDetails");
-            container.innerHTML = "";
-            const excluded = [
-                "password",
-                "confirmPassword",
-                "confirm_password",
-                "uid",
-                "userId",
-                "role",
-                "createdAt",
-                "updatedAt"
-            ];
-            Object.entries(coach).forEach(([key, value]) => {
-                if (excluded.includes(key) || key.toLowerCase().includes("password")) return;
-                addProfileField(container, fieldName(key), value);
-            });
-            if (user.email && !coach.email) {
-                addProfileField(container, "البريد الإلكتروني", user.email);
+        if (data.status === "accepted") {
+          acceptedCount++;
+          const card = document.createElement("div");
+          card.className = "request";
+          addRequestDetails(card, data);
+          const phone = data.formData?.phone || "";
+          if (phone) {
+            const call = document.createElement("a");
+            call.href = "tel:" + phone.replace(/[^\d+]/g, "");
+            call.className = "whatsapp-link";
+            call.textContent = "اتصل به";
+            card.appendChild(call);
+            const whatsappPhone = normalizePhone(phone);
+            if (whatsappPhone) {
+              const whatsapp = document.createElement("a");
+              whatsapp.href = "https://wa.me/" + whatsappPhone;
+              whatsapp.target = "_blank";
+              whatsapp.rel = "noopener noreferrer";
+              whatsapp.textContent = "تواصل عبر WhatsApp";
+              whatsapp.className = "whatsapp-link";
+              card.appendChild(whatsapp);
             }
-            if (container.children.length === 0) {
-                container.textContent = "لا توجد بيانات مسجلة";
-            }
+          }
+          traineesList.appendChild(card);
         }
-        function normalizePhone(phone) {
-            let number = String(phone || "").replace(/\D/g, "");
-            if (number.startsWith("00")) {
-                number = number.slice(2);
-            }
-            if (number.startsWith("0")) {
-                number = "20" + number.slice(1);
-            }
-            return number;
+      });
+      if (pendingCount === 0) {
+        requestsList.textContent = "لا توجد طلبات حتى الآن";
+      }
+      if (acceptedCount === 0) {
+        traineesList.textContent = "لا يوجد متدربون مقبولون حتى الآن";
+      }
+    }
+    async function changeStatus(requestId, status) {
+      try {
+        const requestRef = doc(db, "requests", requestId);
+        if (status === "accepted") {
+          await updateDoc(requestRef, {
+            status: "accepted",
+            updatedAt: serverTimestamp()
+          });
+          alert("تم قبول الطلب");
+        } else {
+          await deleteDoc(requestRef);
+          alert("تم رفض الطلب وحذفه");
         }
-        function createRequestCard(requestDoc) {
-            const data = requestDoc.data();
-            const form = data.formData || {};
-            const card = document.createElement("div");
-            card.className = "request";
-            card.append(
-                createText("h3", data.traineeName || "متدرب"),
-                createText("p", "رقم التواصل: " + (form.phone || "غير متاح")),
-                createText("p", "هدف التدريب: " + (form.goal || "غير محدد")),
-                createText("p", "مستوى الخبرة: " + (form.experience || "غير محدد")),
-                createText("p", "منطقة السكن: " + (form.governorate || "غير محددة")),
-                createText("p", "الوقت المناسب: " + (form.preferredTime || "غير محدد")),
-                createText("p", "ملاحظات إضافية: " + (form.notes || "لا توجد"))
-            );
-            const actions = document.createElement("div");
-            actions.className = "actions";
-            const accept = document.createElement("button");
-            accept.className = "accept";
-            accept.textContent = "قبول الطلب";
-            accept.onclick = async () => {
-                accept.disabled = true;
-                try {
-                    await updateDoc(doc(db, "requests", requestDoc.id), {
-                        status: "accepted",
-                        updatedAt: serverTimestamp()
-                    });
-                    alert("تم قبول الطلب بنجاح");
-                } catch (error) {
-                    console.error(error);
-                    alert("تعذر قبول الطلب: " + error.message);
-                    accept.disabled = false;
-                }
-            };
-            const reject = document.createElement("button");
-            reject.className = "reject";
-            reject.textContent = "رفض الطلب";
-            reject.onclick = async () => {
-                if (!confirm("هل أنت متأكد من رفض وحذف هذا الطلب؟")) return;
-                reject.disabled = true;
-                try {
-                    await deleteDoc(doc(db, "requests", requestDoc.id));
-                    alert("تم حذف الطلب");
-                } catch (error) {
-                    console.error(error);
-                    alert("تعذر حذف الطلب: " + error.message);
-                    reject.disabled = false;
-                }
-            };
-            actions.append(accept, reject);
-            card.appendChild(actions);
-            return card;
+      } catch (error) {
+        console.error("Request update error:", error);
+        alert("حدث خطأ أثناء تحديث الطلب: " + error.message);
+      }
+    }
+    async function startDashboard() {
+      const user = await authReady;
+      if (!user) {
+        window.location.href = "signCoach.html";
+        return;
+      }
+      const userSnap = await getDoc(doc(db, "users", user.uid));
+      if (!userSnap.exists() || userSnap.data().role !== "coach") {
+        alert("هذا الحساب ليس حساب مدرب");
+        await signOut(auth);
+        window.location.href = "log.html";
+        return;
+      }
+      const coachSnap = await getDoc(doc(db, "coaches", user.uid));
+      if (!coachSnap.exists()) {
+        document.getElementById("coachDetails").textContent = "بيانات المدرب غير موجودة";
+        return;
+      }
+      const coach = coachSnap.data();
+      let privateData = {};
+      try {
+        const privateSnap = await getDoc(doc(db, "coachPrivate", user.uid));
+        if (privateSnap.exists()) {
+          privateData = privateSnap.data();
         }
-        function createTraineeCard(requestDoc) {
-            const data = requestDoc.data();
-            const form = data.formData || {};
-            const phone = form.phone || "";
-            const card = document.createElement("div");
-            card.className = "request";
-            card.append(
-                createText("h3", data.traineeName || "متدرب"),
-                createText("p", "رقم التواصل: " + (phone || "غير متاح")),
-                createText("p", "هدف التدريب: " + (form.goal || "غير محدد")),
-                createText("p", "مستوى الخبرة: " + (form.experience || "غير محدد")),
-                createText("p", "منطقة السكن: " + (form.governorate || "غير محددة")),
-                createText("p", "الوقت المناسب: " + (form.preferredTime || "غير محدد"))
+      } catch (error) {
+        console.error("تعذر تحميل بيانات التواصل الخاصة:", error);
+      }
+      showCoachDetails(coach, user, privateData);
+      const requestsQuery = query(
+        collection(db, "requests"),
+        where("coachId", "==", user.uid)
+      );
+      stopRequests = onSnapshot(
+        requestsQuery,
+        (snapshot) => renderRequests(snapshot),
+        (error) => {
+          console.error("Requests error:", error);
+          document.getElementById("requests").textContent = "تعذر تحميل الطلبات: " + error.message;
+          document.getElementById("myTrainees").textContent = "تعذر تحميل المقبولين: " + error.message;
+        }
+      );
+    }
+    document.getElementById("logout").addEventListener("click", async () => {
+      if (stopRequests) {
+        stopRequests();
+      }
+      try {
+        await signOut(auth);
+        window.location.href = "signCoach.html";
+      } catch (error) {
+        alert("تعذر تسجيل الخروج: " + error.message);
+      }
+    });
+    startDashboard().catch((error) => {
+      console.error("Dashboard error:", error);
+      document.getElementById("coachDetails").textContent = "تعذر تحميل بيانات المدرب: " + error.message;
+      document.getElementById("requests").textContent = "تعذر تحميل الطلبات: " + error.message;
+    });
+    </script>
+</body>
+</html>
