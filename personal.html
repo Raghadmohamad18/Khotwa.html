@@ -175,275 +175,275 @@
             <div id="myTrainees">جاري تحميل البيانات...</div>
           </div>
         </div>
-    <script type="module">
-    import { auth, db, authReady } from "./firebase.js";
-    import { signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-    import {
-      doc,
-      getDoc,
-      collection,
-      query,
-      where,
-      onSnapshot,
-      updateDoc,
-      deleteDoc,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-    let stopRequests = null;
-    function fieldName(key) {
-      const names = {
-        fullName: "الاسم بالكامل",
-        name: "الاسم",
-        email: "البريد الإلكتروني",
-        phone: "رقم التليفون",
-        category: "المجال",
-        specialization: "التخصص",
-        price: "السعر",
-        priceType: "نوع الاشتراك",
-        experience: "الخبرة",
-        governorate: "المحافظة",
-        city: "المدينة",
-        area: "منطقة التدريب",
-        address: "العنوان",
-        gender: "النوع",
-        age: "العمر",
-        bio: "نبذة عن المدرب",
-        about: "نبذة عن المدرب",
-        description: "الوصف",
-        certificate: "الشهادة",
-        certificates: "الشهادات",
-        certs: "الشهادات",
-        workplace: "مكان العمل",
-        availability: "المواعيد المتاحة",
-        online: "التدريب أونلاين",
-        trainingPlaces: "أماكن التدريب",
-        imageUrl: "صورة المدرب"
-      };
-      return names[key] || key.replace(/([A-Z])/g, " $1");
-    }
-    function addProfileField(container, label, value) {
-      if (value === null || value === undefined || value === "") return;
-      if (typeof value === "object" && !Array.isArray(value)) return;
-      const item = document.createElement("div");
-      item.className = "profile-item";
-      const title = document.createElement("strong");
-      title.textContent = label;
-      const content = document.createElement("span");
-      content.textContent = Array.isArray(value) ? value.join("، ") : String(value);
-      item.append(title, content);
-      container.appendChild(item);
-    }
-    function showCoachDetails(coach, user, privateData) {
-  const container = document.getElementById("coachDetails");
-  container.innerHTML = "";
-  addProfileField(container, "اسم المدرب", coach.fullName);
-  addProfileField(container, "الرياضة", coach.specialization || coach.category);
-  addProfileField(
-    container,
-    "السعر",
-    coach.price
-      ? coach.price + (coach.priceType ? " - " + coach.priceType : "")
-      : ""
-  );
-  const excluded = [
-    "fullName",
-    "specialization",
-    "category",
-    "price",
-    "priceType",
-    "password",
-    "confirmPassword",
-    "confirm_password",
-    "uid",
-    "userId",
-    "role",
-    "createdAt",
-    "updatedAt"
-  ];
-  Object.entries(coach).forEach(([key, value]) => {
-    if (
-      excluded.includes(key) ||
-      key.toLowerCase().includes("password")
-    ) {
-      return;
-    }
-    addProfileField(container, fieldName(key), value);
-  });
-  if (user.email && !coach.email) {
-    addProfileField(container, "البريد الإلكتروني", user.email);
-  }
-  if (privateData.phone && !coach.phone) {
-    addProfileField(container, "رقم التليفون", privateData.phone);
-  }
-  if (container.children.length === 0) {
-    container.textContent = "لا توجد بيانات إضافية مسجلة";
-  }
-}
-    function createText(tag, text) {
-      const element = document.createElement(tag);
-      element.textContent = text;
-      return element;
-    }
-    function normalizePhone(phone) {
-      let number = String(phone || "").replace(/\D/g, "");
-      if (number.startsWith("00")) {
-        number = number.slice(2);
-      }
-      if (number.startsWith("0")) {
-        number = "20" + number.slice(1);
-      }
-      return number;
-    }
-    function addRequestDetails(card, data) {
-      const formData = data.formData || {};
-      card.append(
-        createText("h3", data.traineeName || "متدرب"),
-        createText("p", "الهدف: " + (formData.goal || "غير محدد")),
-        createText("p", "الخبرة: " + (formData.experience || "غير محددة")),
-        createText("p", "المحافظة: " + (formData.governorate || "غير محددة")),
-        createText("p", "رقم التليفون: " + (formData.phone || "غير متاح")),
-        createText("p", "الوقت المناسب: " + (formData.preferredTime || "غير محدد")),
-        createText("p", "ملاحظات: " + (formData.notes || "لا توجد"))
-      );
-    }
-    function renderRequests(snapshot) {
-      const requestsList = document.getElementById("requests");
-      const traineesList = document.getElementById("myTrainees");
-      requestsList.innerHTML = "";
-      traineesList.innerHTML = "";
-      const requests = snapshot.docs.sort((a, b) => {
-        const dateA = a.data().createdAt?.toMillis?.() || 0;
-        const dateB = b.data().createdAt?.toMillis?.() || 0;
-        return dateB - dateA;
-      });
-      let pendingCount = 0;
-      let acceptedCount = 0;
-      requests.forEach((requestDoc) => {
-        const data = requestDoc.data();
-        if (data.status === "pending") {
-          pendingCount++;
-          const card = document.createElement("div");
-          card.className = "request";
-          addRequestDetails(card, data);
-          const accept = createText("button", "قبول");
-          accept.type = "button";
-          accept.onclick = () => changeStatus(requestDoc.id, "accepted");
-          const decline = createText("button", "رفض");
-          decline.type = "button";
-          decline.onclick = () => changeStatus(requestDoc.id, "declined");
-          card.append(accept, decline);
-          requestsList.appendChild(card);
+        <script type="module">
+        import { auth, db, authReady } from "./firebase.js";
+        import { signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+        import {
+          doc,
+          getDoc,
+          collection,
+          query,
+          where,
+          onSnapshot,
+          updateDoc,
+          deleteDoc,
+          serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+        let stopRequests = null;
+        function fieldName(key) {
+          const names = {
+            fullName: "الاسم بالكامل",
+            name: "الاسم",
+            email: "البريد الإلكتروني",
+            phone: "رقم التليفون",
+            category: "المجال",
+            specialization: "التخصص",
+            price: "السعر",
+            priceType: "نوع الاشتراك",
+            experience: "الخبرة",
+            governorate: "المحافظة",
+            city: "المدينة",
+            area: "منطقة التدريب",
+            address: "العنوان",
+            gender: "النوع",
+            age: "العمر",
+            bio: "نبذة عن المدرب",
+            about: "نبذة عن المدرب",
+            description: "الوصف",
+            certificate: "الشهادة",
+            certificates: "الشهادات",
+            certs: "الشهادات",
+            workplace: "مكان العمل",
+            availability: "المواعيد المتاحة",
+            online: "التدريب أونلاين",
+            trainingPlaces: "أماكن التدريب",
+            imageUrl: "صورة المدرب"
+          };
+          return names[key] || key.replace(/([A-Z])/g, " $1");
         }
-        if (data.status === "accepted") {
-          acceptedCount++;
-          const card = document.createElement("div");
-          card.className = "request";
-          addRequestDetails(card, data);
-          const phone = data.formData?.phone || "";
-          if (phone) {
-            const call = document.createElement("a");
-            call.href = "tel:" + phone.replace(/[^\d+]/g, "");
-            call.className = "whatsapp-link";
-            call.textContent = "اتصل به";
-            card.appendChild(call);
-            const whatsappPhone = normalizePhone(phone);
-            if (whatsappPhone) {
-              const whatsapp = document.createElement("a");
-              whatsapp.href = "https://wa.me/" + whatsappPhone;
-              whatsapp.target = "_blank";
-              whatsapp.rel = "noopener noreferrer";
-              whatsapp.textContent = "تواصل عبر WhatsApp";
-              whatsapp.className = "whatsapp-link";
-              card.appendChild(whatsapp);
-            }
+        function addProfileField(container, label, value) {
+          if (value === null || value === undefined || value === "") return;
+          if (typeof value === "object" && !Array.isArray(value)) return;
+          const item = document.createElement("div");
+          item.className = "profile-item";
+          const title = document.createElement("strong");
+          title.textContent = label;
+          const content = document.createElement("span");
+          content.textContent = Array.isArray(value) ? value.join("، ") : String(value);
+          item.append(title, content);
+          container.appendChild(item);
+        }
+        function showCoachDetails(coach, user, privateData) {
+      const container = document.getElementById("coachDetails");
+      container.innerHTML = "";
+      addProfileField(container, "اسم المدرب", coach.fullName);
+      addProfileField(container, "الرياضة", coach.specialization || coach.category);
+      addProfileField(
+        container,
+        "السعر",
+        coach.price
+          ? coach.price + (coach.priceType ? " - " + coach.priceType : "")
+          : ""
+      );
+      const excluded = [
+        "fullName",
+        "specialization",
+        "category",
+        "price",
+        "priceType",
+        "password",
+        "confirmPassword",
+        "confirm_password",
+        "uid",
+        "userId",
+        "role",
+        "createdAt",
+        "updatedAt"
+      ];
+      Object.entries(coach).forEach(([key, value]) => {
+        if (
+          excluded.includes(key) ||
+          key.toLowerCase().includes("password")
+        ) {
+          return;
+        }
+        addProfileField(container, fieldName(key), value);
+      });
+      if (user.email && !coach.email) {
+        addProfileField(container, "البريد الإلكتروني", user.email);
+      }
+      if (privateData.phone && !coach.phone) {
+        addProfileField(container, "رقم التليفون", privateData.phone);
+      }
+      if (container.children.length === 0) {
+        container.textContent = "لا توجد بيانات إضافية مسجلة";
+      }
+    }
+        function createText(tag, text) {
+          const element = document.createElement(tag);
+          element.textContent = text;
+          return element;
+        }
+        function normalizePhone(phone) {
+          let number = String(phone || "").replace(/\D/g, "");
+          if (number.startsWith("00")) {
+            number = number.slice(2);
           }
-          traineesList.appendChild(card);
+          if (number.startsWith("0")) {
+            number = "20" + number.slice(1);
+          }
+          return number;
         }
-      });
-      if (pendingCount === 0) {
-        requestsList.textContent = "لا توجد طلبات حتى الآن";
-      }
-      if (acceptedCount === 0) {
-        traineesList.textContent = "لا يوجد متدربون مقبولون حتى الآن";
-      }
-    }
-    async function changeStatus(requestId, status) {
-      try {
-        const requestRef = doc(db, "requests", requestId);
-        if (status === "accepted") {
-          await updateDoc(requestRef, {
-            status: "accepted",
-            updatedAt: serverTimestamp()
+        function addRequestDetails(card, data) {
+          const formData = data.formData || {};
+          card.append(
+            createText("h3", data.traineeName || "متدرب"),
+            createText("p", "الهدف: " + (formData.goal || "غير محدد")),
+            createText("p", "الخبرة: " + (formData.experience || "غير محددة")),
+            createText("p", "المحافظة: " + (formData.governorate || "غير محددة")),
+            createText("p", "رقم التليفون: " + (formData.phone || "غير متاح")),
+            createText("p", "الوقت المناسب: " + (formData.preferredTime || "غير محدد")),
+            createText("p", "ملاحظات: " + (formData.notes || "لا توجد"))
+          );
+        }
+        function renderRequests(snapshot) {
+          const requestsList = document.getElementById("requests");
+          const traineesList = document.getElementById("myTrainees");
+          requestsList.innerHTML = "";
+          traineesList.innerHTML = "";
+          const requests = snapshot.docs.sort((a, b) => {
+            const dateA = a.data().createdAt?.toMillis?.() || 0;
+            const dateB = b.data().createdAt?.toMillis?.() || 0;
+            return dateB - dateA;
           });
-          alert("تم قبول الطلب");
-        } else {
-          await deleteDoc(requestRef);
-          alert("تم رفض الطلب وحذفه");
+          let pendingCount = 0;
+          let acceptedCount = 0;
+          requests.forEach((requestDoc) => {
+            const data = requestDoc.data();
+            if (data.status === "pending") {
+              pendingCount++;
+              const card = document.createElement("div");
+              card.className = "request";
+              addRequestDetails(card, data);
+              const accept = createText("button", "قبول");
+              accept.type = "button";
+              accept.onclick = () => changeStatus(requestDoc.id, "accepted");
+              const decline = createText("button", "رفض");
+              decline.type = "button";
+              decline.onclick = () => changeStatus(requestDoc.id, "declined");
+              card.append(accept, decline);
+              requestsList.appendChild(card);
+            }
+            if (data.status === "accepted") {
+              acceptedCount++;
+              const card = document.createElement("div");
+              card.className = "request";
+              addRequestDetails(card, data);
+              const phone = data.formData?.phone || "";
+              if (phone) {
+                const call = document.createElement("a");
+                call.href = "tel:" + phone.replace(/[^\d+]/g, "");
+                call.className = "whatsapp-link";
+                call.textContent = "اتصل به";
+                card.appendChild(call);
+                const whatsappPhone = normalizePhone(phone);
+                if (whatsappPhone) {
+                  const whatsapp = document.createElement("a");
+                  whatsapp.href = "https://wa.me/" + whatsappPhone;
+                  whatsapp.target = "_blank";
+                  whatsapp.rel = "noopener noreferrer";
+                  whatsapp.textContent = "تواصل عبر WhatsApp";
+                  whatsapp.className = "whatsapp-link";
+                  card.appendChild(whatsapp);
+                }
+              }
+              traineesList.appendChild(card);
+            }
+          });
+          if (pendingCount === 0) {
+            requestsList.textContent = "لا توجد طلبات حتى الآن";
+          }
+          if (acceptedCount === 0) {
+            traineesList.textContent = "لا يوجد متدربون مقبولون حتى الآن";
+          }
         }
-      } catch (error) {
-        console.error("Request update error:", error);
-        alert("حدث خطأ أثناء تحديث الطلب: " + error.message);
-      }
-    }
-    async function startDashboard() {
-      const user = await authReady;
-      if (!user) {
-        window.location.href = "signCoach.html";
-        return;
-      }
-      const userSnap = await getDoc(doc(db, "users", user.uid));
-      if (!userSnap.exists() || userSnap.data().role !== "coach") {
-        alert("هذا الحساب ليس حساب مدرب");
-        await signOut(auth);
-        window.location.href = "log.html";
-        return;
-      }
-      const coachSnap = await getDoc(doc(db, "coaches", user.uid));
-      if (!coachSnap.exists()) {
-        document.getElementById("coachDetails").textContent = "بيانات المدرب غير موجودة";
-        return;
-      }
-      const coach = coachSnap.data();
-      let privateData = {};
-      try {
-        const privateSnap = await getDoc(doc(db, "coachPrivate", user.uid));
-        if (privateSnap.exists()) {
-          privateData = privateSnap.data();
+        async function changeStatus(requestId, status) {
+          try {
+            const requestRef = doc(db, "requests", requestId);
+            if (status === "accepted") {
+              await updateDoc(requestRef, {
+                status: "accepted",
+                updatedAt: serverTimestamp()
+              });
+              alert("تم قبول الطلب");
+            } else {
+              await deleteDoc(requestRef);
+              alert("تم رفض الطلب وحذفه");
+            }
+          } catch (error) {
+            console.error("Request update error:", error);
+            alert("حدث خطأ أثناء تحديث الطلب: " + error.message);
+          }
         }
-      } catch (error) {
-        console.error("تعذر تحميل بيانات التواصل الخاصة:", error);
-      }
-      showCoachDetails(coach, user, privateData);
-      const requestsQuery = query(
-        collection(db, "requests"),
-        where("coachId", "==", user.uid)
-      );
-      stopRequests = onSnapshot(
-        requestsQuery,
-        (snapshot) => renderRequests(snapshot),
-        (error) => {
-          console.error("Requests error:", error);
+        async function startDashboard() {
+          const user = await authReady;
+          if (!user) {
+            window.location.href = "signCoach.html";
+            return;
+          }
+          const userSnap = await getDoc(doc(db, "users", user.uid));
+          if (!userSnap.exists() || userSnap.data().role !== "coach") {
+            alert("هذا الحساب ليس حساب مدرب");
+            await signOut(auth);
+            window.location.href = "log.html";
+            return;
+          }
+          const coachSnap = await getDoc(doc(db, "coaches", user.uid));
+          if (!coachSnap.exists()) {
+            document.getElementById("coachDetails").textContent = "بيانات المدرب غير موجودة";
+            return;
+          }
+          const coach = coachSnap.data();
+          let privateData = {};
+          try {
+            const privateSnap = await getDoc(doc(db, "coachPrivate", user.uid));
+            if (privateSnap.exists()) {
+              privateData = privateSnap.data();
+            }
+          } catch (error) {
+            console.error("تعذر تحميل بيانات التواصل الخاصة:", error);
+          }
+          showCoachDetails(coach, user, privateData);
+          const requestsQuery = query(
+            collection(db, "requests"),
+            where("coachId", "==", user.uid)
+          );
+          stopRequests = onSnapshot(
+            requestsQuery,
+            (snapshot) => renderRequests(snapshot),
+            (error) => {
+              console.error("Requests error:", error);
+              document.getElementById("requests").textContent = "تعذر تحميل الطلبات: " + error.message;
+              document.getElementById("myTrainees").textContent = "تعذر تحميل المقبولين: " + error.message;
+            }
+          );
+        }
+        document.getElementById("logout").addEventListener("click", async () => {
+          if (stopRequests) {
+            stopRequests();
+          }
+          try {
+            await signOut(auth);
+            window.location.href = "signCoach.html";
+          } catch (error) {
+            alert("تعذر تسجيل الخروج: " + error.message);
+          }
+        });
+        startDashboard().catch((error) => {
+          console.error("Dashboard error:", error);
+          document.getElementById("coachDetails").textContent = "تعذر تحميل بيانات المدرب: " + error.message;
           document.getElementById("requests").textContent = "تعذر تحميل الطلبات: " + error.message;
-          document.getElementById("myTrainees").textContent = "تعذر تحميل المقبولين: " + error.message;
-        }
-      );
-    }
-    document.getElementById("logout").addEventListener("click", async () => {
-      if (stopRequests) {
-        stopRequests();
-      }
-      try {
-        await signOut(auth);
-        window.location.href = "signCoach.html";
-      } catch (error) {
-        alert("تعذر تسجيل الخروج: " + error.message);
-      }
-    });
-    startDashboard().catch((error) => {
-      console.error("Dashboard error:", error);
-      document.getElementById("coachDetails").textContent = "تعذر تحميل بيانات المدرب: " + error.message;
-      document.getElementById("requests").textContent = "تعذر تحميل الطلبات: " + error.message;
-    });
-    </script>
-</body>
+        });
+        </script>
+    </body>
 </html>
