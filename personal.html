@@ -1,267 +1,214 @@
 
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>لوحة تحكم المدرب | خُطوة</title>
-
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Segoe UI", Tahoma, sans-serif;
-}
-
-body {
-    background: #f5f5f5;
-    color: #202020;
-    min-height: 100vh;
-    padding: 40px 5%;
-}
-
-.container {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(280px, 1fr));
-    gap: 25px;
-    max-width: 1250px;
-    margin: auto;
-    align-items: start;
-}
-
-.card {
-    background: #fff;
-    padding: 28px;
-    border-radius: 18px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, .07);
-    border: 1px solid #e9e9e9;
-    border-top: 5px solid #ce2029;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    min-width: 0;
-    transition: transform .2s, box-shadow .2s;
-}
-
-.card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 9px 25px rgba(0, 0, 0, .11);
-}
-
-.card h2 {
-    color: #ce2029;
-    font-size: 22px;
-    padding-bottom: 14px;
-    border-bottom: 2px solid #eee;
-}
-
-.profile-info {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.profile-item {
-    background: #fafafa;
-    padding: 12px 15px;
-    border-radius: 9px;
-    border-right: 3px solid #ce2029;
-    overflow-wrap: anywhere;
-}
-
-.profile-item strong {
-    display: block;
-    color: #ce2029;
-    font-size: 13px;
-    margin-bottom: 5px;
-}
-
-.profile-item span {
-    color: #333;
-    font-size: 15px;
-    line-height: 1.7;
-}
-
-.request {
-    background: #fafafa;
-    border: 1px solid #e8e8e8;
-    border-right: 4px solid #ce2029;
-    border-radius: 12px;
-    padding: 18px;
-    margin-bottom: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    overflow-wrap: anywhere;
-}
-
-.request h3 {
-    color: #202020;
-    font-size: 18px;
-}
-
-.request p {
-    color: #595959;
-    font-size: 14px;
-    line-height: 1.7;
-}
-
-button {
-    border: none;
-    border-radius: 9px;
-    padding: 11px 18px;
-    background: #202020;
-    color: white;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: .2s;
-    margin-left: 6px;
-    margin-top: 5px;
-}
-
-button:hover {
-    background: #ce2029;
-    transform: translateY(-2px);
-}
-
-button:disabled {
-    opacity: .6;
-    cursor: not-allowed;
-    transform: none;
-}
-
-#logout {
-    background: #ce2029;
-    margin-top: 10px;
-    padding: 13px;
-}
-
-#logout:hover {
-    background: #a71921;
-}
-
-.whatsapp-link {
-    display: inline-block;
-    width: fit-content;
-    text-decoration: none;
-    padding: 11px 16px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    background: #e5f6ec;
-    color: #16834a;
-    transition: .2s;
-}
-
-.whatsapp-link:hover {
-    background: #c9efd8;
-}
-
-#requests,
-#myTrainees,
-#notifications {
-    color: #82918b;
-    line-height: 1.8;
-    font-size: 15px;
-}
-
-@media (max-width: 750px) {
-    body {
-        padding: 25px 15px;
-    }
-
-    .container {
-        grid-template-columns: 1fr;
-        gap: 18px;
-    }
-
-    .card {
-        padding: 22px;
-    }
-
-    .card h2 {
-        font-size: 20px;
-    }
-}
-</style>
-</head>
-
-<body class="personal-page">
-
-<div class="container">
-
-    <div class="card">
-        <h2>بيانات المدرب</h2>
-        <div id="coachDetails" class="profile-info">
-            جاري تحميل البيانات...
-        </div>
-        <button id="logout">تسجيل الخروج</button>
-    </div>
-
-    <div class="card">
-        <h2>طلبات المتدربين</h2>
-        <div id="requests">جاري تحميل الطلبات...</div>
-    </div>
-
-    <div class="card">
-        <h2>المتدربون المقبولون</h2>
-        <div id="myTrainees">جاري تحميل البيانات...</div>
-    </div>
-
-    <div class="card">
-        <h2>الإشعارات</h2>
-        <div id="notifications">جاري تحميل الإشعارات...</div>
-    </div>
-
-</div>
-
-<script type="module">
-
-// ==============================
-// 1. Firebase Imports
-// ==============================
-
-import {
-    auth,
-    db,
-    authReady
-} from "./firebase.js";
-
-import {
-    signOut
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
-import {
-    doc,
-    getDoc,
-    collection,
-    query,
-    where,
-    onSnapshot,
-    updateDoc,
-    writeBatch,
-    serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
-
-// ==============================
-// 2. Global Variables
-// ==============================
-
+    <html lang="ar" dir="rtl">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>لوحة تحكم المدرب | خُطوة</title>
+            <style>
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                    font-family: "Segoe UI", Tahoma, sans-serif;
+                }
+                body {
+                    background: #f5f5f5;
+                    color: #202020;
+                    min-height: 100vh;
+                    padding: 40px 5%;
+                }
+                .container {
+                    display: grid;
+                    grid-template-columns: repeat(2, minmax(280px, 1fr));
+                    gap: 25px;
+                    max-width: 1250px;
+                    margin: auto;
+                    align-items: start;
+                }
+                .card {
+                    background: #fff;
+                    padding: 28px;
+                    border-radius: 18px;
+                    box-shadow: 0 5px 20px rgba(0, 0, 0, .07);
+                    border: 1px solid #e9e9e9;
+                    border-top: 5px solid #ce2029;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 15px;
+                    min-width: 0;
+                    transition: transform .2s, box-shadow .2s;
+                }
+                .card:hover {
+                    transform: translateY(-4px);
+                    box-shadow: 0 9px 25px rgba(0, 0, 0, .11);
+                }
+                .card h2 {
+                    color: #ce2029;
+                    font-size: 22px;
+                    padding-bottom: 14px;
+                    border-bottom: 2px solid #eee;
+                }
+                .profile-info {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                }
+                .profile-item {
+                    background: #fafafa;
+                    padding: 12px 15px;
+                    border-radius: 9px;
+                    border-right: 3px solid #ce2029;
+                    overflow-wrap: anywhere;
+                }
+                .profile-item strong {
+                    display: block;
+                    color: #ce2029;
+                    font-size: 13px;
+                    margin-bottom: 5px;
+                }
+                .profile-item span {
+                    color: #333;
+                    font-size: 15px;
+                    line-height: 1.7;
+                }
+                .request {
+                    background: #fafafa;
+                    border: 1px solid #e8e8e8;
+                    border-right: 4px solid #ce2029;
+                    border-radius: 12px;
+                    padding: 18px;
+                    margin-bottom: 15px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    overflow-wrap: anywhere;
+                }
+                .request h3 {
+                    color: #202020;
+                    font-size: 18px;
+                }
+                .request p {
+                    color: #595959;
+                    font-size: 14px;
+                    line-height: 1.7;
+                }
+                button {
+                    border: none;
+                    border-radius: 9px;
+                    padding: 11px 18px;
+                    background: #202020;
+                    color: white;
+                    font-size: 14px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: .2s;
+                    margin-left: 6px;
+                    margin-top: 5px;
+                }
+                button:hover {
+                    background: #ce2029;
+                    transform: translateY(-2px);
+                }
+                button:disabled {
+                    opacity: .6;
+                    cursor: not-allowed;
+                    transform: none;
+                }
+                #logout {
+                    background: #ce2029;
+                    margin-top: 10px;
+                    padding: 13px;
+                }
+                #logout:hover {
+                    background: #a71921;
+                }
+                .whatsapp-link {
+                    display: inline-block;
+                    width: fit-content;
+                    text-decoration: none;
+                    padding: 11px 16px;
+                    border-radius: 8px;
+                    font-size: 14px;
+                    font-weight: 600;
+                    background: #e5f6ec;
+                    color: #16834a;
+                    transition: .2s;
+                }
+                .whatsapp-link:hover {
+                    background: #c9efd8;
+                }
+                #requests,
+                #myTrainees,
+                #notifications {
+                    color: #82918b;
+                    line-height: 1.8;
+                    font-size: 15px;
+                }
+                
+                @media (max-width: 750px) {
+                    body {
+                        padding: 25px 15px;
+                 }
+                .container {
+                    grid-template-columns: 1fr;
+                    gap: 18px;
+                }
+                .card {
+                    padding: 22px;
+                }
+                .card h2 {
+                    font-size: 20px;
+                }
+            }
+            </style>
+        </head>
+        <body class="personal-page">
+            <div class="container">
+                <div class="card">
+                    <h2>بيانات المدرب</h2>
+                    <div id="coachDetails" class="profile-info">
+                        جاري تحميل البيانات...
+                    </div>
+                    <button id="logout">تسجيل الخروج</button>
+                </div>
+                <div class="card">
+                    <h2>طلبات المتدربين</h2>
+                    <div id="requests">جاري تحميل الطلبات...</div>
+                </div>
+                <div class="card">
+                    <h2>المتدربون المقبولون</h2>
+                    <div id="myTrainees">جاري تحميل البيانات...</div>
+                </div>
+                <div class="card">
+                    <h2>الإشعارات</h2>
+                    <div id="notifications">جاري تحميل الإشعارات...</div>
+                </div>
+            </div>
+        <script type="module">
+            import {
+                auth,
+                db,
+                authReady
+            } from "./firebase.js";
+            import {
+                signOut
+            } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+            import {
+                doc,
+                getDoc,
+                collection,
+                query,
+                where,
+                onSnapshot,
+                updateDoc,
+                writeBatch,
+                serverTimestamp
+            } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 await authReady;
-
 let stopRequests = null;
 let stopNotifications = null;
-
-
-// ==============================
-// 3. Helper Functions
-// ==============================
-
 function fieldName(key) {
-
     const names = {
         fullName: "الاسم بالكامل",
         name: "الاسم",
@@ -289,82 +236,51 @@ function fieldName(key) {
         online: "التدريب أونلاين",
         trainingPlaces: "أماكن التدريب"
     };
-
     return names[key] || key.replace(/([A-Z])/g, " $1");
 }
 
-
 function addProfileField(container, label, value) {
-
     if (
         value === null ||
         value === undefined ||
         value === ""
     ) return;
-
     if (typeof value === "object" && !Array.isArray(value)) return;
-
     const item = document.createElement("div");
     item.className = "profile-item";
-
     const title = document.createElement("strong");
     title.textContent = label;
-
     const content = document.createElement("span");
     content.textContent = Array.isArray(value)
         ? value.join("، ")
         : String(value);
-
     item.append(title, content);
     container.appendChild(item);
 }
-
-
 function createText(tag, text) {
-
     const element = document.createElement(tag);
     element.textContent = text;
-
     return element;
 }
-
-
 function normalizePhone(phone) {
-
     let number = String(phone || "").replace(/\D/g, "");
-
     if (number.startsWith("00")) {
         number = number.slice(2);
     }
-
     if (number.startsWith("0")) {
         number = "20" + number.slice(1);
     }
-
     return number;
 }
-
-
 function statusText(status) {
-
     if (status === "pending") return "قيد الانتظار";
     if (status === "accepted") return "مقبول";
     if (status === "declined") return "مرفوض";
-
     return status || "غير محددة";
 }
-
-
-// ==============================
-// 4. Display Coach Information
-// ==============================
-
 function showCoachDetails(coach, user, privateData) {
-
     const container = document.getElementById("coachDetails");
-
     container.innerHTML = "";
-
     const excluded = [
         "password",
         "confirmPassword",
@@ -375,127 +291,75 @@ function showCoachDetails(coach, user, privateData) {
         "createdAt",
         "updatedAt"
     ];
-
     Object.entries(coach).forEach(([key, value]) => {
-
         if (
             excluded.includes(key) ||
             key.toLowerCase().includes("password")
         ) return;
-
         addProfileField(container, fieldName(key), value);
     });
-
     if (user.email && !coach.email) {
         addProfileField(container, "البريد الإلكتروني", user.email);
     }
-
     if (privateData.phone && !coach.phone) {
         addProfileField(container, "رقم التليفون", privateData.phone);
     }
-
     if (container.children.length === 0) {
         container.textContent = "لا توجد بيانات إضافية مسجلة";
     }
 }
-
-
-// ==============================
-// 5. Load Dashboard
-// ==============================
-
 async function startDashboard() {
-
     const user = auth.currentUser;
-
     if (!user) {
         window.location.href = "signCoach.html";
         return;
     }
-
-    // Check User Account
-
     const userSnap = await getDoc(doc(db, "users", user.uid));
-
     if (!userSnap.exists() || userSnap.data().role !== "coach") {
-
         alert("هذا الحساب ليس حساب مدرب");
-
         await signOut(auth);
-
         window.location.href = "log.html";
         return;
     }
-
-    // Get Coach Data
-
     const coachSnap = await getDoc(doc(db, "coaches", user.uid));
-
     if (!coachSnap.exists()) {
-
         document.getElementById("coachDetails").textContent =
             "بيانات المدرب غير موجودة";
-
         return;
     }
-
     const coach = coachSnap.data();
-
-    // Get Private Coach Data
-
     let privateData = {};
-
     try {
-
         const privateSnap = await getDoc(
             doc(db, "coachPrivate", user.uid)
         );
-
         if (privateSnap.exists()) {
             privateData = privateSnap.data();
         }
-
     } catch (error) {
         console.error("تعذر تحميل بيانات التواصل الخاصة:", error);
     }
-
     showCoachDetails(coach, user, privateData);
-
-
-    // ==============================
-    // 6. Load Training Requests
-    // ==============================
-
     const requestsQuery = query(
         collection(db, "requests"),
         where("coachId", "==", user.uid)
     );
-
     stopRequests = onSnapshot(
         requestsQuery,
         (snapshot) => {
-
             const list = document.getElementById("requests");
             const trainees = document.getElementById("myTrainees");
-
             list.innerHTML = "";
             trainees.innerHTML = "";
-
             const requests = snapshot.docs.sort((a, b) => {
-
                 const dateA = a.data().createdAt?.toMillis?.() || 0;
                 const dateB = b.data().createdAt?.toMillis?.() || 0;
-
                 return dateB - dateA;
             });
-
             requests.forEach((requestDoc) => {
-
                 const data = requestDoc.data();
-
                 const card = document.createElement("div");
                 card.className = "request";
-
                 card.append(
                     createText("h3", data.traineeName || "متدرب"),
                     createText("p", "البريد: " + (data.traineeEmail || "غير متاح")),
@@ -505,223 +369,137 @@ async function startDashboard() {
                     createText("p", "ملاحظات: " + (data.formData?.notes || "لا توجد")),
                     createText("p", "الحالة: " + statusText(data.status))
                 );
-
-
-                // Accept and Decline Buttons
-
                 if (data.status === "pending") {
-
                     const accept = createText("button", "قبول");
                     accept.type = "button";
-
                     accept.onclick = () => {
                         changeStatus(requestDoc.id, data, user.uid, "accepted");
                     };
-
                     const decline = createText("button", "رفض");
                     decline.type = "button";
-
                     decline.onclick = () => {
                         changeStatus(requestDoc.id, data, user.uid, "declined");
                     };
-
                     card.append(accept, decline);
                 }
-
-
-                // Accepted Trainees
-
                 if (data.status === "accepted") {
-
                     const traineeCard = document.createElement("div");
                     traineeCard.className = "request";
-
                     traineeCard.append(
                         createText("h3", data.traineeName || "متدرب"),
                         createText("p", "البريد الإلكتروني: " + (data.traineeEmail || "غير متاح"))
                     );
-
                     const phone = data.formData?.phone || data.traineePhone || "";
-
                     if (phone) {
-
                         traineeCard.appendChild(
                             createText("p", "رقم التليفون: " + phone)
                         );
-
                         const whatsappPhone = normalizePhone(phone);
-
                         if (whatsappPhone) {
-
                             const whatsapp = document.createElement("a");
-
                             whatsapp.href = "https://wa.me/" + whatsappPhone;
                             whatsapp.target = "_blank";
                             whatsapp.rel = "noopener noreferrer";
                             whatsapp.textContent = "تواصل مع المتدرب عبر WhatsApp";
                             whatsapp.className = "whatsapp-link";
-
                             traineeCard.appendChild(whatsapp);
                         }
-
                     } else {
-
                         traineeCard.appendChild(
                             createText("p", "رقم تليفون المتدرب غير متاح")
                         );
                     }
-
                     trainees.appendChild(traineeCard);
                 }
-
                 list.appendChild(card);
             });
-
-
             if (requests.length === 0) {
                 list.textContent = "لا توجد طلبات حتى الآن";
             }
-
             if (trainees.children.length === 0) {
                 trainees.textContent = "لا يوجد متدربون مقبولون حتى الآن";
             }
         },
-
         (error) => {
-
             console.error("Requests error:", error);
-
             document.getElementById("requests").textContent =
                 "تعذر تحميل الطلبات: " + error.message;
-
             document.getElementById("myTrainees").textContent =
                 "تعذر تحميل المتدربين المقبولين";
         }
     );
-
-
-    // ==============================
-    // 7. Load Notifications
-    // ==============================
-
     const notificationsQuery = query(
         collection(db, "notifications"),
         where("userId", "==", user.uid)
     );
-
     stopNotifications = onSnapshot(
         notificationsQuery,
         (snapshot) => {
-
             const list = document.getElementById("notifications");
-
             list.innerHTML = "";
-
             const notifications = snapshot.docs.sort((a, b) => {
-
                 const dateA = a.data().createdAt?.toMillis?.() || 0;
                 const dateB = b.data().createdAt?.toMillis?.() || 0;
-
                 return dateB - dateA;
             });
-
             if (notifications.length === 0) {
-
                 list.textContent = "لا توجد إشعارات";
                 return;
             }
-
             notifications.forEach((item) => {
-
                 const data = item.data();
-
                 const card = document.createElement("div");
                 card.className = "request";
-
                 card.append(
                     createText("h3", data.title || "إشعار"),
                     createText("p", data.message || "")
                 );
-
                 if (!data.isRead) {
-
                     const readButton = createText("button", "تحديد كمقروء");
                     readButton.type = "button";
-
                     readButton.onclick = async () => {
-
                         try {
-
                             await updateDoc(
                                 doc(db, "notifications", item.id),
                                 { isRead: true }
                             );
-
                         } catch (error) {
-
                             console.error(error);
                             alert("تعذر تحديث الإشعار: " + error.message);
                         }
                     };
-
                     card.appendChild(readButton);
                 }
-
                 list.appendChild(card);
             });
         },
-
         (error) => {
-
             console.error("Notifications error:", error);
-
             document.getElementById("notifications").textContent =
                 "تعذر تحميل الإشعارات: " + error.message;
         }
     );
 }
-
-
-// ==============================
-// 8. Accept / Decline Requests
-// ==============================
-
 async function changeStatus(requestId, requestData, coachId, status) {
-
     try {
-
         const batch = writeBatch(db);
-
-        const requestRef = doc(db, "requests", requestId);
-
+        const requestRef = doc(db, "requests", requestId);\
         const requestUpdate = {
             status,
             updatedAt: serverTimestamp()
         };
-
-
-        // Get Coach Phone
-
         if (status === "accepted") {
-
             try {
-
                 const privateSnap = await getDoc(
                     doc(db, "coachPrivate", coachId)
                 );
-
                 if (privateSnap.exists()) {
                     requestUpdate.coachPhone = privateSnap.data().phone || "";
                 }
-
             } catch (error) {
                 console.error("تعذر قراءة رقم المدرب:", error);
             }
         }
-
-
-        // Update Request
-
         batch.update(requestRef, requestUpdate);
 
 
